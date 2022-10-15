@@ -79,7 +79,7 @@
             <div class="col-xl-12 col-12">
                 <div class="row">
                     <div class="col-xl-3 col-4">
-                        <div class="box bg-warning">
+                        <div class="box bg-info">
                             <div class="box-body">
                                 <h2 class="my-0 fw-600 text-white">4K+</h2>
                                 <p class="mb-10 text-white-80">School</p>
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-4">
-                        <div class="box bg-warning">
+                        <div class="box bg-success">
                             <div class="box-body">
                                 <h2 class="my-0 fw-600 text-white">450K+</h2>
                                 <p class="mb-10 text-white-80">Program</p>

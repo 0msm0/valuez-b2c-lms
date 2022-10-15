@@ -149,7 +149,7 @@
                         <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson Plan</span></a>
                     </li>
 
-                    <li class="header">Components</li>
+                    <li class="header">Account</li>
                     <li>
                         <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage School</span></a>
                     </li>
