@@ -58,7 +58,7 @@
                                         </td>
                                         <td>Course {{$i+1}}</td>
                                         <td><span class="badge bg-success">Active</span></td>
-                                        <td><a href="{{ route('school.add') }}" class="waves-effect waves-light btn btn-outline btn-info mb-5">Edit</a>
+                                        <td><a href="{{ route('course.add') }}" class="waves-effect waves-light btn btn-outline btn-info mb-5">Edit</a>
                                             <button type="button"
                                                 class="waves-effect waves-light btn btn-outline btn-danger mb-5">Delete</button></td>
                                     </tr>

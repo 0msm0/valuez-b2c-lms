@@ -40,12 +40,18 @@ Route::controller(SchoolController::class)->group(function () {
 
 Route::controller(CourseController::class)->group(function () {
     Route::get('manage-course', 'index')->name('course.list');
+    Route::get('add-course', 'addcourse')->name('course.add');
+    Route::get('update-course', 'editcourse')->name('course.edit');
 });
 
 Route::controller(LessonPlanController::class)->group(function () {
     Route::get('manage-lesson-plan', 'index')->name('lesson.plan.list');
+    Route::get('add-lesson-plan', 'addlessonplan')->name('lesson.plan.add');
+    Route::get('update-lesson-plan', 'editlessonplan')->name('lesson.plan.edit');
 });
 
 Route::controller(ProgramController::class)->group(function () {
     Route::get('manage-program', 'index')->name('program.list');
+    Route::get('add-program', 'addprogram')->name('program.add');
+    Route::get('update-program', 'editprogram')->name('program.edit');
 });
