@@ -28,7 +28,10 @@ class AuthController extends Controller
             return redirect()->intended('dashboard')->withSuccess('Signed in');
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        #return redirect("login")->withSuccess('Login details are not valid');
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function registration()
@@ -62,16 +65,17 @@ class AuthController extends Controller
     public function dashboard()
     {
         #if (Auth::check()) {
-            return view('dashboard');
+        return view('dashboard');
         #}
 
         return redirect("login")->withSuccess('You are not allowed to access');
     }
 
-    public function signOut()
+    public function signOut(Request $request)
     {
-        Session::flush();
         Auth::logout();
-        return Redirect('login');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('login');      
     }
 }
