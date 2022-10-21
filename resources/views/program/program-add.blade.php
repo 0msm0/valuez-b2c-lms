@@ -29,26 +29,34 @@
                         <h4 class="box-title">Add New Program</h4>
                     </div>
                     <!-- /.box-header -->
-                    <form>
-                        <div class="box-body">                          
+                    <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="box-body">
                             <div class="form-group">
-                                <label class="form-label">Program Title</label>
-                                <input type="email" class="form-control" placeholder="Enter Program Title">
+                                <label class="form-label">Program Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" class="form-control" placeholder="Enter Program Title">
+                                @error('title')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label for="formFile" class="form-label">Program Image</label>
-                                <input class="form-control" type="file" id="formFile">
-                            </div>                         
+                                <label for="formFile" class="form-label">Program Image <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="file" name="image" id="formFile">
+                                @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <hr>
                             <div class="form-group">
                                 <label class="form-label">Status</label>
                                 <div class="c-inputs-stacked">
-                                    <input name="status" type="radio" id="radio_123" value="1" checked>
-                                    <label for="radio_123" class="me-30">Active</label>                           
-                                    <input name="status" type="radio" id="radio_789" value="0">
-                                    <label for="radio_789" class="me-30">Inactive</label>
+                                    <input name="status" type="radio" id="active" value="1" checked>
+                                    <label for="active" class="me-30">Active</label>
+                                    <input name="status" type="radio" id="inactive" value="0">
+                                    <label for="inactive" class="me-30">Inactive</label>
                                 </div>
-                            </div>                          
+                            </div>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
@@ -62,4 +70,4 @@
         </div>
     </section>
     <!-- /.content -->
-    @endsection
+@endsection

@@ -52,10 +52,16 @@ Route::middleware('auth')->controller(LessonPlanController::class)->group(functi
     Route::get('manage-lesson-plan', 'index')->name('lesson.plan.list');
     Route::get('add-lesson-plan', 'addlessonplan')->name('lesson.plan.add');
     Route::get('update-lesson-plan', 'editlessonplan')->name('lesson.plan.edit');
+    Route::post('remove-lesson-plan', 'destroy')->name('lesson.plan.remove');
+    Route::post('lesson-plan-add', 'store')->name('lesson.plan.store');
+    Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
 });
 
 Route::middleware('auth')->controller(ProgramController::class)->group(function () {
     Route::get('manage-program', 'index')->name('program.list');
     Route::get('add-program', 'addprogram')->name('program.add');
     Route::get('update-program', 'editprogram')->name('program.edit');
+    Route::post('remove-program', 'destroy')->name('program.remove');
+    Route::post('program-add', 'store')->name('program.store');
+    Route::post('program-edit', 'edit')->name('program.update');
 });

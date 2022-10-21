@@ -28,14 +28,8 @@
                     <h5 class="card-title mb-0">Class / Program</h5>
                     <div class="card-actions float-end">
                         <div class="dropdown show">
-                            <a href="#" data-bs-toggle="dropdown" data-bs-display="static"><i class="align-middle"
-                                    data-feather="more-horizontal"></i></a>
-
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
+                            <a href="{{ route('program.add') }}"
+                                class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Program</a>
                         </div>
                     </div>
                 </div>
@@ -51,18 +45,25 @@
                                 </tr>
                             </thead>
                             <tbody class="text-fade">
-                                @for ($i = 0; $i <= 5; $i++)
-                                    <tr>
-                                        <td><img src="{{ asset('assets/images/avatar/avatar-2.png') }}" width="32"
-                                                height="32" class="bg-light my-n1" alt="Avatar">
-                                        </td>
-                                        <td>Class {{$i+1}}</td>
-                                        <td><span class="badge bg-success">Active</span></td>
-                                        <td><a href="{{ route('program.add') }}" class="waves-effect waves-light btn btn-outline btn-info mb-5">Edit</a>
-                                            <button type="button"
-                                                class="waves-effect waves-light btn btn-outline btn-danger mb-5">Delete</button></td>
-                                    </tr>
-                                @endfor
+                                @foreach ($class_list as $cdata)
+                                <tr>
+                                    <td><img src="{{ url('uploads/program') }}/{{ $cdata->class_image ? $cdata->class_image : 'no_image.png' }}"
+                                            width="32" height="32" class="bg-light my-n1"
+                                            alt="{{ $cdata->class_name }}">
+                                    </td>
+                                    <td>{{ $cdata->class_name }}</td>
+                                    <td><span
+                                            class="badge bg-{{ $cdata->status == 1 ? 'success' : 'danger' }}">{{ $cdata->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('program.remove', ['program' => $cdata->id]) }}" method="POST">
+                                            @csrf
+                                            <a href="{{ route('program.edit', ['program' => $cdata->id]) }}" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
+                                            <button type="submit" class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
