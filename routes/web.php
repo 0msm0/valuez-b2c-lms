@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 
-Route::controller(AuthController::class)->group(function () {    
+Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
     Route::post('process-login', 'authuser')->name('login.process');
     Route::get('registration', 'registration')->name('register-user');
@@ -42,6 +42,10 @@ Route::middleware('auth')->controller(CourseController::class)->group(function (
     Route::get('manage-course', 'index')->name('course.list');
     Route::get('add-course', 'addcourse')->name('course.add');
     Route::get('update-course', 'editcourse')->name('course.edit');
+    Route::post('remove-course', 'destroy')->name('course.remove');
+    Route::post('course-add', 'store')->name('course.store');
+    Route::post('course-edit', 'edit')->name('course.update');
+
 });
 
 Route::middleware('auth')->controller(LessonPlanController::class)->group(function () {
