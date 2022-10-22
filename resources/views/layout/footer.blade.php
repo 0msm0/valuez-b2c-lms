@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    &copy; {{ date('Y') }}<a href="#">Multipurpose Themes</a>. All Rights Reserved.
+    &copy; {{ date('Y') }}<a href="#">Valuez Hut</a>. All Rights Reserved.
 </footer>
 
 <!-- Vendor JS -->

@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="_token" content="{{ csrf_token() }}" />
 <!-- PAGE TITLE HERE -->
-<title> edulearn - Dashboard</title>
+<title>Valuez Hut - Dashboard</title>
 <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
 
 <!-- FAVICONS ICON -->

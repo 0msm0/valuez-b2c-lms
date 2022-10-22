@@ -10,7 +10,7 @@
     <link rel="icon" href="../../../images/favicon.ico">
     <meta name="_token" content="{{ csrf_token() }}" />
 
-    <title>edulearn - Log in </title>
+    <title>Valuez Hut - Log in </title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="{{ asset('assets/src/css/vendors_css.css') }}">
@@ -33,7 +33,7 @@
                         <div class="bg-white rounded10 shadow-lg">
                             <div class="content-top-agile p-20 pb-0">
                                 <h2 class="text-primary fw-600">Let's Get Started</h2>
-                                <p class="mb-0 text-fade">Sign in to continue to edulearn.</p>
+                                <p class="mb-0 text-fade">Sign in to continue to Valuez Hut.</p>
                             </div>
                             <div class="p-40">
                                 <form method="POST" action="{{ route('login.process') }}">
@@ -41,7 +41,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Email id <span class="text-danger">*</span></label>
                                         <div class="controls">
-                                            <input type="text" name="email" class="form-control" placeholder="Username">
+                                            <input type="text" name="email" class="form-control"
+                                                placeholder="Username">
                                         </div>
                                         @if ($errors->has('email'))
                                             <div class="form-control-feedback">
@@ -52,7 +53,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Password <span class="text-danger">*</span></label>
                                         <div class="controls">
-                                            <input type="password" name="password" class="form-control" placeholder="Password">
+                                            <input type="password" name="password" class="form-control"
+                                                placeholder="Password">
                                         </div>
                                         @if ($errors->has('password'))
                                             <div class="form-control-feedback">

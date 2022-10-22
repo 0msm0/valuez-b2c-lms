@@ -1,18 +1,14 @@
 <header class="main-header">
     <div class="d-flex align-items-center logo-box justify-content-start">
         <!-- Logo -->
-        <a href="index.html" class="logo">
+        <a href="{{ url('/')}}" class="logo">
             <!-- logo-->
-            <div class="logo-mini w-30">
-                <span class="light-logo"><img src="{{ asset('assets/images/logo-letter.png') }}" alt="logo"></span>
-                <span class="dark-logo"><img src="{{ asset('assets/images/logo-letter-white.png') }}"
-                        alt="logo"></span>
+            <div class="logo-mini w-60">
+                <span class="light-logo"><img src="{{ asset('assets/images/logo-valuez.png') }}" alt="logo"></span>
+                
             </div>
             <div class="logo-lg">
-                <span class="light-logo"><img src="{{ asset('assets/images/logo-dark-text.png') }}"
-                        alt="logo"></span>
-                <span class="dark-logo"><img src="{{ asset('assets/images/logo-light-text.png') }}"
-                        alt="logo"></span>
+               Valuez Hut
             </div>
         </a>
     </div>
