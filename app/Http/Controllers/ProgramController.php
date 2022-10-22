@@ -29,7 +29,7 @@ class ProgramController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required',
         ]);
 
 
@@ -48,8 +48,7 @@ class ProgramController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required',           
         ]);
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/program/';

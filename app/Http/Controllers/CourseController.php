@@ -27,16 +27,18 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+       
         $request->validate([
             'title' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required',
         ]);
 
-
+        
         if ($image = $request->file('image')) {
+            
             $destinationPath = 'uploads/course/';
             $originalname = $image->getClientOriginalName();
-            $imageName = "course_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $imageName = "course_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();           
             $image->move($destinationPath, $imageName);
         }
 
@@ -48,8 +50,8 @@ class CourseController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required',           
+            // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/course/';
