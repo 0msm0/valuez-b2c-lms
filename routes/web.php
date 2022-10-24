@@ -21,6 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('home', [AuthController::class,'dashboard']);
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
@@ -30,15 +31,18 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('signout', 'signout')->name('signout');
 });
 
-Route::get('dashboard', [AuthController::class,'dashboard'])->name('dashboard');
+Route::middleware('auth')->get('dashboard', [AuthController::class,'dashboard'])->name('dashboard');
 
-Route::middleware('auth')->controller(SchoolController::class)->group(function () {
+Route::middleware('auth')->prefix('school')->controller(SchoolController::class)->group(function () {
     Route::get('manage-school', 'index')->name('school.list');
     Route::get('add-new-school', 'addschool')->name('school.add');
     Route::get('update-school', 'editschool')->name('school.edit');
+    Route::post('remove-school', 'destroy')->name('school.remove');
+    Route::post('school-add', 'store')->name('school.store');
+    Route::post('school-edit', 'edit')->name('school.update');
 });
 
-Route::middleware('auth')->controller(CourseController::class)->group(function () {
+Route::middleware('auth')->prefix('course')->controller(CourseController::class)->group(function () {
     Route::get('manage-course', 'index')->name('course.list');
     Route::get('add-course', 'addcourse')->name('course.add');
     Route::get('update-course', 'editcourse')->name('course.edit');
@@ -48,7 +52,7 @@ Route::middleware('auth')->controller(CourseController::class)->group(function (
 
 });
 
-Route::middleware('auth')->controller(LessonPlanController::class)->group(function () {
+Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanController::class)->group(function () {
     Route::get('manage-lesson-plan', 'index')->name('lesson.plan.list');
     Route::get('add-lesson-plan', 'addlessonplan')->name('lesson.plan.add');
     Route::get('update-lesson-plan', 'editlessonplan')->name('lesson.plan.edit');
@@ -57,7 +61,7 @@ Route::middleware('auth')->controller(LessonPlanController::class)->group(functi
     Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
 });
 
-Route::middleware('auth')->controller(ProgramController::class)->group(function () {
+Route::middleware('auth')->prefix('program')->controller(ProgramController::class)->group(function () {
     Route::get('manage-program', 'index')->name('program.list');
     Route::get('add-program', 'addprogram')->name('program.add');
     Route::get('update-program', 'editprogram')->name('program.edit');

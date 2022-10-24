@@ -22,19 +22,18 @@
     <section class="content">
         <div class="row">
             <div class="col-xl-12">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">School</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
-                                <a href="#" data-bs-toggle="dropdown" data-bs-display="static"><i class="align-middle"
-                                        data-feather="more-horizontal"></i></a>
-
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
+                                <a href="{{ route('school.add') }}"
+                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add School</a>
                             </div>
                         </div>
                     </div>
@@ -54,37 +53,30 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-fade">
-                                    @for ($i = 0; $i <= 4; $i++)
+                                    @foreach ($school as $sdata)
                                         <tr>
                                             <td><img src="{{ asset('assets/images/avatar/avatar-2.png') }}" width="32"
                                                     height="32" class="bg-light rounded-circle my-n1" alt="Avatar">
                                             </td>
-                                            <td>Garrett Winters</td>
-                                            <td>Good Guys</td>
-                                            <td>garrett@winters.com</td>
-                                            <td>9712444456</td>
-                                            <td>10</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td><a href="{{ route('school.add') }}" class="waves-effect waves-light btn btn-outline btn-info mb-5">Edit</a>
-                                                <button type="button"
-                                                    class="waves-effect waves-light btn btn-outline btn-danger mb-5">Delete</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="{{ asset('assets/images/avatar/avatar-1.png') }}" width="32"
-                                                    height="32" class="bg-light rounded-circle my-n1" alt="Avatar">
+                                            <td>{{ $sdata->school_name }}</td>
+                                            <td>{{ $sdata->primary_person }}</td>
+                                            <td>{{ $sdata->primary_email }}</td>
+                                            <td>{{ $sdata->primary_mobile }}</td>
+                                            <td>{{ $sdata->licence }}</td>
+                                            <td><span class="badge bg-{{ $sdata->status == 1 ? 'success' : 'danger' }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</span>
                                             </td>
-                                            <td>Ashton Cox</td>
-                                            <td>Levitz Furniture</td>
-                                            <td>ashton@cox.com</td>
-                                            <td>9712444456</td>
-                                            <td>10</td>
-                                            <td><span class="badge bg-danger">InActive</span></td>
-                                            <td><a href="{{ route('school.add') }}" class="waves-effect waves-light btn btn-outline btn-info mb-5">Edit</a>
-                                                <button type="button"
-                                                    class="waves-effect waves-light btn btn-outline btn-danger mb-5">Delete</button>
+                                            <td>
+                                                <form action="{{ route('school.remove', ['school' => $sdata->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
+                                                    <button type="submit"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
-                                    @endfor
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

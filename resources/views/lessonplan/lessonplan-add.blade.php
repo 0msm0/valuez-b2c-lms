@@ -34,36 +34,57 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label class="form-label">Lesson Plan Title</label>
-                                <input type="text" name="title" class="form-control"
+                                <input type="text" name="title" value="{{ old('title') }}" class="form-control"
                                     placeholder="Enter Lesson Plan Title">
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Video Link</label>
-                                <input type="text" class="form-control" placeholder="Enter Video Link">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Lesson No</label>
-                                <input type="text" class="form-control" placeholder="Enter Lesson No">
-                            </div>
+
                             <div class="form-group">
                                 <label class="form-label">Program</label>
-                                <select class="form-control select2" style="width: 100%;">
+                                <select class="form-control select2" name="class_id" style="width: 100%;">
                                     @foreach ($program_list as $prog)
-                                        <option value="{{ $prog->id }}}">{{ $prog->class_name }}</option>
+                                        <option value="{{ $prog->id }}" {{ $prog->id == old('class_id') ? 'selected' : '' }}>
+                                            {{ $prog->class_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('class_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Course</label>
-                                <select class="form-control select2" style="width: 100%;">
+                                <select class="form-control select2" name="course_id" style="width: 100%;">
                                     @foreach ($course_list as $course)
-                                        <option value="{{ $course->id }}}">{{ $course->course_name }}</option>
+                                        <option value="{{ $course->id }}" {{ $course->id == old('course_id') ? 'selected' : '' }}>{{ $course->course_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('course_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Video Link <span class="text-danger">*</span></label>
+                                <input type="text" name="video_url" value="{{ old('video_url') }}" class="form-control"
+                                    placeholder="Enter Video Link">
+                                @error('video_url')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Lesson No <span class="text-danger">*</span></label>
+                                <input type="text" name="lesson_no" value="{{ old('lesson_no') }}" class="form-control"
+                                    placeholder="Enter Lesson No">
+                                @error('lesson_no')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Lesson Instructions</label>
+                                <textarea rows="3" name="lesson_desc" class="form-control" placeholder="Enter Lesson Instructions">{{ old('lesson_desc') }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="formFile" class="form-label">Lesson Plan Image <span

@@ -1,23 +1,23 @@
 @extends('layout.main')
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-    <div class="d-flex align-items-center">
-        <div class="me-auto">
-            <h4 class="page-title">Update School</h4>
-            <div class="d-inline-block align-items-center">
-                <nav>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                        <li class="breadcrumb-item" aria-current="page">Manage School</li>
-                        <li class="breadcrumb-item active" aria-current="page">Update School</li>
-                    </ol>
-                </nav>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="d-flex align-items-center">
+            <div class="me-auto">
+                <h4 class="page-title">Update School</h4>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                            <li class="breadcrumb-item" aria-current="page">Manage School</li>
+                            <li class="breadcrumb-item active" aria-current="page">Update School</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 
     <!-- Main content -->
     <section class="content">
@@ -26,58 +26,84 @@
                 <!-- Basic Forms -->
                 <div class="box">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Form Sections</h4>
+                        <h4 class="box-title">Update School</h4>
                     </div>
                     <!-- /.box-header -->
-                    <form>
-                        <div class="box-body">                          
+                    <form action="{{ route('school.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="box-body">
                             <div class="form-group">
-                                <label class="form-label">Full Name:</label>
-                                <input type="email" class="form-control" placeholder="Enter full name">
+                                <label class="form-label">School Name <span class="text-danger">*</span></label>
+                                <input type="text" name="title" value="{{ $school->school_name }}" class="form-control" placeholder="Enter School Name">
+                                @error('title')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Email address:</label>
-                                <input type="email" class="form-control" placeholder="Enter email">
+                                <label class="form-label">School Mobile <span class="text-danger">*</span></label>
+                                <input type="text" name="mobile" value="{{ $school->mobile }}" class="form-control" placeholder="Enter School Mobile">
+                                @error('mobile')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Contact:</label>
-                                <input type="tel" class="form-control" placeholder="Phone number">
+                                <label class="form-label">School Address <span class="text-danger">*</span></label>
+                                <input type="text" name="address" value="{{ $school->address }}" class="form-control"
+                                    placeholder="Enter School Address">
+                                @error('address')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Communications :</label>
-                                <div class="c-inputs-stacked">
-                                    <input type="checkbox" id="checkbox_123">
-                                    <label for="checkbox_123" class="me-30">Email</label>
-                                    <input type="checkbox" id="checkbox_234">
-                                    <label for="checkbox_234" class="me-30">SMS</label>
-                                    <input type="checkbox" id="checkbox_345">
-                                    <label for="checkbox_345" class="me-30">Phone</label>
-                                </div>
+                                <label class="form-label">Total licence <span class="text-danger">*</span></label>
+                                <input type="text" name="licence" value="{{ $school->licence }}" class="form-control" placeholder="Enter Total licence">
+                                @error('licence')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Primary Person Name<span class="text-danger">*</span></label>
+                                <input type="text" name="primary_person" value="{{ $school->primary_person }}" class="form-control"
+                                    placeholder="Enter Person Name">
+                                @error('primary_person')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Primary Email <span class="text-danger">*</span></label>
+                                <input type="text" name="primary_email" value="{{ $school->primary_email }}" class="form-control"
+                                    placeholder="Enter Primary Email">
+                                @error('primary_email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Primary Mobile <span class="text-danger">*</span></label>
+                                <input type="text" name="primary_mobile" value="{{ $school->primary_mobile }}" class="form-control"
+                                    placeholder="Enter Primary Mobile">
+                                @error('primary_mobile')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <hr>
-
-                            <h4 class="mt-0 mb-20">2. Payment Info:</h4>
-
                             <div class="form-group">
-                                <label class="form-label">Payment Method :</label>
+                                <label class="form-label">Status</label>
                                 <div class="c-inputs-stacked">
-                                    <input name="group123" type="radio" id="radio_123" value="1">
-                                    <label for="radio_123" class="me-30">Credit Card</label>
-                                    <input name="group456" type="radio" id="radio_456" value="1">
-                                    <label for="radio_456" class="me-30">Cash</label>
-                                    <input name="group789" type="radio" id="radio_789" value="1">
-                                    <label for="radio_789" class="me-30">Wallet</label>
+                                    <input name="status" type="radio" id="active" value="1"
+                                        {{ $school->status == 1 ? 'checked' : '' }}>
+                                    <label for="active" class="me-30">Active</label>
+                                    <input name="status" type="radio" id="inactive" value="0"
+                                        {{ $school->status == 0 ? 'checked' : '' }}>
+                                    <label for="inactive" class="me-30">Inactive</label>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Amount:</label>
-                                <input type="email" class="form-control" placeholder="Enter full name">
                             </div>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-danger">Cancel</button>
-                            <button type="submit" class="btn btn-success pull-right">Submit</button>
+                            <input type="hidden" name="id" value="{{ $school->id }}">
+                            <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </form>
                 </div>

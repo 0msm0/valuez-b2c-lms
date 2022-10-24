@@ -1,14 +1,14 @@
 <header class="main-header">
     <div class="d-flex align-items-center logo-box justify-content-start">
         <!-- Logo -->
-        <a href="{{ url('/')}}" class="logo">
+        <a href="{{ url('/') }}" class="logo">
             <!-- logo-->
             <div class="logo-mini w-60">
                 <span class="light-logo"><img src="{{ asset('assets/images/logo-valuez.png') }}" alt="logo"></span>
-                
+
             </div>
             <div class="logo-lg">
-               Valuez Hut
+                Valuez Hut
             </div>
         </a>
     </div>
@@ -131,23 +131,24 @@
             <div class="multinav-scroll" style="height: 97%;">
                 <!-- sidebar menu-->
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li>
+                    <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                     </li>
-                    <li>
+                    <li class="{{ Request::is('program/*') ? 'active' : '' }}">
                         <a href="{{ route('program.list') }}"><i data-feather="list"></i><span>Class/Program</span></a>
                     </li>
-                    <li>
+                    <li class="{{ Request::is('course/*') ? 'active' : '' }}">
                         <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
                     </li>
-
-                    <li>
-                        <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson Plan</span></a>
+                    <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
+                        <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson
+                                Plan</span></a>
                     </li>
 
                     <li class="header">Account</li>
-                    <li>
-                        <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage School</span></a>
+                    <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                        <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage
+                                School</span></a>
                     </li>
                     <li>
                         <a href="{{ route('signout') }}"><i data-feather="log-out"></i><span>Logout</span></a>

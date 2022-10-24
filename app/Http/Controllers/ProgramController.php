@@ -35,8 +35,8 @@ class ProgramController extends Controller
 
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/program/';
-            $originalname = $image->getClientOriginalName();
-            $imageName = "class_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $originalname = $image->hashName();
+            $imageName = "class_" . date('Ymd').'_'. $originalname;
             $image->move($destinationPath, $imageName);
         }
 
@@ -52,8 +52,8 @@ class ProgramController extends Controller
         ]);
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/program/';
-            $originalname = $image->getClientOriginalName();
-            $imageName = "class_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $originalname = $image->hashName();
+            $imageName = "class_" . date('Ymd').'_'. $originalname;
             $image->move($destinationPath, $imageName);
 
             $image_path = $destinationPath.$request->old_image;

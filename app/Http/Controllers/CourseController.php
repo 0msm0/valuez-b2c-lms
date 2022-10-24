@@ -34,11 +34,10 @@ class CourseController extends Controller
         ]);
 
         
-        if ($image = $request->file('image')) {
-            
+        if ($image = $request->file('image')) {            
             $destinationPath = 'uploads/course/';
-            $originalname = $image->getClientOriginalName();
-            $imageName = "course_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();           
+            $originalname = $image->hashName();
+            $imageName = "course_" . date('Ymd').'_'. $originalname;               
             $image->move($destinationPath, $imageName);
         }
 
@@ -55,10 +54,9 @@ class CourseController extends Controller
         ]);
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/course/';
-            $originalname = $image->getClientOriginalName();
-            $imageName = "course_".$originalname.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $originalname = $image->hashName();
+            $imageName = "course_" . date('Ymd').'_'. $originalname;
             $image->move($destinationPath, $imageName);
-
             $image_path = $destinationPath.$request->old_image;
             @unlink($image_path);
         }else{
