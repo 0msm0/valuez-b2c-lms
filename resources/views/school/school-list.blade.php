@@ -69,6 +69,8 @@
                                                 <form action="{{ route('school.remove', ['school' => $sdata->id]) }}"
                                                     method="POST">
                                                     @csrf
+                                                    <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5">Teacher</a>
                                                     <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
                                                         class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
                                                     <button type="submit"

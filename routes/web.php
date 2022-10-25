@@ -25,9 +25,7 @@ Route::get('home', [AuthController::class,'dashboard']);
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
-    Route::post('process-login', 'authuser')->name('login.process');
-    Route::get('registration', 'registration')->name('register-user');
-    Route::post('process-registration', 'createuser')->name('register.process');
+    Route::post('process-login', 'authuser')->name('login.process'); 
     Route::get('signout', 'signout')->name('signout');
 });
 
@@ -68,4 +66,13 @@ Route::middleware('auth')->prefix('program')->controller(ProgramController::clas
     Route::post('remove-program', 'destroy')->name('program.remove');
     Route::post('program-add', 'store')->name('program.store');
     Route::post('program-edit', 'edit')->name('program.update');
+});
+
+Route::middleware('auth')->prefix('school')->controller(AuthController::class)->group(function () {
+    Route::get('manage-teacher', 'userlist')->name('teacher.list');
+    Route::get('add-teacher', 'addUser')->name('teacher.add');
+    Route::get('update-teacher', 'updateUser')->name('teacher.edit');
+    Route::post('teacher-remove', 'destroy')->name('teacher.remove');
+    Route::post('teacher-add', 'createuser')->name('teacher.store');
+    Route::post('teacher-edit', 'edituser')->name('teacher.update');
 });
