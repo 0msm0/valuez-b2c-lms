@@ -37,14 +37,15 @@ class AuthController extends Controller
 
     public function userlist(Request $request)
     {
-        $schoolId = $request->input('school');
-        $userlist = DB::table('users')->where(['usertype' => 'teacher'])->orderBy('id')->get();
-        return view('users.teacher', compact('userlist'));
+        $schoolid = $request->input('school');
+        $userlist = DB::table('users')->where(['school_id'=>$schoolid,'usertype' => 'teacher'])->orderBy('id')->get();
+        return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
-    public function addUser()
+    public function addUser(Request $request)
     {
-        return view('users.teacher-add');
+        $schoolid = $request->input('school');
+        return view('users.teacher-add', compact('schoolid'));
     }
 
     public function updateUser(Request $request)
@@ -65,7 +66,7 @@ class AuthController extends Controller
         $data = $request->all();
         $check = $this->create($data);
 
-        return redirect(route('teacher.list'))->withSuccess('User added successfully!');
+        return redirect(route('teacher.list', ['school' => $data['school']]))->withSuccess('User added successfully!');
     }
 
     public function create(array $data)
@@ -74,6 +75,8 @@ class AuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'school_id' => $data['school'],
+            'status' => 1,
             'password' => Hash::make($passWord)
         ]);
     }
@@ -81,25 +84,25 @@ class AuthController extends Controller
     public function edituser(Request $request)
     {
         $data = $request->all();
-
+        $school = $data['school'];
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$data['id'],
+            'email' => 'required|email|unique:users,email,' . $data['id'],
             // 'password' => 'min:6',
         ]);
-        
+
         User::where('id', $data['id'])->update([
             'name' => $data['name'],
             'email' => $data['email']
         ]);
 
-        return redirect(route('teacher.list'))->with('success', 'User Updated successfully');
+        return redirect(route('teacher.list', ['school' => $school]))->with('success', 'User Updated successfully');
     }
 
     public function destroy(Request $request)
     {
         $userId = $request->input('userid');
-        DB::table('users')->where('id', $userId)->delete();
+        DB::table('users')->where('id', $userId)->update(['is_deleted' => 1]);
         return redirect(route('teacher.list'))->with('success', 'User deleted successfully');
     }
 

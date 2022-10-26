@@ -48,7 +48,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-fade">
+                                <tbody class="text-dark">
                                     @foreach ($course as $cdata)
                                         <tr>
                                             <td><img src="{{ url('uploads/course') }}/{{ $cdata->course_image ? $cdata->course_image : 'no_image.png' }}"

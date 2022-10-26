@@ -53,7 +53,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-fade">
+                                <tbody class="text-dark">
 
                                     @foreach ($lessonplan as $lpdata)
                                         <tr>

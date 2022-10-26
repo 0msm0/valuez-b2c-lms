@@ -49,15 +49,15 @@
                 <div class="box bg-transparent no-shadow">
                     <div class="box-body p-xl-0 text-center">
                         <h3 class="px-30 mb-20">Have More<br>knoledge to share?</h3>
-                        <a href="course.html" class="waves-effect waves-light w-p100 btn btn-primary"><i
-                                class="fa fa-plus me-15"></i> Create New Course</a>
+                        <a href="{{ route('lesson.plan.add') }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
+                                class="fa fa-plus me-15"></i> Create New Lesson Plan</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <a class="box box-link-shadow text-center pull-up" href="javascript:void(0)">
                             <div class="box-body py-5 bg-primary-light px-5">
-                                <p class="fw-500 text-primary text-overflow">Courses in Progress</p>
+                                <p class="fw-500 text-primary text-overflow">Courses</p>
                             </div>
                             <div class="box-body p-10">
                                 <h1 class="countnm fs-40 m-0">5</h1>
@@ -82,9 +82,8 @@
                         <div class="box bg-info">
                             <div class="box-body">
                                 <h2 class="my-0 fw-600 text-white">4K+</h2>
-                                <p class="mb-10 text-white-80">School</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <p class="mb-0 text-white-70">This is the latest Data</p>
+                                    <p class="mb-10 text-white-80">School</p>
                                     <button type="button"
                                         class="waves-effect waves-circle btn btn-circle btn-warning-light"><i
                                             class="mdi mdi-arrow-top-right"></i></button>
@@ -96,9 +95,8 @@
                         <div class="box bg-warning">
                             <div class="box-body">
                                 <h2 class="my-0 fw-600 text-white">45K+</h2>
-                                <p class="mb-10 text-white-80">Teacher</p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <p class="mb-0 text-white-70">This is the latest Data</p>
+                                    <p class="mb-10 text-white-80">Teacher</p>
                                     <button type="button"
                                         class="waves-effect waves-circle btn btn-circle btn-warning-light"><i
                                             class="mdi mdi-arrow-top-right"></i></button>
@@ -109,10 +107,9 @@
                     <div class="col-xl-3 col-4">
                         <div class="box bg-success">
                             <div class="box-body">
-                                <h2 class="my-0 fw-600 text-white">450K+</h2>
-                                <p class="mb-10 text-white-80">Program</p>
+                                <h2 class="my-0 fw-600 text-white">40K+</h2>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <p class="mb-0 text-white-70">This is the latest Data</p>
+                                    <p class="mb-10 text-white-80">Program</p>
                                     <button type="button"
                                         class="waves-effect waves-circle btn btn-circle btn-warning-light"><i
                                             class="mdi mdi-arrow-top-right"></i></button>
@@ -124,31 +121,17 @@
                         <div class="box bg-danger">
                             <div class="box-body">
                                 <h2 class="my-0 fw-600 text-white">200K+</h2>
-                                <p class="mb-10 text-white-80">Lesson Plan</p>
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="waves-effect waves-circle btn btn-circle btn-danger-light"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                            class="mdi mdi-play"></i></button>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p class="mb-10 text-white-80">Lesson Plan</p>
+                                    <button type="button"
+                                    class="waves-effect waves-circle btn btn-circle btn-warning-light"><i
+                                        class="mdi mdi-arrow-top-right"></i></button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="ratio ratio-16x9">
-                                        <iframe
-                                            src="//player.vimeo.com/video/473177594?title=0&portrait=0&byline=0&autoplay=1"
-                                            title="video" allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div>                    
                     </div>
                 </div>
             </div>
-
-
-
 
         </div>
     </section>

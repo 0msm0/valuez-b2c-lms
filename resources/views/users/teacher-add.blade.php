@@ -50,6 +50,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
+                            <input type="hidden" name="school" value="{{ $schoolid }}">
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </form>

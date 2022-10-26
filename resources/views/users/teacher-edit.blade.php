@@ -58,6 +58,7 @@
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <input type="hidden" name="id" value="{{ $user->id }}">
+                            <input type="hidden" name="school" value="{{ $user->school_id }}">
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </form>

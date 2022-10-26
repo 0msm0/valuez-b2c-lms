@@ -42,22 +42,22 @@
                             <table id="example2" class="table" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        {{-- <th>#</th> --}}
                                         <th>School</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Contact</th>
-                                        <th>Teacher</th>
+                                        <th>Licence</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-fade">
+                                <tbody class="text-dark">
                                     @foreach ($school as $sdata)
                                         <tr>
-                                            <td><img src="{{ asset('assets/images/avatar/avatar-2.png') }}" width="32"
+                                            {{-- <td><img src="{{ asset('assets/images/avatar/avatar-2.png') }}" width="32"
                                                     height="32" class="bg-light rounded-circle my-n1" alt="Avatar">
-                                            </td>
+                                            </td> --}}
                                             <td>{{ $sdata->school_name }}</td>
                                             <td>{{ $sdata->primary_person }}</td>
                                             <td>{{ $sdata->primary_email }}</td>

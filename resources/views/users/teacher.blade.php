@@ -32,7 +32,7 @@
                         <h5 class="card-title mb-0">Users</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
-                                <a href="{{ route('teacher.add') }}"
+                                <a href="{{ route('teacher.add', ['school' => $schoolid]) }}"
                                     class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add User</a>
                             </div>
                         </div>
@@ -42,23 +42,24 @@
                             <table id="example2" class="table" style="width:100%">
                                 <thead>
                                     <tr>
-                                       
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-fade">
+                                <tbody class="text-dark">
                                     @foreach ($userlist as $udata)
                                         <tr>
-                                           
                                             <td>{{ $udata->name }}</td>
-                                            <td>{{ $udata->email }}</td>                                           
+                                            <td>{{ $udata->email }}</td>
                                             <td>
-                                                <form action="{{ route('teacher.remove', ['userid' => $udata->id]) }}" method="POST">
+                                                <form action="{{ route('teacher.remove', ['userid' => $udata->id]) }}"
+                                                    method="POST">
                                                     @csrf
-                                                    <a href="{{ route('teacher.edit', ['userid' => $udata->id]) }}" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
-                                                    <button type="submit" class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
+                                                    <a href="{{ route('teacher.edit', ['userid' => $udata->id]) }}"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
+                                                    <button type="submit"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
