@@ -72,13 +72,16 @@ class AuthController extends Controller
     public function create(array $data)
     {
         $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
-        return User::create([
+        $add_user = [
             'name' => $data['name'],
             'email' => $data['email'],
             'school_id' => $data['school'],
+            'usertype' => 'teacher',
             'status' => 1,
             'password' => Hash::make($passWord)
-        ]);
+        ];
+        #print_r($add_user); die;
+        return User::create($add_user);
     }
 
     public function edituser(Request $request)
