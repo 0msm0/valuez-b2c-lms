@@ -78,4 +78,9 @@ class ProgramController extends Controller
         DB::table('master_class')->where('id', $classId)->delete();
         return redirect(route('program.list'))->with('success','Program deleted successfully');
     }
+
+    public function TeacherClasslist(){
+        $class_list = DB::table('master_class')->where('status',1)->orderBy('id')->get();
+        return view('webpages.classlist',compact('class_list'));
+    }
 }

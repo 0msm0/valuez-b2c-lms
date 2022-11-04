@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 
 
@@ -26,7 +27,13 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')->withSuccess('Signed in');
+            $user = Auth::user();
+            session(['usertype' => $user->usertype]);
+            if ($user->usertype == 'superadmin') {
+                return redirect()->intended(route('admin-dashboard'))->withSuccess('Signed in');
+            } else {
+                return redirect()->intended(route('dashboard'))->withSuccess('Signed in');
+            }
         }
 
         #return redirect("login")->withSuccess('Login details are not valid');
@@ -38,7 +45,7 @@ class AuthController extends Controller
     public function userlist(Request $request)
     {
         $schoolid = $request->input('school');
-        $userlist = DB::table('users')->where(['school_id'=>$schoolid,'usertype' => 'teacher'])->orderBy('id')->get();
+        $userlist = DB::table('users')->where(['school_id' => $schoolid, 'usertype' => 'teacher'])->orderBy('id')->get();
         return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
@@ -88,17 +95,14 @@ class AuthController extends Controller
     {
         $data = $request->all();
         $school = $data['school'];
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $data['id'],
-            // 'password' => 'min:6',
-        ]);
-
-        User::where('id', $data['id'])->update([
-            'name' => $data['name'],
-            'email' => $data['email']
-        ]);
-
+        $updateuser = ['name' => $data['name'],'email' => $data['email']];
+        $validate = ['name' => 'required', 'email' => 'required|email|unique:users,email,' . $data['id']];
+        if (!empty($data['password'])) {
+            $validate['password'] = ['required', Password::min(6)];
+            $updateuser['password'] = Hash::make($data['password']);
+        }
+        $request->validate($validate);   
+        User::where('id', $data['id'])->update($updateuser);
         return redirect(route('teacher.list', ['school' => $school]))->with('success', 'User Updated successfully');
     }
 
@@ -109,13 +113,22 @@ class AuthController extends Controller
         return redirect(route('teacher.list'))->with('success', 'User deleted successfully');
     }
 
+    public function AdminDash()
+    {
+        if (Auth::check()) {
+            return view('dashboard-admin');
+        } else {
+            return redirect("login")->withSuccess('You are not allowed to access');
+        }
+    }
+
     public function dashboard()
     {
-        #if (Auth::check()) {
-        return view('dashboard');
-        #}
-
-        return redirect("login")->withSuccess('You are not allowed to access');
+        if (Auth::check()) {
+            return view('dashboard');
+        } else {
+            return redirect("login")->withSuccess('You are not allowed to access');
+        }
     }
 
     public function signOut(Request $request)

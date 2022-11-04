@@ -21,15 +21,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('home', [AuthController::class,'dashboard']);
+Route::get('home', [AuthController::class, 'dashboard']);
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
-    Route::post('process-login', 'authuser')->name('login.process'); 
+    Route::post('process-login', 'authuser')->name('login.process');
     Route::get('signout', 'signout')->name('signout');
 });
 
-Route::middleware('auth')->get('dashboard', [AuthController::class,'dashboard'])->name('dashboard');
+Route::middleware('auth')->get('master-dashboard', [AuthController::class, 'AdminDash'])->name('admin-dashboard');
+Route::middleware('auth')->get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 
 Route::middleware('auth')->prefix('school')->controller(SchoolController::class)->group(function () {
     Route::get('manage-school', 'index')->name('school.list');
@@ -47,7 +48,6 @@ Route::middleware('auth')->prefix('course')->controller(CourseController::class)
     Route::post('remove-course', 'destroy')->name('course.remove');
     Route::post('course-add', 'store')->name('course.store');
     Route::post('course-edit', 'edit')->name('course.update');
-
 });
 
 Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanController::class)->group(function () {
@@ -75,4 +75,8 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::post('teacher-remove', 'destroy')->name('teacher.remove');
     Route::post('teacher-add', 'createuser')->name('teacher.store');
     Route::post('teacher-edit', 'edituser')->name('teacher.update');
+});
+
+Route::middleware('auth')->prefix('teacher')->group(function () {
+    Route::get('class-list', [ProgramController::class,'TeacherClasslist'])->name('teacher.class.list');
 });

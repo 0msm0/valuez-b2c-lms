@@ -94,7 +94,10 @@
                         </li>
                     </ul>
                 </li>
-
+                @php
+                    $user_type = session('usertype') == 'superadmin' ? 'Super Admin' : session('usertype');
+                    $fullname = auth()->user()->name;
+                @endphp
                 <!-- User Account-->
                 <li class="dropdown user user-menu">
                     <a href="#"
@@ -102,8 +105,8 @@
                         title="User" data-bs-toggle="modal" data-bs-target="#quick_user_toggle">
                         <div class="d-flex pt-1 align-items-center">
                             <div class="text-end me-10">
-                                <p class="pt-5 fs-14 mb-0 fw-700">Nil Yeager</p>
-                                <small class="fs-10 mb-0 text-uppercase text-mute">Admin</small>
+                                <p class="pt-5 fs-14 mb-0 fw-700">{{ $fullname }}</p>
+                                <small class="fs-10 mb-0 text-uppercase text-mute">{{ ucfirst($user_type) }}</small>
                             </div>
                             <img src="{{ asset('assets/images/avatar/avatar-13.png') }}"
                                 class="avatar rounded-circle bg-primary-light h-40 w-40" alt="" />
@@ -131,25 +134,43 @@
             <div class="multinav-scroll" style="height: 97%;">
                 <!-- sidebar menu-->
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
-                    </li>
-                    <li class="{{ Request::is('program/*') ? 'active' : '' }}">
-                        <a href="{{ route('program.list') }}"><i data-feather="list"></i><span>Class/Program</span></a>
-                    </li>
-                    <li class="{{ Request::is('course/*') ? 'active' : '' }}">
-                        <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
-                    </li>
-                    <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
-                        <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson
-                                Plan</span></a>
-                    </li>
 
-                    <li class="header">Account</li>
-                    <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                        <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage
-                                School</span></a>
-                    </li>
+                    @if (session('usertype') == 'superadmin')
+                        <li class="{{ Request::is('admin-dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('admin-dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="{{ Request::is('program/*') ? 'active' : '' }}">
+                            <a href="{{ route('program.list') }}"><i
+                                    data-feather="list"></i><span>Class/Program</span></a>
+                        </li>
+                        <li class="{{ Request::is('course/*') ? 'active' : '' }}">
+                            <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
+                        </li>
+                        <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
+                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson
+                                    Plan</span></a>
+                        </li>
+                        <li class="header">Account</li>
+                        <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                            <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage
+                                    School</span></a>
+                        </li>
+                    @elseif(session('usertype') == 'admin')
+                        <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="{{ Request::is('program/*') ? 'active' : '' }}">
+                            <a href="{{ route('program.list') }}"><i
+                                    data-feather="list"></i><span>Class/Program</span></a>
+                        </li>
+                    @elseif(session('usertype') == 'teacher')
+                        <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
+                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Class list</span></a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('signout') }}"><i data-feather="log-out"></i><span>Logout</span></a>
                     </li>
