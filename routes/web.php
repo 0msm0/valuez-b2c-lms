@@ -6,6 +6,8 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonPlanController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\WebPage;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -79,4 +81,6 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
 
 Route::middleware('auth')->prefix('teacher')->group(function () {
     Route::get('class-list', [ProgramController::class,'TeacherClasslist'])->name('teacher.class.list');
+    Route::get('course-list/{class}', [WebPage::class,'courselist'])->name('teacher.course.list');
+    Route::get('lesson-plan-list/{id}', [WebPage::class,'lessonPlan'])->name('teacher.lesson.list');
 });
