@@ -22,7 +22,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-lg-8 col-12">
+            <div class="col-lg-10 col-xl-8 col-12">
                 <!-- Basic Forms -->
                 <div class="box">
                     <div class="box-header with-border">
@@ -63,17 +63,17 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Video Link</label>
-                                <input type="text" name="video_url" class="form-control" value="{{ $lessonplan->video_url }}"
-                                    placeholder="Enter Video Link">
+                                <input type="text" name="video_url" class="form-control"
+                                    value="{{ $lessonplan->video_url }}" placeholder="Enter Video Link">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Lesson No</label>
-                                <input type="text" name="lesson_no" class="form-control" value="{{ $lessonplan->lesson_no }}"
-                                    placeholder="Enter Lesson No">
+                                <input type="text" name="lesson_no" class="form-control"
+                                    value="{{ $lessonplan->lesson_no }}" placeholder="Enter Lesson No">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Lesson Instructions</label>
-                                <textarea rows="3" name="lesson_desc" class="form-control" placeholder="Enter Lesson Instructions">{{ $lessonplan->lesson_desc }}</textarea>
+                                <textarea id="lesson_inst" name="lesson_desc" class="form-control" placeholder="Enter Lesson Instructions">{{ $lessonplan->lesson_desc }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="formFile" class="form-label">Lesson Plan Image <span
@@ -112,7 +112,13 @@
 @endsection
 
 @section('script-section')
+    <script src="{{ asset('assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
+
     <script>
         $('.select2').select2();
+        //Add text editor
+
+        //bootstrap WYSIHTML5 - text editor
+        $('#lesson_inst').wysihtml5();
     </script>
 @endsection

@@ -95,13 +95,13 @@ class AuthController extends Controller
     {
         $data = $request->all();
         $school = $data['school'];
-        $updateuser = ['name' => $data['name'],'email' => $data['email']];
+        $updateuser = ['name' => $data['name'], 'email' => $data['email']];
         $validate = ['name' => 'required', 'email' => 'required|email|unique:users,email,' . $data['id']];
         if (!empty($data['password'])) {
             $validate['password'] = ['required', Password::min(6)];
             $updateuser['password'] = Hash::make($data['password']);
         }
-        $request->validate($validate);   
+        $request->validate($validate);
         User::where('id', $data['id'])->update($updateuser);
         return redirect(route('teacher.list', ['school' => $school]))->with('success', 'User Updated successfully');
     }
@@ -116,7 +116,15 @@ class AuthController extends Controller
     public function AdminDash()
     {
         if (Auth::check()) {
-            return view('dashboard-admin');
+            $school = $teacher = $program = $lessonplan = 0;
+
+            $school = DB::table('school')->where('status', 1)->get()->count();
+            $teacher = DB::table('users')->where('usertype', 'teacher')->get()->count();
+            $course = DB::table('master_course')->where('status', 1)->get()->count();
+            $program = DB::table('master_class')->where('status', 1)->get()->count();
+            $lessonplan = DB::table('lesson_plan')->where('status', 1)->get()->count();
+
+            return view('dashboard-admin', compact('school', 'teacher', 'program', 'lessonplan','course'));
         } else {
             return redirect("login")->withSuccess('You are not allowed to access');
         }
