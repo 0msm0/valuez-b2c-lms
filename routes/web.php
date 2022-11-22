@@ -80,3 +80,12 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
 Route::middleware('auth')->prefix('teacher')->group(function () {
     Route::get('class-list', [ProgramController::class,'TeacherClasslist'])->name('teacher.class.list');
 });
+
+Route::get('send-mail', function () {
+    $details = [
+        'title' => 'Mail from LMS',
+        'body' => 'This is for testing email using smtp'
+    ];
+    \Mail::to('itrahul.com@gmail.com')->send(new \App\Mail\TestMail($details));
+    dd("Email is Sent.");
+});
