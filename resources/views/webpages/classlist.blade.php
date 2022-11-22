@@ -26,7 +26,7 @@
                                     <div class="mt-30 pro-dec text-center">
                                         <h5 class="fw-500"><a href="#">{{ $cdata->class_name }}</a></h5>
                                         <div class="price-dle d-flex justify-content-center align-items-center">
-                                            <a href="#" class="btn btn-sm btn-primary me-2">Quick View</a>
+                                            <a href="{{ route('teacher.course.list',['class'=>$cdata->id]) }}" class="btn btn-sm btn-primary me-2">View Course</a>
                                         </div>
                                     </div>
                                 </div>
