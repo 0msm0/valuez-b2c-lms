@@ -90,6 +90,6 @@ Route::get('send-mail', function () {
         'title' => 'Mail from LMS.com',
         'body' => 'This is for testing email using smtp'
     ];   
-    \Mail::to('itrahul.com@gmail.com')->send(new \App\Mail\TestMail($details));   
+    \Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));   
     dd("Email is Sent.");
 });
