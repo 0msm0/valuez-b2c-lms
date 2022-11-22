@@ -45,13 +45,20 @@ class SchoolController extends Controller
             'primary_person' => $request->primary_person,
             'primary_email' => $request->primary_email,
             'primary_mobile' => $request->primary_mobile,
+            'second_email' => $request->secondary_email,
+            'second_mobile' => $request->secondary_mobile,
             'mobile' => $request->mobile,
             'address' => $request->address,
             'licence' => $request->licence,
+            'school_desc' => $request->school_desc,
+            'school_logo' => $request->school_logo,
+            'package_start' => $request->package_start,
+            'package_end' => $request->package_end,
             'is_deleted' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
         ];
+        
         DB::table('school')->insert($schoolData);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
     }
