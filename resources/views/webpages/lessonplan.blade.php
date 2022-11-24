@@ -18,47 +18,96 @@
                     @if ($lessonPlan->first())
                         @foreach ($lessonPlan as $cdata)
                             <div class="col-xl-4 col-md-6 col-12">
-                                <div class="blog-post rounded overflow-hidden">
-                                    <div class="entry-image clearfix">
-                                        @if (filter_var($cdata->video_url, FILTER_VALIDATE_URL) === false)
-                                            <img class="img-fluid bg-white"
-                                                src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
-                                                alt="{{ $cdata->title }}">
-                                        @else
-                                            <div class="blog-p-post-you-tube">
-                                                <div class="cs-video [youtube, widescreen]">
-                                                    <iframe width="560" height="315" src="{{ $cdata->video_url }}"
-                                                        frameborder="0" allow="autoplay; encrypted-media"
-                                                        allowfullscreen></iframe>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="blog-detail">
-                                        <div class="entry-title mb-10">
-                                            <a href="#">{{ $cdata->title }}</a>
-                                        </div>
-                                        <div class="entry-meta mb-10">
-                                            <ul class="list-unstyled">
+                                <div class="card">
+                                    <img class=""
+                                        src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
+                                        alt="{{ $cdata->title }}" />
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $cdata->title }}</h5>
+
+                                        <div class="mb-10">
+                                            <ul class="list-unstyled d-flex justify-content-between align-items-center">
                                                 <li><a href="#" class="text-mute hover-primary"><i
-                                                            class="fa fa-folder-open-o"></i> Design</a></li>
+                                                            class="fa fa-tag"></i>
+                                                        {{ $cdata->program->class_name }}</a></li>
                                                 <li><a href="#" class="text-mute hover-primary"><i
-                                                            class="fa fa-comment-o"></i> 5</a></li>
-                                                <li><a href="#" class="text-mute hover-primary"><i
-                                                            class="fa fa-calendar-o"></i> 12 Aug 2020</a></li>
+                                                            class="fa fa-folder-open-o"></i>
+                                                        {{ $cdata->course->course_name }}</a></li>
                                             </ul>
                                         </div>
-                                        <div class="entry-content">
-                                            <p class="text-gray-600">{{ $cdata->lesson_desc }}</p>
-                                        </div>
-                                        <div class="entry-share d-flex justify-content-between align-items-center">
-                                            <div class="entry-button">
-                                                <a href="#" class="btn btn-primary-light btn-sm">Read more</a>
-                                            </div>
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
+                                                Instructions</button>
+
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#bs-video-modal-{{ $cdata->id }}">View Video</button>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
+                            <!-- Video modal -->
+                            <div class="modal fade" id="bs-video-modal-{{ $cdata->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-label-{{ $cdata->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        </div>
+                                        <div class="modal-body pt-0">
+                                            {{-- {{ $cdata->video_url }} --}}
+                                            @php
+                                                $parsed = parse_url($cdata->video_url);
+                                                $checkUrlHost = explode('.', $parsed['host']);
+                                                if (in_array('youtube', $checkUrlHost)) {
+                                                    $video_id = explode('?v=', $cdata->video_url);
+                                                    if (empty($video_id[1])) {
+                                                        $video_id = explode('/v/', $cdata->video_url);
+                                                    }
+                                                    $video_id = explode('&', $video_id[1]);
+                                                    $video_id = $video_id[0];
+                                                    $video_url = 'https://www.youtube.com/embed/' . $video_id;
+
+                                                } elseif (in_array('vimeo', $checkUrlHost)) {
+                                                    $video_id = (int) substr(parse_url($cdata->video_url, PHP_URL_PATH), 1);
+                                                    $video_url = 'https://player.vimeo.com/video/'.$video_id;
+                                                } else {
+                                                    $video_url = '';
+                                                }
+                                            @endphp
+                                            <iframe src="{{ $video_url }}"
+                                                style="overflow:hidden;height:350px;width: 100%;" frameborder="0"
+                                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+
+                            <!-- Info modal -->
+                            <div class="modal fade" id="bs-info-modal-{{ $cdata->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-label-{{ $cdata->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="modal-label--{{ $cdata->id }}">
+                                                {{ $cdata->title }}</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ $cdata->lesson_desc }}
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
                         @endforeach
                     @else
                         <div class="col-sm-6">
@@ -74,3 +123,11 @@
     </section>
     <!-- /.content -->
 @endsection
+
+<script language="javascript" type="text/javascript">
+    $(function() {
+        $('.btn-close').click(function() {
+            $('iframe').attr('src', $('iframe').attr('src'));
+        });
+    });
+</script>

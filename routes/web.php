@@ -82,7 +82,7 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
 Route::middleware('auth')->prefix('teacher')->group(function () {
     Route::get('class-list', [ProgramController::class,'TeacherClasslist'])->name('teacher.class.list');
     Route::get('course-list/{class}', [WebPage::class,'courselist'])->name('teacher.course.list');
-    Route::get('lesson-plan-list/{id}', [WebPage::class,'lessonPlan'])->name('teacher.lesson.list');
+    Route::get('lesson-plan-list/{classid}/{course}', [WebPage::class,'lessonPlan'])->name('teacher.lesson.list');
 });
 
 Route::get('send-mail', function () {   

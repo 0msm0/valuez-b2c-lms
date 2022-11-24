@@ -31,7 +31,9 @@ class AuthController extends Controller
             session(['usertype' => $user->usertype]);
             if ($user->usertype == 'superadmin') {
                 return redirect()->intended(route('admin-dashboard'))->withSuccess('Signed in');
-            } else {
+            } else if ($user->usertype == 'teacher') {
+                return redirect()->intended(route('teacher.class.list'))->withSuccess('Signed in');
+            } else if ($user->usertype == 'admin') {
                 return redirect()->intended(route('dashboard'))->withSuccess('Signed in');
             }
         }
@@ -124,7 +126,7 @@ class AuthController extends Controller
             $program = DB::table('master_class')->where('status', 1)->get()->count();
             $lessonplan = DB::table('lesson_plan')->where('status', 1)->get()->count();
 
-            return view('dashboard-admin', compact('school', 'teacher', 'program', 'lessonplan','course'));
+            return view('dashboard-admin', compact('school', 'teacher', 'program', 'lessonplan', 'course'));
         } else {
             return redirect("login")->withSuccess('You are not allowed to access');
         }
