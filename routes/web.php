@@ -41,6 +41,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::post('remove-school', 'destroy')->name('school.remove');
     Route::post('school-add', 'store')->name('school.store');
     Route::post('school-edit', 'edit')->name('school.update');
+    Route::post('school-status', 'change_status')->name('school.status');
 });
 
 Route::middleware('auth')->prefix('course')->controller(CourseController::class)->group(function () {

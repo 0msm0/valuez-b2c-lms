@@ -42,7 +42,7 @@
                             <table id="example2" class="table" style="width:100%">
                                 <thead>
                                     <tr>
-                                        {{-- <th>#</th> --}}
+                                        <th>#</th>
                                         <th>School</th>
                                         <th>Name</th>
                                         <th>Email</th>
@@ -55,28 +55,37 @@
                                 <tbody class="text-dark">
                                     @foreach ($school as $sdata)
                                         <tr>
-                                            {{-- <td><img src="{{ asset('assets/images/avatar/avatar-2.png') }}" width="32"
-                                                    height="32" class="bg-light rounded-circle my-n1" alt="Avatar">
-                                            </td> --}}
+                                            <td><img src="{{ url('uploads/school') }}/{{ !empty($sdata->school_logo != '') ? $sdata->school_logo : 'no_image.png' }}"
+                                                    width="32" height="32" class="bg-light my-n1"
+                                                    alt="{{ $sdata->school_name }}">
+                                            </td>
                                             <td>{{ $sdata->school_name }}</td>
                                             <td>{{ $sdata->primary_person }}</td>
                                             <td>{{ $sdata->primary_email }}</td>
                                             <td>{{ $sdata->primary_mobile }}</td>
                                             <td><span class="badge badge-pill badge-primary">{{ $sdata->teacher->count() }}
                                                     / {{ $sdata->licence }}</span></td>
-                                            <td><span
-                                                    class="badge bg-{{ $sdata->status == 1 ? 'success' : 'danger' }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                            <td><a href="javascript:void(0);"
+                                                    class="change_status text-white badge bg-{{ $sdata->status == 1 ? 'success' : 'danger' }}"
+                                                    id="status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
+                                                    data-status="{{ $sdata->status }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
                                             <td>
                                                 <form action="{{ route('school.remove', ['school' => $sdata->id]) }}"
                                                     method="POST">
-                                                    @csrf                                                    
+                                                    @csrf
+                                                    <a href="#"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i
+                                                            class="fa fa-lock"></i></a>
                                                     <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"><i class="fa fa-user-o"></i></a>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"><i
+                                                            class="fa fa-user-o"></i></a>
                                                     <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"><i class="fa fa-pencil-square-o"></i></a>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"><i
+                                                            class="fa fa-pencil-square-o"></i></a>
                                                     <button type="submit"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i class="fa fa-trash-o"></i></button>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i
+                                                            class="fa fa-trash-o"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -91,4 +100,31 @@
         </div>
     </section>
     <!-- /.content -->
+@endsection
+@section('script-section')
+    <script>
+        $(document).ready(function() {
+            $('.change_status').click(function() {
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+                $.ajax({
+                    url: "{{ route('school.status') }}",
+                    type: "POST",
+                    data: {
+                        school: id,
+                        status: status
+                    },
+                    success: function(data) {
+                        var csts = (status == 1) ? 0 : 1;
+                        $('#status_' + id).text(data).attr('data-status', csts);
+                        if (csts == 1) {
+                            $('#status_' + id).addClass('bg-success').removeClass('bg-danger');
+                        } else {
+                            $('#status_' + id).addClass('bg-danger').removeClass('bg-success');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -12,10 +12,10 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $school = School::with(['teacher'=> function ($query) {
+        $school = School::with(['teacher' => function ($query) {
             $query->where('usertype', '=', 'teacher');
         }])->orderBy('id')->get();
-       
+
         return view('school.school-list', compact('school'));
     }
 
@@ -115,5 +115,13 @@ class SchoolController extends Controller
         $schoolId = $request->input('schoolid');
         DB::table('school')->where('id', $schoolId)->update(['is_deleted' => 1]);
         return redirect(route('school.list'))->with('success', 'School deleted successfully');
+    }
+
+    public function change_status(Request $request)
+    {
+        $schoolId = $request->school;
+        $status = ($request->status == 1) ? 0 : 1;
+        DB::table('school')->where('id', $schoolId)->update(['status' => $status]);
+        echo ($status == 1) ? 'Active' : 'Inactive';
     }
 }
