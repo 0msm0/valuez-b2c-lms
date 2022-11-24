@@ -11,4 +11,8 @@ class School extends Model
     protected $table = 'school';
     protected $primaryKey = 'id';
 
+    public function teacher()
+    {
+        return $this->hasMany(User::class, 'school_id', 'id');
+    }
 }

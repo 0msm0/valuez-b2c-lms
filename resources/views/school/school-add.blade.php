@@ -71,8 +71,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">School Logo <span class="text-danger">*</span></label>
-                                        <input type="text" name="school_logo" class="form-control"
-                                            placeholder="Enter School Logo">
+                                        <input type="file" name="school_logo" class="form-control">
                                         @error('school_logo')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -81,31 +80,34 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School specific details <span class="text-danger">*</span></label>
-                                        <input type="text" name="school_desc" class="form-control"
-                                            placeholder="Enter School specific details">
+                                        <label class="form-label">School specific details <span
+                                                class="text-danger">*</span></label>
+                                        <textarea  name="school_desc" class="form-control"
+                                            placeholder="Enter School specific details"></textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Subscription Start date <span class="text-danger">*</span></label>
-                                        <input type="date" name="package_start" class="form-control"
-                                            placeholder="Enter Subscription Start date">
+                                        <label class="form-label">Subscription Start date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" min='{{ date('Y-m-d') }}' name="package_start"
+                                            class="form-control" placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Subscription end date <span class="text-danger">*</span></label>
-                                        <input type="date" name="package_end" class="form-control"
-                                            placeholder="Subscription end date">
+                                        <label class="form-label">Subscription end date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" min='{{ date('Y-m-d') }}' name="package_end"
+                                            class="form-control" placeholder="Subscription end date">
                                         @error('package_end')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -115,7 +117,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Total Licence <span class="text-danger">*</span></label>
-                                        <input type="text" name="licence" class="form-control"
+                                        <input type="number" value="25" name="licence" class="form-control"
                                             placeholder="Enter Total Licence">
                                         @error('licence')
                                             <span class="text-danger">{{ $message }}</span>
@@ -124,7 +126,8 @@
                                 </div>
                             </div>
 
-                            <h4 class="box-title text-primary mb-0 mt-20"><i class="ti-envelope me-15"></i> Contact Info</h4>
+                            <h4 class="box-title text-primary mb-0 mt-20"><i class="ti-envelope me-15"></i> Contact Info
+                            </h4>
                             <hr class="my-15">
                             <div class="row">
                                 <div class="col-md-4">
@@ -150,7 +153,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Primary Mobile <span class="text-danger">*</span></label>
+                                        <label class="form-label">Primary Mobile <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" name="primary_mobile" class="form-control"
                                             placeholder="Enter Primary Mobile">
                                         @error('primary_mobile')
@@ -161,7 +165,8 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Email <span class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Email <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" name="secondary_email" class="form-control"
                                             placeholder="Enter Secondary Email">
                                         @error('secondary_email')
@@ -171,7 +176,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Mobile <span class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Mobile <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" name="secondary_mobile" class="form-control"
                                             placeholder="Enter Secondary Mobile">
                                         @error('secondary_mobile')

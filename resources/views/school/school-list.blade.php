@@ -62,19 +62,21 @@
                                             <td>{{ $sdata->primary_person }}</td>
                                             <td>{{ $sdata->primary_email }}</td>
                                             <td>{{ $sdata->primary_mobile }}</td>
-                                            <td>{{ $sdata->licence }}</td>
-                                            <td><span class="badge bg-{{ $sdata->status == 1 ? 'success' : 'danger' }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                            <td><span class="badge badge-pill badge-primary">{{ $sdata->teacher->count() }}
+                                                    / {{ $sdata->licence }}</span></td>
+                                            <td><span
+                                                    class="badge bg-{{ $sdata->status == 1 ? 'success' : 'danger' }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</span>
                                             </td>
                                             <td>
                                                 <form action="{{ route('school.remove', ['school' => $sdata->id]) }}"
                                                     method="POST">
-                                                    @csrf
+                                                    @csrf                                                    
                                                     <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5">Teacher</a>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"><i class="fa fa-user-o"></i></a>
                                                     <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"><i class="fa fa-pencil-square-o"></i></a>
                                                     <button type="submit"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i class="fa fa-trash-o"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

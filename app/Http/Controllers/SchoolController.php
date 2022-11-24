@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SchoolController extends Controller
 {
     public function index()
     {
-        $school = DB::table('school')->orderBy('id')->get();
+        $school = School::with(['teacher'=> function ($query) {
+            $query->where('usertype', '=', 'teacher');
+        }])->orderBy('id')->get();
+       
         return view('school.school-list', compact('school'));
     }
 
@@ -29,15 +35,18 @@ class SchoolController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'primary_email' => 'required|email|unique:school',
             // 'image' => 'required',
         ]);
 
 
-        if ($image = $request->file('image')) {
+        if ($image = $request->file('school_logo')) {
             $destinationPath = 'uploads/school/';
             $originalname = $image->hashName();
             $imageName = "school_" . date('Ymd') . '_' . $originalname;
-            // $image->move($destinationPath, $imageName);
+            $image->move($destinationPath, $imageName);
+        } else {
+            $imageName = "";
         }
 
         $schoolData = [
@@ -51,15 +60,29 @@ class SchoolController extends Controller
             'address' => $request->address,
             'licence' => $request->licence,
             'school_desc' => $request->school_desc,
-            'school_logo' => $request->school_logo,
+            'school_logo' => $imageName,
             'package_start' => $request->package_start,
             'package_end' => $request->package_end,
             'is_deleted' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
         ];
-        
-        DB::table('school')->insert($schoolData);
+
+        $school_id =  DB::table('school')->insertGetId($schoolData);
+
+        $user_pass = "123456";
+        $user_email = $request->primary_email;
+        $username = explode("@", $user_email);
+        $schoolAdmin = [
+            'name' => $request->primary_person,
+            'email' => $user_email,
+            'usertype' => 'admin',
+            'password' => Hash::make($user_pass),
+            'view_pass' => $user_pass,
+            'school_id' => $school_id,
+            'username' => trim($username[0]) . date('YHimsd'),
+        ];
+        User::create($schoolAdmin);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
     }
 
@@ -68,7 +91,7 @@ class SchoolController extends Controller
         $request->validate([
             'title' => 'required',
             // 'image' => 'required',
-        ]);     
+        ]);
 
         $schoolData = [
             'school_name' => $request->title,
@@ -82,7 +105,7 @@ class SchoolController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
         ];
-        
+
         DB::table('school')->where('id', $request->id)->update($schoolData);
         return redirect(route('school.list'))->with(['message' => 'School Updated successfully!', 'status' => 'success']);
     }
