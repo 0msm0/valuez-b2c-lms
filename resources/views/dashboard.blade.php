@@ -3,7 +3,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-xl-9 col-12">
+            <div class="col-xl-8 col-12">
                 <div class="box bg-success">
                     <div class="box-body d-flex p-0">
                         <div class="flex-grow-1 p-30 flex-grow-1 bg-img bg-none-md"
@@ -46,6 +46,62 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xl-4 col-12">
+                <div class="box bg-transparent no-shadow">
+                    <div class="box-body p-xl-0 text-center">
+                        <h3 class="px-30 mb-20">Have More<br>Knowledge to share?</h3>
+                        <a href="{{ route('lesson.plan.add') }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
+                                class="fa fa-plus me-15"></i> Add Teacher Account</a>
+                    </div>
+                </div>              
+            </div>
+
+
+            <div class="col-xl-12 col-12">
+                <div class="row">
+                    <div class="col-xl-4 col-6">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-15 bg-primary h-50 w-50 l-h-68 rounded text-center">
+                                            <span class="icon-Mail fs-24"></span>
+                                        </div>
+                                        <div class="d-flex flex-column fw-500">
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Total Licence</a>
+                                            <span class="text-fade">{{ $school->licence }}</span>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="col-xl-4 col-6">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-15 bg-primary h-50 w-50 l-h-68 rounded text-center">
+                                            <span class="icon-Mail fs-24"></span>
+                                        </div>
+                                        <div class="d-flex flex-column fw-500">
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16"> Licence Usage</a>
+                                            <span class="text-fade">{{ $school->teacher->count() }}</span>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+
         </div>
     </section>
     <!-- /.content -->
