@@ -11,14 +11,16 @@
                     $header_name = $school->school_name;
                 
                     $display_name = !empty($school->school_logo) ? 'd-none' : '';
+                    $display_logo = !empty($school->school_logo) ? 'd-none' : '';
                 } else {
                     $logo = 'assets/images/logo-valuez.png';
                     $header_name = 'Valuez';
                     $display_name = '';
+                    $display_logo = '';
                 }
             @endphp
             <!-- logo-->
-            <div class="logo-mini w-60">
+            <div class="logo-mini w-60 {{ $display_logo }}">
                 <span class="light-logo"><img src="{{ asset($logo) }}" alt="logo"></span>
             </div>
             <div class="logo-lg {{ $display_name }}">
