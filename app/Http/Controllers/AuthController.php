@@ -110,6 +110,12 @@ class AuthController extends Controller
         return redirect($redirect)->with('success', 'User Updated successfully');
     }
 
+    public function resetPassword(Request $request)
+    {
+        $passWord = $this->getToken();
+        User::where('id', $request->userid)->update(['view_pass' => $passWord, 'password' => Hash::make($passWord)]);
+    }
+
     public function destroy(Request $request)
     {
         $userId = $request->input('userid');

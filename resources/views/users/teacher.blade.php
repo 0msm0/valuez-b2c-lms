@@ -62,9 +62,20 @@
                                                 <form action="{{ route('teacher.remove', ['userid' => $udata->id]) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <a href="javascript:void(0);"
-                                                        class="reset_password waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5">Reset
-                                                        Password</a>
+
+                                                    <button class="btn btn-sm btn-outline btn-primary mb-5 dropdown-toggle"
+                                                        type="button" data-bs-toggle="dropdown"><i
+                                                            class="icon ti-settings"></i>
+                                                        Password</button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="reset_password dropdown-item" href="javascript:void(0);"
+                                                            data-userid="{{ $udata->id }}"><i class="fa fa-refresh"></i>
+                                                            Reset</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="view_password dropdown-item"
+                                                            data-pass="{{ $udata->view_pass }}"
+                                                            href="javascript:void(0);"><i class="fa fa-eye"></i> View</a>
+                                                    </div>
                                                     <a href="{{ route('teacher.edit', ['userid' => $udata->id]) }}"
                                                         class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
                                                     <button type="submit"
@@ -88,8 +99,32 @@
 @section('script-section')
     <script>
         $(document).ready(function() {
+            $('.view_password').click(function() {
+                var viewPass = $(this).attr('data-pass');
+                alert("Password : " + viewPass);
+            });
+
             $('.reset_password').click(function() {
-                confirm("Reset Password");
+                let text;
+                if (confirm("Press a ok for Reset Password!") == true) {
+                    $.ajax({
+                        url: "{{ route('user.password') }}",
+                        type: "POST",
+                        data: {
+                            userid: $(this).attr("data-userid"),
+                        },
+                        success: function(data) {
+                            alert("Your Password Reset");
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        }
+                    });
+                } else {
+                    text = "You canceled!";
+                    console.log(text);
+                }
+
             });
 
             $('.change_status').click(function() {

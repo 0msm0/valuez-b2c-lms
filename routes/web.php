@@ -80,6 +80,8 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::post('teacher-add', 'createuser')->name('teacher.store');
     Route::post('teacher-edit', 'edituser')->name('teacher.update');
     Route::get('teacher-list', 'teacherList')->name('school.teacher.list');
+    Route::post('reset-password', 'resetPassword')->name('user.password');
+
 
 });
 
