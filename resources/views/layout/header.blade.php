@@ -10,8 +10,8 @@
                     $logo = 'uploads/school/' . $school->school_logo;
                     $header_name = $school->school_name;
                 
-                    $display_name = empty($school->school_logo) ? 'd-none' : '';
-                    $display_logo = !empty($school->school_logo) ? 'd-none' : '';
+                    $display_name = !empty($school->school_logo) ? 'd-none' : '';
+                    $display_logo = empty($school->school_logo) ? 'd-none' : '';
                 } else {
                     $logo = 'assets/images/logo-valuez.png';
                     $header_name = 'Valuez';
