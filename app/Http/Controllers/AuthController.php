@@ -138,17 +138,20 @@ class AuthController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $schoolid = $user->school_id;
-            $school = School::with(['teacher' => function ($query) {
-                $query->where('usertype', '=', 'teacher');
-            }])->where('id', $schoolid)->orderBy('id')->first();
+            if (session()->get('usertype') == 'admin') {
+                $school = School::with(['teacher' => function ($query) {
+                    $query->where('usertype', '=', 'teacher');
+                }])->where('id', $schoolid)->orderBy('id')->first();
 
+                $package_start = new \DateTime(date("Y-m-d h:i:s"));
+                $package_end = new \DateTime($school->package_end);
+                $interval = $package_start->diff($package_end);
+                $time_left = $interval->format('%a');
 
-            $package_start = new \DateTime(date("Y-m-d h:i:s"));
-            $package_end = new \DateTime($school->package_end);
-            $interval = $package_start->diff($package_end);
-            $time_left = $interval->format('%a');
-
-            return view('dashboard', compact('school', 'time_left'));
+                return view('dashboard', compact('school', 'time_left'));
+            } else {
+                return view('dashboard-teacher');
+            }
         } else {
             return redirect("login")->withSuccess('You are not allowed to access');
         }
