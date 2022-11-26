@@ -38,13 +38,16 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
-                                                Instructions</button>
+                                            @if ($cdata->lesson_desc)
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
+                                                    Instructions</button>
+                                            @endif
 
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#bs-video-modal-{{ $cdata->id }}">View Video</button>
-
+                                            @if ($cdata->video_url)
+                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-video-modal-{{ $cdata->id }}">View Video</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -73,10 +76,9 @@
                                                     $video_id = explode('&', $video_id[1]);
                                                     $video_id = $video_id[0];
                                                     $video_url = 'https://www.youtube.com/embed/' . $video_id;
-
                                                 } elseif (in_array('vimeo', $checkUrlHost)) {
                                                     $video_id = (int) substr(parse_url($cdata->video_url, PHP_URL_PATH), 1);
-                                                    $video_url = 'https://player.vimeo.com/video/'.$video_id;
+                                                    $video_url = 'https://player.vimeo.com/video/' . $video_id;
                                                 } else {
                                                     $video_url = '';
                                                 }
