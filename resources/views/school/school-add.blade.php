@@ -80,7 +80,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School specific details <span
+                                        <label class="form-label">School Remarks <span
                                                 class="text-danger">*</span></label>
                                         <textarea  name="school_desc" class="form-control"
                                             placeholder="Enter School specific details"></textarea>

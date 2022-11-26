@@ -172,4 +172,18 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('login');
     }
+
+    // Generate token
+    public function getToken($length = 6)
+    {
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLM";
+        $codeAlphabet .= "nopqrstuvwxyz";
+        $codeAlphabet .= "0123456789";
+        $max = strlen($codeAlphabet);
+        for ($i = 0; $i < $length; $i++) {
+            $token .= $codeAlphabet[rand(0, $max - 1)];
+        }
+        return $token . rand(0, 4);
+    }
 }

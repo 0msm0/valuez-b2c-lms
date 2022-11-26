@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Mail;
+
 
 class SchoolController extends Controller
 {
@@ -69,10 +71,11 @@ class SchoolController extends Controller
         ];
 
         $school_id =  DB::table('school')->insertGetId($schoolData);
-
-        $user_pass = "123456";
-        $user_email = $request->primary_email;
+        $auth_user = new AuthController();
+        $user_pass = $auth_user->getToken();
+        $user_email = strtolower($request->primary_email);
         $username = explode("@", $user_email);
+        $userId = trim($username[0]) . date('Yims');
         $schoolAdmin = [
             'name' => $request->primary_person,
             'email' => $user_email,
@@ -80,10 +83,23 @@ class SchoolController extends Controller
             'password' => Hash::make($user_pass),
             'view_pass' => $user_pass,
             'school_id' => $school_id,
-            'username' => trim($username[0]) . date('YHimsd'),
+            'username' => $userId,
         ];
         User::create($schoolAdmin);
+        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass]);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
+    }
+
+    public function schoolAdminMail($data)
+    {
+        $details = [
+            'view' => 'emails.account',
+            'subject' => 'User Account creation Mail from Valuez',
+            'title' => $data['username'],
+            'userid' => $data['userid'],
+            'pass' => $data['pass']
+        ];
+        Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));
     }
 
     public function edit(Request $request)
@@ -122,6 +138,14 @@ class SchoolController extends Controller
         $schoolId = $request->school;
         $status = ($request->status == 1) ? 0 : 1;
         DB::table('school')->where('id', $schoolId)->update(['status' => $status]);
+        echo ($status == 1) ? 'Active' : 'Inactive';
+    }
+
+    public function change_user_status(Request $request)
+    {
+        $userId = $request->userid;
+        $status = ($request->status == 1) ? 0 : 1;
+        DB::table('users')->where('id', $userId)->update(['status' => $status]);
         echo ($status == 1) ? 'Active' : 'Inactive';
     }
 }

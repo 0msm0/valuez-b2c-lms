@@ -42,6 +42,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::post('school-add', 'store')->name('school.store');
     Route::post('school-edit', 'edit')->name('school.update');
     Route::post('school-status', 'change_status')->name('school.status');
+    Route::post('teacher-status', 'change_user_status')->name('teacher.status');
 });
 
 Route::middleware('auth')->prefix('course')->controller(CourseController::class)->group(function () {
@@ -93,7 +94,9 @@ Route::middleware('auth')->prefix('whats-new')->controller(AuthController::class
 });
 Route::get('send-mail', function () {   
     $details = [
-        'title' => 'Mail from LMS.com',
+        'view' => 'emails.test',
+        'subject' => 'Test Mail form LMS',
+        'title' => 'Mail from Valuez hut',
         'body' => 'This is for testing email using smtp'
     ];   
     \Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));   
