@@ -78,6 +78,8 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::post('teacher-remove', 'destroy')->name('teacher.remove');
     Route::post('teacher-add', 'createuser')->name('teacher.store');
     Route::post('teacher-edit', 'edituser')->name('teacher.update');
+    Route::get('teacher-list', 'teacherList')->name('school.teacher.list');
+
 });
 
 Route::middleware('auth')->prefix('teacher')->group(function () {
@@ -86,6 +88,9 @@ Route::middleware('auth')->prefix('teacher')->group(function () {
     Route::get('lesson-plan-list/{classid}/{course}', [WebPage::class,'lessonPlan'])->name('teacher.lesson.list');
 });
 
+Route::middleware('auth')->prefix('whats-new')->controller(AuthController::class)->group(function () {
+
+});
 Route::get('send-mail', function () {   
     $details = [
         'title' => 'Mail from LMS.com',

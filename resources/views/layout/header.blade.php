@@ -2,14 +2,29 @@
     <div class="d-flex align-items-center logo-box justify-content-start">
         <!-- Logo -->
         <a href="{{ url('/') }}" class="logo">
+            @php
+                if (session()->get('usertype') != 'superadmin') {
+                    $user = Auth::user();
+                    $schoolid = $user->school_id;
+                    $school = App\Models\School::where('id', $schoolid)->first();
+                    $logo = 'uploads/school/' . $school->school_logo;
+                    $header_name = $school->school_name;
+                
+                    $display_name = !empty($school->school_logo) ? 'd-none' : '';
+                } else {
+                    $logo = 'assets/images/logo-valuez.png';
+                    $header_name = 'Valuez';
+                    $display_name = '';
+                }
+            @endphp
             <!-- logo-->
             <div class="logo-mini w-60">
-                <span class="light-logo"><img src="{{ asset('assets/images/logo-valuez.png') }}" alt="logo"></span>
+                <span class="light-logo"><img src="{{ asset($logo) }}" alt="logo"></span>
+            </div>
+            <div class="logo-lg {{ $display_name }}">
+                {{ $header_name }}
+            </div>
 
-            </div>
-            <div class="logo-lg">
-                Valuez Hut
-            </div>
         </a>
     </div>
     <!-- Header Navbar -->
@@ -137,7 +152,8 @@
 
                     @if (session('usertype') == 'superadmin')
                         <li class="{{ Request::is('admin-dashboard') ? 'active' : '' }}">
-                            <a href="{{ route('admin-dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
+                            <a href="{{ route('admin-dashboard') }}"><i
+                                    data-feather="home"></i><span>Dashboard</span></a>
                         </li>
                         <li class="{{ Request::is('program/*') ? 'active' : '' }}">
                             <a href="{{ route('program.list') }}"><i
@@ -159,16 +175,21 @@
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                         </li>
-                        <li class="{{ Request::is('program/*') ? 'active' : '' }}">
-                            <a href="{{ route('program.list') }}"><i
-                                    data-feather="list"></i><span>Class/Program</span></a>
+                        <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                            <a href="{{ route('school.teacher.list') }}"><i data-feather="user"></i><span>Manage
+                                    Teacher</span></a>
                         </li>
+                        {{-- <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                            <a href="{{ route('school.teacher.list') }}"><i data-feather="bell"></i><span>What's
+                                    new</span></a>
+                        </li> --}}
                     @elseif(session('usertype') == 'teacher')
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                         </li>
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Class list</span></a>
+                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Class
+                                    list</span></a>
                         </li>
                     @endif
                     <li>

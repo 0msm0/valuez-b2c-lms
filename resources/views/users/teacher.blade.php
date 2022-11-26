@@ -9,7 +9,7 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Manage User</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Teacher</li>
                         </ol>
                     </nav>
                 </div>
@@ -29,11 +29,11 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Users</h5>
+                        <h5 class="card-title mb-0">Manage Teacher</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
                                 <a href="{{ route('teacher.add', ['school' => $schoolid]) }}"
-                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add User</a>
+                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Teacher</a>
                             </div>
                         </div>
                     </div>

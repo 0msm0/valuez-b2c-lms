@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
-use App\Models\User;
+use App\Models\{User, School};
 
 
 class AuthController extends Controller
@@ -34,7 +34,7 @@ class AuthController extends Controller
             } else if ($user->usertype == 'teacher') {
                 return redirect()->intended(route('teacher.class.list'))->withSuccess('Signed in');
             } else if ($user->usertype == 'admin') {
-                return redirect()->intended(route('dashboard'))->withSuccess('Signed in');
+                return redirect()->intended(route('school.teacher.list'))->withSuccess('Signed in');
             }
         }
 
@@ -74,8 +74,8 @@ class AuthController extends Controller
 
         $data = $request->all();
         $check = $this->create($data);
-
-        return redirect(route('teacher.list', ['school' => $data['school']]))->withSuccess('User added successfully!');
+        $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $data['school']]);
+        return redirect($redirect)->withSuccess('User added successfully!');
     }
 
     public function create(array $data)
@@ -105,7 +105,8 @@ class AuthController extends Controller
         }
         $request->validate($validate);
         User::where('id', $data['id'])->update($updateuser);
-        return redirect(route('teacher.list', ['school' => $school]))->with('success', 'User Updated successfully');
+        $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $school]);
+        return redirect($redirect)->with('success', 'User Updated successfully');
     }
 
     public function destroy(Request $request)
@@ -135,10 +136,30 @@ class AuthController extends Controller
     public function dashboard()
     {
         if (Auth::check()) {
-            return view('dashboard');
+            $user = Auth::user();
+            $schoolid = $user->school_id;
+            $school = School::with(['teacher' => function ($query) {
+                $query->where('usertype', '=', 'teacher');
+            }])->where('id', $schoolid)->orderBy('id')->first();
+
+
+            $package_start = new \DateTime(date("Y-m-d h:i:s"));
+            $package_end = new \DateTime($school->package_end);
+            $interval = $package_start->diff($package_end);
+            $time_left = $interval->format('%a');
+
+            return view('dashboard', compact('school', 'time_left'));
         } else {
             return redirect("login")->withSuccess('You are not allowed to access');
         }
+    }
+
+    public function teacherList()
+    {
+        $user = Auth::user();
+        $schoolid = $user->school_id;
+        $userlist = DB::table('users')->where(['school_id' => $user->school_id, 'usertype' => 'teacher'])->orderBy('id')->get();
+        return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
     public function signOut(Request $request)
