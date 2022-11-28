@@ -24,9 +24,16 @@ class AuthController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
+        $username = $request->email;
+        $password = $request->password;
 
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            Auth::attempt(['email' => $username, 'password' => $password]);
+        } else {
+            Auth::attempt(['username' => $username, 'password' => $password]);
+        }
+
+        if (Auth::check()) {
             $user = Auth::user();
             session(['usertype' => $user->usertype]);
             if ($user->usertype == 'superadmin') {
