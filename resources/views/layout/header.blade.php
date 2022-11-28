@@ -21,7 +21,7 @@
             @endphp
             <!-- logo-->
             <div class="logo-mini {{ $display_logo }}">
-                <span class="light-logo"><img src="{{ asset($logo) }}" alt="logo" class="h-60"></span>
+                <span class="light-logo"><img src="{{ asset($logo) }}" alt="logo" style="max-height:60px;"></span>
             </div>
             <div class="logo-lg {{ $display_name }}">
                 {{ $header_name }}
