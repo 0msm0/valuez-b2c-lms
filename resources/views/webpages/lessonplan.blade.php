@@ -108,7 +108,7 @@
                                     <div class="modal-body pt-0">                                      
                                         <iframe src="" style="overflow:hidden;height:350px;width: 100%;"
                                             frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                                            allowfullscreen></iframe>
+                                            allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
