@@ -159,14 +159,13 @@
                         </li>
                         <li class="{{ Request::is('program/*') ? 'active' : '' }}">
                             <a href="{{ route('program.list') }}"><i
-                                    data-feather="list"></i><span>Class/Program</span></a>
+                                    data-feather="list"></i><span>Grade</span></a>
                         </li>
                         <li class="{{ Request::is('course/*') ? 'active' : '' }}">
                             <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
                         </li>
                         <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
-                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Lesson
-                                    Plan</span></a>
+                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Instruction</span></a>
                         </li>
                         <li class="header">Account</li>
                         <li class="{{ Request::is('school/*') ? 'active' : '' }}">
@@ -190,7 +189,7 @@
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                         </li>
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Class
+                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade
                                     list</span></a>
                         </li>
                     @endif

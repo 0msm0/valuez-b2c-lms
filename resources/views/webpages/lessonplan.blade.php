@@ -17,7 +17,7 @@
                 <div class="row">
                     @if ($lessonPlan->first())
                         @foreach ($lessonPlan as $cdata)
-                            <div class="col-xl-4 col-md-6 col-12">
+                            <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
                                     <img class=""
                                         src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
@@ -46,7 +46,7 @@
 
                                             @if ($cdata->video_url)
                                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#bs-video-modal-{{ $cdata->id }}">View Video</button>
+                                                    data-bs-target="#bs-video-modal-{{ $cdata->id }}">Instructions Video</button>
                                             @endif
                                         </div>
                                     </div>
@@ -77,8 +77,10 @@
                                                     $video_id = $video_id[0];
                                                     $video_url = 'https://www.youtube.com/embed/' . $video_id;
                                                 } elseif (in_array('vimeo', $checkUrlHost)) {
-                                                    $video_id = (int) substr(parse_url($cdata->video_url, PHP_URL_PATH), 1);
-                                                    $video_url = 'https://player.vimeo.com/video/' . $video_id;
+                                                    $parse_vimeo = parse_url($cdata->video_url, PHP_URL_PATH);
+                                                    $video_id = array_values(array_filter(explode('/', $parse_vimeo)));
+                                                    $para_vimeo = count($video_id) > 1 ? '?h=' . $video_id[1] : '';
+                                                    $video_url = 'https://player.vimeo.com/video/' . $video_id[0] . $para_vimeo;                                                   
                                                 } else {
                                                     $video_url = '';
                                                 }
@@ -105,7 +107,7 @@
                                                 aria-hidden="true"></button>
                                         </div>
                                         <div class="modal-body">
-                                            {{ $cdata->lesson_desc }}
+                                            {!! $cdata->lesson_desc !!}
                                         </div>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
