@@ -160,7 +160,7 @@
                     success: function(data) {
                         console.log(data);
                         if (data == 'update') {
-                            $('#read-btn-' + videoId).html("completd").addClass("btn-success")
+                            $('#read-btn-' + videoId).html("Completd").addClass("btn-success")
                                 .removeClass("btn-dark");
                         } else {
                             console.log(data);
