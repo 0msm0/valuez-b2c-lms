@@ -4,7 +4,7 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Class List</h4>
+                <h4 class="page-title">Grade</h4>
             </div>
 
         </div>
