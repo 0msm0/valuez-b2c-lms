@@ -84,21 +84,21 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
 });
 
 Route::middleware('auth')->prefix('teacher')->group(function () {
-    Route::get('class-list', [ProgramController::class,'TeacherClasslist'])->name('teacher.class.list');
-    Route::get('course-list/{class}', [WebPage::class,'courselist'])->name('teacher.course.list');
-    Route::get('lesson-plan-list/{classid}/{course}', [WebPage::class,'lessonPlan'])->name('teacher.lesson.list');
+    Route::get('class-list', [ProgramController::class, 'TeacherClasslist'])->name('teacher.class.list');
+    Route::get('course-list/{class}', [WebPage::class, 'courselist'])->name('teacher.course.list');
+    Route::get('lesson-plan-list/{classid}/{course}', [WebPage::class, 'lessonPlan'])->name('teacher.lesson.list');
+    Route::post('save-plan-report', [WebPage::class, 'setUserReport'])->name('report.save.plan');
 });
 
 Route::middleware('auth')->prefix('whats-new')->controller(AuthController::class)->group(function () {
-
 });
-Route::get('send-mail', function () {   
+Route::get('send-mail', function () {
     $details = [
         'view' => 'emails.test',
         'subject' => 'Test Mail form LMS',
         'title' => 'Mail from Valuez hut',
         'body' => 'This is for testing email using smtp'
-    ];   
-    \Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));   
+    ];
+    \Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));
     dd("Email is Sent.");
 });

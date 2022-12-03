@@ -57,21 +57,28 @@
                                             </ul>
                                         </div>
 
-                                        <div class="d-flex justify-content-between align-items-center">
+                                        <div class="justify-content-center align-items-center">
                                             @if ($cdata->lesson_desc)
-                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-info btn-sm mb-5"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
                                                     Instructions</button>
                                             @endif
 
                                             @if ($cdata->video_url)
                                                 <button id="vid-btn-{{ $cdata->id }}" data-video="{{ $video_url }}"
-                                                    type="button" class="play-video btn btn-warning btn-sm"
+                                                    type="button" class="play-video btn btn-warning btn-sm mb-5"
                                                     data-bs-toggle="modal" data-bs-target="#bs-video-modal">Instructions
                                                     Video</button>
                                                 {{-- <a class="popup-youtube btn btn-primary" href="{{ $video_url }}">Open
                                                     YouTube video</a> --}}
                                             @endif
+
+                                            <button id="read-btn-{{ $cdata->id }}" data-id="{{ $cdata->id }}"
+                                                type="button"
+                                                class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson) ? 'Completed' : 'Mark
+                                                as
+                                                complete' }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -97,18 +104,18 @@
                         @endforeach
 
                         <!-- Video modal -->
-                        <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
-                            aria-labelledby="modal-label" aria-hidden="true">
+                        <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-hidden="true"></button>
                                     </div>
-                                    <div class="modal-body pt-0">                                      
+                                    <div class="modal-body pt-0">
                                         <iframe src="" style="overflow:hidden;height:350px;width: 100%;"
-                                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                                            allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+                                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+                                            webkitallowfullscreen mozallowfullscreen></iframe>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -137,6 +144,30 @@
             $('.play-video').click(function() {
                 var vid_link = $(this).attr('data-video');
                 $('iframe').attr('src', vid_link);
+            });
+
+            $('.mark-as-read').click(function() {
+                var videoId = $(this).attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('report.save.plan') }}",
+                    data: {
+                        planId: videoId,
+                    },
+                    beforeSend: function() {
+                        $('#read-btn-' + videoId).html("Please wait..");
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data == 'update') {
+                            $('#read-btn-' + videoId).html("completd").addClass("btn-success")
+                                .removeClass("btn-dark");
+                        } else {
+                            console.log(data);
+                            $('#read-btn-' + videoId).html("Error");
+                        }
+                    }
+                });
             });
 
         });
