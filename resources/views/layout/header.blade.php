@@ -202,9 +202,9 @@
                 <div class="sidebar-widgets">
                     <div class="mx-25 mb-30 pb-20 side-bx bg-primary-light rounded20">
                         <div class="text-center">
-                            <img src="{{ asset('assets/images/svg-icon/color-svg/custom-24.svg') }}"
+                            <img src="{{ asset('assets/images/logo-valuez.png') }}"
                                 class="sideimg p-5" alt="">
-                            <h4 class="title-bx text-primary">Best Education Admin</h4>
+                            <h4 class="title-bx text-primary">Valuez</h4>
                         </div>
                     </div>
                 </div>
