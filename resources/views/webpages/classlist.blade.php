@@ -5,6 +5,14 @@
         <div class="d-flex align-items-center">
             <div class="me-auto">
                 <h4 class="page-title">Grade</h4>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><i class="mdi mdi-home-outline"></i></li>                          
+                            <li class="breadcrumb-item active" aria-current="page">Grade</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
 
         </div>
@@ -26,7 +34,7 @@
                                     <div class="mt-30 pro-dec text-center">
                                         <h5 class="fw-500"><a href="#">{{ $cdata->class_name }}</a></h5>
                                         <div class="price-dle d-flex justify-content-center align-items-center">
-                                            <a href="{{ route('teacher.course.list',['class'=>$cdata->id]) }}" class="btn btn-sm btn-primary me-2">View Course</a>
+                                            <a href="{{ route('teacher.course.list',['class'=>$cdata->id]) }}" class="btn btn-sm btn-primary me-2">View Courses</a>
                                         </div>
                                     </div>
                                 </div>

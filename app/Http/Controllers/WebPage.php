@@ -26,10 +26,12 @@ class WebPage extends Controller
             $user = Auth::user();
             $userId = $user->id;
             $schoolId = $user->school_id;
-            $lessonPlan = LessonPlan::with('program', 'course')->where(['course_id' => $req->course, 'class_id' => $req->classid, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
+            $class_id = $req->classid;
+
+            $lessonPlan = LessonPlan::with('program', 'course')->where(['course_id' => $req->course, 'class_id' => $class_id, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
             $report = Reports::where(['userid' => $userId,'school'=>$schoolId])->get('lesson_plan')->toArray();
             $complete_lesson = array_column($report,'lesson_plan');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson'));
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson','class_id'));
         }
     }
 

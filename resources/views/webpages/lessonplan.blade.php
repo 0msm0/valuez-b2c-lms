@@ -4,7 +4,17 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Lesson Plan</h4>
+                <h4 class="page-title">Instruction Module</h4>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><i class="mdi mdi-home-outline"></i></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('teacher.class.list') }}">Grade</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('teacher.course.list',['class'=>$class_id]) }}">Course</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Instruction Module</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
 
         </div>

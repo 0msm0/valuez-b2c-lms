@@ -5,6 +5,15 @@
         <div class="d-flex align-items-center">
             <div class="me-auto">
                 <h4 class="page-title">Course</h4>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><i class="mdi mdi-home-outline"></i></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('teacher.class.list') }}">Grade</a></li>                           
+                            <li class="breadcrumb-item active" aria-current="page">Course</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
 
         </div>
@@ -28,7 +37,7 @@
                                             <h5 class="fw-500"><a href="#">{{ $cdata->course_name }}</a></h5>
                                             <div class="price-dle d-flex justify-content-center align-items-center">
                                                 <a href="{{ route('teacher.lesson.list', ['classid' => $cdata->class_id,'course'=> $cdata->course_id]) }}"
-                                                    class="btn btn-sm btn-primary me-2">View Lesson Plan</a>
+                                                    class="btn btn-sm btn-primary me-2">View Instruction Modules</a>
                                             </div>
                                         </div>
                                     </div>
