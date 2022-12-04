@@ -9,8 +9,10 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><i class="mdi mdi-home-outline"></i></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('teacher.class.list') }}">Grade</a></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('teacher.course.list',['class'=>$class_id]) }}">Course</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a
+                                    href="{{ route('teacher.class.list') }}">Grade</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a
+                                    href="{{ route('teacher.course.list', ['class' => $class_id]) }}">Course</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Instruction Module</li>
                         </ol>
                     </nav>
@@ -28,34 +30,18 @@
                     @if ($lessonPlan->first())
                         @foreach ($lessonPlan as $cdata)
                             @php
-                                $parsed = parse_url($cdata->video_url);
-                                $checkUrlHost = explode('.', $parsed['host']);
-                                if (in_array('youtube', $checkUrlHost)) {
-                                    $video_id = explode('?v=', $cdata->video_url);
-                                    if (empty($video_id[1])) {
-                                        $video_id = explode('/v/', $cdata->video_url);
-                                    }
-                                    $video_id = explode('&', $video_id[1]);
-                                    $video_id = $video_id[0];
-                                    $video_url = 'https://www.youtube.com/embed/' . $video_id;
-                                } elseif (in_array('vimeo', $checkUrlHost)) {
-                                    $parse_vimeo = parse_url($cdata->video_url, PHP_URL_PATH);
-                                    $video_id = array_values(array_filter(explode('/', $parse_vimeo)));
-                                    $para_vimeo = count($video_id) > 1 ? '?h=' . $video_id[1] : '';
-                                    $video_url = 'https://player.vimeo.com/video/' . $video_id[0] . $para_vimeo;
-                                } else {
-                                    $video_url = '';
-                                }
+                                $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
+                                $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
                             @endphp
                             <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
-                                    <img class=""
+                                    <img class="video-btn"
                                         src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
-                                        alt="{{ $cdata->title }}" />
+                                        alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}" data-bs-toggle="modal"
+                                        data-src="{{ $main_video }}" data-bs-target="#bs-video-modal" />
 
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $cdata->title }}</h5>
-
                                         <div class="mb-10">
                                             <ul class="list-unstyled d-flex justify-content-between align-items-center">
                                                 <li><a href="#" class="text-mute hover-primary"><i
@@ -76,9 +62,10 @@
                                             @endif
 
                                             @if ($cdata->video_url)
-                                                <button id="vid-btn-{{ $cdata->id }}" data-video="{{ $video_url }}"
-                                                    type="button" class="play-video btn btn-warning btn-sm mb-5"
-                                                    data-bs-toggle="modal" data-bs-target="#bs-video-modal">Instructions
+                                                <button id="vid-btn-{{ $cdata->id }}" data-src="{{ $info_video }}"
+                                                    data-title="{{ $cdata->title }}" type="button"
+                                                    class="video-btn btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-video-modal">Instructions
                                                     Video</button>
                                                 {{-- <a class="popup-youtube btn btn-primary" href="{{ $video_url }}">Open
                                                     YouTube video</a> --}}
@@ -86,9 +73,11 @@
 
                                             <button id="read-btn-{{ $cdata->id }}" data-id="{{ $cdata->id }}"
                                                 type="button"
-                                                class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson) ? 'Completed' : 'Mark
-                                                as
-                                                complete' }}</button>
+                                                class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
+                                                    ? 'Completed'
+                                                    : 'Mark
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -112,24 +101,6 @@
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
                         @endforeach
-
-                        <!-- Video modal -->
-                        <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-hidden="true"></button>
-                                    </div>
-                                    <div class="modal-body pt-0">
-                                        <iframe src="" style="overflow:hidden;height:350px;width: 100%;"
-                                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
-                                            webkitallowfullscreen mozallowfullscreen></iframe>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
                     @else
                         <div class="col-sm-6">
                             <div class="card card-body">
@@ -143,18 +114,34 @@
         </div>
     </section>
     <!-- /.content -->
+
+    <!-- Main Video Modal -->
+    <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="ribbon-box">
+                    <div class="ribbon ribbon-danger float-end btn-close1" data-bs-dismiss="modal" aria-label="Close"
+                        style="cursor: pointer;">
+                        <i class="mdi mdi-close"></i>
+                    </div>
+                    <h5 class="text-danger float-start m-0 p-3" id="video-title">Video Player</h5>
+                </div>
+                <div class="modal-body pt-0">
+                    <div id="video-loader" class="text-center"><i class="fa fa-spinner fa-spin fs-1"></i></div>
+                    <!-- 16:9 aspect ratio -->
+                    <div class="ratio ratio-16x9">
+                        <iframe class="embed-responsive-item" frameborder="0" src="" id="video"
+                            allowscriptaccess="always" allow="autoplay"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script-section')
     <script language="javascript" type="text/javascript">
         $(function() {
-            $('.btn-close').click(function() {
-                $('iframe').attr('src', "");
-            });
-
-            $('.play-video').click(function() {
-                var vid_link = $(this).attr('data-video');
-                $('iframe').attr('src', vid_link);
-            });
 
             $('.mark-as-read').click(function() {
                 var videoId = $(this).attr('data-id');
@@ -181,5 +168,37 @@
             });
 
         });
+
+        $(document).ready(function() {
+            // Gets the video src from the data-src on each button
+            var $videoSrc;
+            $('.video-btn').click(function() {
+                $videoSrc = $(this).data("src");
+                $("#video-title").text($(this).data("title"));    
+                $("#video-loader").show();           
+            });
+            // console.log($videoSrc);          
+            $('#bs-video-modal').on('shown.bs.modal', function(e) {
+                setTimeout(() => {
+                    $("#video").attr('src', $videoSrc);
+                    $("#video-loader").hide();
+                }, 200);
+            })
+            $('#bs-video-modal').on('hide.bs.modal', function(e) {
+                $("#video").attr('src', "");                
+            })
+            // document ready  
+        });
     </script>
 @endsection
+<style>
+    #bs-video-modal .modal-dialog {
+        max-width: 800px;
+        margin: 30px auto;
+    }
+
+    #bs-video-modal .modal-body {
+        position: relative;
+        padding: 5px;
+    }
+</style>

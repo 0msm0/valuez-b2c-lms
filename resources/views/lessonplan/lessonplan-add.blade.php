@@ -45,7 +45,8 @@
                                 <label class="form-label">Program</label>
                                 <select class="form-control select2" name="class_id" style="width: 100%;">
                                     @foreach ($program_list as $prog)
-                                        <option value="{{ $prog->id }}" {{ $prog->id == old('class_id') ? 'selected' : '' }}>
+                                        <option value="{{ $prog->id }}"
+                                            {{ $prog->id == old('class_id') ? 'selected' : '' }}>
                                             {{ $prog->class_name }}</option>
                                     @endforeach
                                 </select>
@@ -58,7 +59,9 @@
                                 <label class="form-label">Course</label>
                                 <select class="form-control select2" name="course_id" style="width: 100%;">
                                     @foreach ($course_list as $course)
-                                        <option value="{{ $course->id }}" {{ $course->id == old('course_id') ? 'selected' : '' }}>{{ $course->course_name }}</option>
+                                        <option value="{{ $course->id }}"
+                                            {{ $course->id == old('course_id') ? 'selected' : '' }}>
+                                            {{ $course->course_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('course_id')
@@ -66,7 +69,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Video Link <span class="text-danger">*</span></label>
+                                <label class="form-label">Main Video Link<span class="text-danger">*</span></label>
                                 <input type="text" name="video_url" value="{{ old('video_url') }}" class="form-control"
                                     placeholder="Enter Video Link">
                                 @error('video_url')
@@ -75,8 +78,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="form-label">Instructions Video Link</label>
+                                <input type="text" name="video_info_url" value="{{ old('video_info_url') }}"
+                                    class="form-control" placeholder="Enter Instructions Video Link">
+                                @error('video_info_url')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <label class="form-label">Lesson No <span class="text-danger">*</span></label>
-                                <input type="text" name="lesson_no" value="{{ old('lesson_no') }}" class="form-control"
+                                <input type="number" name="lesson_no" value="{{ old('lesson_no') }}" class="form-control"
                                     placeholder="Enter Lesson No">
                                 @error('lesson_no')
                                     <span class="text-danger">{{ $message }}</span>
@@ -84,7 +96,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Lesson Instructions</label>
-                                <textarea rows="3" name="lesson_desc" class="form-control" placeholder="Enter Lesson Instructions">{{ old('lesson_desc') }}</textarea>
+                                <textarea id="lesson_inst" rows="3" name="lesson_desc" class="form-control"
+                                    placeholder="Enter Lesson Instructions">{{ old('lesson_desc') }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="formFile" class="form-label">Lesson Plan Image <span
@@ -120,7 +133,11 @@
 @endsection
 
 @section('script-section')
+    <script src="{{ asset('assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
     <script>
         $('.select2').select2();
+        //Add text editor
+        //bootstrap WYSIHTML5 - text editor
+        $('#lesson_inst').wysihtml5();
     </script>
 @endsection

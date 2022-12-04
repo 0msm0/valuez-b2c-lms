@@ -9,7 +9,8 @@ class LessonPlan extends Model
 {
     use HasFactory;
     protected $table = 'lesson_plan';
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id';
+    protected $guarded = [];
 
     public function program()
     {

@@ -66,6 +66,14 @@
                                 <input type="text" name="video_url" class="form-control"
                                     value="{{ $lessonplan->video_url }}" placeholder="Enter Video Link">
                             </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Instructions Video Link</label>
+                                <input type="text" name="video_info_url" class="form-control"
+                                    value="{{ $lessonplan->video_info_url }}" placeholder="Enter Instructions Video Link">
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="form-label">Lesson No</label>
                                 <input type="text" name="lesson_no" class="form-control"

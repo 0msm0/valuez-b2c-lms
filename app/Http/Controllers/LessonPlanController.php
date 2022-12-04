@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\LessonPlan;
 
 class LessonPlanController extends Controller
 {
@@ -56,6 +57,7 @@ class LessonPlanController extends Controller
         $courseData = [
             'title' => $request->title,
             'video_url' => $request->video_url,
+            'video_info_url' => $request->video_info_url,
             'lesson_no' => $request->lesson_no,
             'lesson_desc' => $request->lesson_desc,
             'class_id' => $request->class_id,
@@ -64,7 +66,7 @@ class LessonPlanController extends Controller
             'lesson_image' => $imageName
         ];
         // print_r($courseData); die;
-        DB::table('lesson_plan')->insert($courseData);
+        LessonPlan::create($courseData);
         return redirect(route('lesson.plan.list'))->with(['message' => 'Lesson Plan added successfully!', 'status' => 'success']);
     }
 
@@ -93,6 +95,7 @@ class LessonPlanController extends Controller
         $courseData = [
             'title' => $request->title,
             'video_url' => $request->video_url,
+            'video_info_url' => $request->video_info_url,
             'lesson_no' => $request->lesson_no,
             'lesson_desc' => $request->lesson_desc,
             'class_id' => $request->class_id,
@@ -101,7 +104,7 @@ class LessonPlanController extends Controller
             'lesson_image' => $imageName
         ];
         // print_r($courseData); die;
-        DB::table('lesson_plan')->where('id', $request->id)->update($courseData);
+        LessonPlan::where('id', $request->id)->update($courseData);
         return redirect(route('lesson.plan.list'))->with(['message' => 'Lesson Plan updated successfully!', 'status' => 'success']);
     }
     /**
@@ -116,4 +119,5 @@ class LessonPlanController extends Controller
         DB::table('lesson_plan')->where('id', $lessonId)->delete();
         return redirect(route('lesson.plan.list'))->with('success', 'Lesson Plan deleted successfully');
     }
+    
 }

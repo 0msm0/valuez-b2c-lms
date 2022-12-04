@@ -29,9 +29,9 @@ class WebPage extends Controller
             $class_id = $req->classid;
 
             $lessonPlan = LessonPlan::with('program', 'course')->where(['course_id' => $req->course, 'class_id' => $class_id, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
-            $report = Reports::where(['userid' => $userId,'school'=>$schoolId])->get('lesson_plan')->toArray();
-            $complete_lesson = array_column($report,'lesson_plan');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson','class_id'));
+            $report = Reports::where(['userid' => $userId, 'school' => $schoolId])->get('lesson_plan')->toArray();
+            $complete_lesson = array_column($report, 'lesson_plan');
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id'));
         }
     }
 
@@ -50,5 +50,28 @@ class WebPage extends Controller
                 return "error";
             }
         }
+    }
+
+    public static function getVideoUrl($video_src = "")
+    {
+        $parsed = parse_url($video_src);
+        $checkUrlHost = explode('.', $parsed['host']);
+        if (in_array('youtube', $checkUrlHost)) {
+            $video_id = explode('?v=', $video_src);
+            if (empty($video_id[1])) {
+                $video_id = explode('/v/', $video_src);
+            }
+            $video_id = explode('&', $video_id[1]);
+            $video_id = $video_id[0];
+            $video_url = 'https://www.youtube.com/embed/' . $video_id;
+        } elseif (in_array('vimeo', $checkUrlHost)) {
+            $parse_vimeo = parse_url($video_src, PHP_URL_PATH);
+            $video_id = array_values(array_filter(explode('/', $parse_vimeo)));
+            $para_vimeo = count($video_id) > 1 ? '?h=' . $video_id[1] : '';
+            $video_url = 'https://player.vimeo.com/video/' . $video_id[0] . $para_vimeo;
+        } else {
+            $video_url = '';
+        }
+        return $video_url;
     }
 }
