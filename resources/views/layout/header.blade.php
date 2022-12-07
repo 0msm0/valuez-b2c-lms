@@ -165,7 +165,7 @@
                             <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
                         </li>
                         <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
-                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Instruction</span></a>
+                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Instructional Module</span></a>
                         </li>
                         <li class="header">Account</li>
                         <li class="{{ Request::is('school/*') ? 'active' : '' }}">

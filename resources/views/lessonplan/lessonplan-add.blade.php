@@ -4,13 +4,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Program</h4>
+                <h4 class="page-title">Instructional Module</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">Manage Lesson Plan </li>
-                            <li class="breadcrumb-item active" aria-current="page">Lesson Plan Add</li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Instructional Module</li>
                         </ol>
                     </nav>
                 </div>
@@ -26,7 +25,7 @@
                 <!-- Basic Forms -->
                 <div class="box">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Add New Lesson Plan</h4>
+                        <h4 class="box-title">Add Instructional Module</h4>
                     </div>
                     <!-- /.box-header -->
                     <form action="{{ route('lesson.plan.store') }}" method="POST" enctype="multipart/form-data">

@@ -4,12 +4,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Lesson Plan</h4>
+                <h4 class="page-title">Instructional Module</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Manage Lesson Plan</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Instructional Module</li>
                         </ol>
                     </nav>
                 </div>
@@ -29,12 +29,12 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Lesson Plan</h5>
+                        <h5 class="card-title mb-0">Instructional Module</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
                                 <a href="{{ route('lesson.plan.add') }}"
-                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Lesson
-                                    Plan</a>
+                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Instructional Module
+                                    </a>
                             </div>
                         </div>
                     </div>
