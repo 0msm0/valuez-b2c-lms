@@ -61,7 +61,7 @@
                                                     Instructions</button>
                                             @endif
 
-                                            @if ($cdata->video_url)
+                                            @if ($cdata->video_info_url)
                                                 <button id="vid-btn-{{ $cdata->id }}" data-src="{{ $info_video }}"
                                                     data-title="{{ $cdata->title }}" type="button"
                                                     class="video-btn btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
