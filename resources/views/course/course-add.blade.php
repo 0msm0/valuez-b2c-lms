@@ -9,8 +9,8 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">Manage Course</li>
-                            <li class="breadcrumb-item active" aria-current="page">Course Add</li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('course.list') }}">Manage Course</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Course</li>
                         </ol>
                     </nav>
                 </div>

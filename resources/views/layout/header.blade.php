@@ -157,7 +157,7 @@
                             <a href="{{ route('admin-dashboard') }}"><i
                                     data-feather="home"></i><span>Dashboard</span></a>
                         </li>
-                        <li class="{{ Request::is('program/*') ? 'active' : '' }}">
+                        <li class="{{ Request::is('grade/*') ? 'active' : '' }}">
                             <a href="{{ route('program.list') }}"><i
                                     data-feather="list"></i><span>Grade</span></a>
                         </li>

@@ -67,7 +67,12 @@ class AuthController extends Controller
     public function updateUser(Request $request)
     {
         $userId = $request->input('userid');
-        $user = DB::table('users')->where(['usertype' => 'teacher', 'id' => $userId])->first();
+        $user = Auth::user();
+        $where_cond = ['usertype' => 'teacher', 'id' => $userId];
+        if (session()->get('usertype') == 'admin') {
+            $where_cond['school_id'] = $user->school_id;
+        }
+        $user = DB::table('users')->where($where_cond)->first();
         return view('users.teacher-edit', compact('user'));
     }
 

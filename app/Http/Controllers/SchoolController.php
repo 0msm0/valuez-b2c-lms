@@ -129,7 +129,7 @@ class SchoolController extends Controller
     public function destroy(Request $request)
     {
         $schoolId = $request->input('schoolid');
-        DB::table('school')->where('id', $schoolId)->update(['is_deleted' => 1]);
+        #DB::table('school')->where('id', $schoolId)->update(['is_deleted' => 1]);
         return redirect(route('school.list'))->with('success', 'School deleted successfully');
     }
 

@@ -9,7 +9,7 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">Manage School</li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('school.list') }}">Manage School</a></li>
                             <li class="breadcrumb-item active" aria-current="page">School Registration</li>
                         </ol>
                     </nav>

@@ -71,21 +71,24 @@
                                                     data-status="{{ $sdata->status }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
                                             <td>
-                                                <form action="{{ route('school.remove', ['school' => $sdata->id]) }}"
+                                                <form id="schoolFrm-{{ $sdata->id }}"
+                                                    action="{{ route('school.remove', ['school' => $sdata->id]) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <a href="#"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i
-                                                            class="fa fa-lock"></i></a>
-                                                    <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"><i
-                                                            class="fa fa-user-o"></i></a>
+                                                    {{-- <a href="#"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5" title=""><i
+                                                            class="fa fa-lock"></i></a> --}}
                                                     <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"><i
-                                                            class="fa fa-pencil-square-o"></i></a>
-                                                    <button type="submit"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"><i
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"
+                                                        title="Edit School"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <button type="button"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
+                                                        title="Delete School"
+                                                        onclick="confirm_delete({{ $sdata->id }})"><i
                                                             class="fa fa-trash-o"></i></button>
+                                                    <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
+                                                        title="Manage Teacher"><i class="fa fa-user-o"></i></a>
                                                 </form>
                                             </td>
                                         </tr>
@@ -103,6 +106,15 @@
 @endsection
 @section('script-section')
     <script>
+        function confirm_delete(id) {
+            let text = "Are you sure want to delete ?.";
+            if (confirm(text) == true) {              
+                $("#schoolFrm-" + id).submit();
+            } else {
+                return false;
+            }
+        }
+
         $(document).ready(function() {
             $('.change_status').click(function() {
                 var id = $(this).attr('data-id');

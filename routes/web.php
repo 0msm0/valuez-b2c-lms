@@ -63,13 +63,13 @@ Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanControlle
     Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
 });
 
-Route::middleware('auth')->prefix('program')->controller(ProgramController::class)->group(function () {
-    Route::get('manage-program', 'index')->name('program.list');
-    Route::get('add-program', 'addprogram')->name('program.add');
-    Route::get('update-program', 'editprogram')->name('program.edit');
-    Route::post('remove-program', 'destroy')->name('program.remove');
-    Route::post('program-add', 'store')->name('program.store');
-    Route::post('program-edit', 'edit')->name('program.update');
+Route::middleware('auth')->prefix('grade')->controller(ProgramController::class)->group(function () {
+    Route::get('manage-grade', 'index')->name('program.list');
+    Route::get('add-grade', 'addprogram')->name('program.add');
+    Route::get('update-grade', 'editprogram')->name('program.edit');
+    Route::post('remove-grade', 'destroy')->name('program.remove');
+    Route::post('grade-add', 'store')->name('program.store');
+    Route::post('grade-edit', 'edit')->name('program.update');
 });
 
 Route::middleware('auth')->prefix('school')->controller(AuthController::class)->group(function () {

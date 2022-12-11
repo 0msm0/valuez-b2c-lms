@@ -4,13 +4,13 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Program</h4>
+                <h4 class="page-title">Grade</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">Manage Program</li>
-                            <li class="breadcrumb-item active" aria-current="page">Program Add</li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('program.list') }}">Manage Grade</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Grade</li>
                         </ol>
                     </nav>
                 </div>
@@ -26,21 +26,21 @@
                 <!-- Basic Forms -->
                 <div class="box">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Add New Program</h4>
+                        <h4 class="box-title">Add New Grade</h4>
                     </div>
                     <!-- /.box-header -->
                     <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="form-label">Program Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" class="form-control" placeholder="Enter Program Title">
+                                <label class="form-label">Grade Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" class="form-control" placeholder="Enter Grade Title">
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="formFile" class="form-label">Program Image <span
+                                <label for="formFile" class="form-label">Grade Image <span
                                         class="text-danger">*</span></label>
                                 <input class="form-control" type="file" name="image" id="formFile">
                                 @error('image')
