@@ -76,8 +76,8 @@
                                                 class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                     ? 'Completed'
                                                     : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
         role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="ribbon-box">
+                <div class="ribbon-box video-close">
                     <div class="ribbon ribbon-danger float-end btn-close1" data-bs-dismiss="modal" aria-label="Close"
                         style="cursor: pointer;">
                         <i class="mdi mdi-close"></i>
@@ -132,7 +132,8 @@
                     <!-- 16:9 aspect ratio -->
                     <div class="ratio ratio-16x9">
                         <iframe class="embed-responsive-item" frameborder="0" src="" id="video"
-                            allowscriptaccess="always" allow="autoplay"></iframe>
+                            allowscriptaccess="always" allow="autoplay" webkitallowfullscreen mozallowfullscreen
+                            allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -174,10 +175,10 @@
             var $videoSrc;
             $('.video-btn').click(function() {
                 $videoSrc = $(this).data("src");
-                $("#video-title").text($(this).data("title"));    
-                $("#video-loader").show();           
+                $("#video-title").text($(this).data("title"));
+                $("#video-loader").show();
             });
-            // console.log($videoSrc);          
+            // console.log($videoSrc);
             $('#bs-video-modal').on('shown.bs.modal', function(e) {
                 setTimeout(() => {
                     $("#video").attr('src', $videoSrc);
@@ -185,9 +186,9 @@
                 }, 200);
             })
             $('#bs-video-modal').on('hide.bs.modal', function(e) {
-                $("#video").attr('src', "");                
+                $("#video").attr('src', "");
             })
-            // document ready  
+            // document ready
         });
     </script>
 @endsection
@@ -200,5 +201,12 @@
     #bs-video-modal .modal-body {
         position: relative;
         padding: 5px;
+    }
+
+    @media (max-width: 765px) {
+        .video-close .ribbon.float-end {
+            margin-right: 0px !important;
+            padding: 5px;
+        }
     }
 </style>
