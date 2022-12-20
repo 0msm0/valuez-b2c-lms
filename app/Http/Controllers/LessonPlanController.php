@@ -60,7 +60,7 @@ class LessonPlanController extends Controller
             'video_info_url' => $request->video_info_url,
             'lesson_no' => $request->lesson_no,
             'lesson_desc' => $request->lesson_desc,
-            'class_id' => $request->class_id,
+            'class_id' => implode(",",$request->class_id),
             'course_id' => $request->course_id,
             'status' => $request->status,
             'lesson_image' => $imageName
@@ -98,7 +98,7 @@ class LessonPlanController extends Controller
             'video_info_url' => $request->video_info_url,
             'lesson_no' => $request->lesson_no,
             'lesson_desc' => $request->lesson_desc,
-            'class_id' => $request->class_id,
+            'class_id' => implode(",",$request->class_id),
             'course_id' => $request->course_id,
             'status' => $request->status,
             'lesson_image' => $imageName
@@ -119,5 +119,5 @@ class LessonPlanController extends Controller
         DB::table('lesson_plan')->where('id', $lessonId)->delete();
         return redirect(route('lesson.plan.list'))->with('success', 'Lesson Plan deleted successfully');
     }
-    
+
 }

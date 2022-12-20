@@ -41,11 +41,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Program</label>
-                                <select class="form-control select2" name="class_id" style="width: 100%;">
+                                <label class="form-label">Grade</label>
+                                <select class="form-control select2" name="class_id[]" style="width: 100%;"
+                                    multiple="multiple" id="class_id">
                                     @foreach ($program_list as $prog)
+                                        @php $classIds = old('class_id'); @endphp
                                         <option value="{{ $prog->id }}"
-                                            {{ $prog->id == old('class_id') ? 'selected' : '' }}>
+                                            {{ (!empty($classIds) && in_array($prog->id, $classIds)) ? 'selected' : '' }}>
                                             {{ $prog->class_name }}</option>
                                     @endforeach
                                 </select>
@@ -135,6 +137,10 @@
     <script src="{{ asset('assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
     <script>
         $('.select2').select2();
+        $('#class_id').select2({
+            tags: true,
+            placeholder: "Select a Grade",
+        });
         //Add text editor
         //bootstrap WYSIHTML5 - text editor
         $('#lesson_inst').wysihtml5();

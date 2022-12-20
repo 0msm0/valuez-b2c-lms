@@ -8,7 +8,7 @@
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>                           
+                            <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
                             <li class="breadcrumb-item active" aria-current="page">Edit Instructional Module</li>
                         </ol>
                     </nav>
@@ -41,11 +41,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Program</label>
-                                <select class="form-control select2" name="class_id" style="width: 100%;">
+                                <label class="form-label">Grade</label>
+                                <select class="form-control select21" name="class_id[]" style="width: 100%;"
+                                    multiple="multiple" id="class_id">
                                     @foreach ($program_list as $prog)
+                                        @php $classIds = explode(",",$lessonplan->class_id); @endphp
                                         <option value="{{ $prog->id }}"
-                                            {{ $prog->id == $lessonplan->class_id ? 'selected' : '' }}>
+                                            {{ in_array($prog->id, $classIds) ? 'selected' : '' }}>
                                             {{ $prog->class_name }}</option>
                                     @endforeach
                                 </select>
@@ -123,6 +125,9 @@
 
     <script>
         $('.select2').select2();
+        $('#class_id').select2({
+            tags: true
+        });
         //Add text editor
 
         //bootstrap WYSIHTML5 - text editor
