@@ -46,7 +46,7 @@
                                             <ul class="list-unstyled d-flex justify-content-between align-items-center">
                                                 <li><a href="#" class="text-mute hover-primary"><i
                                                             class="fa fa-tag"></i>
-                                                        {{ $cdata->program->class_name }}</a></li>
+                                                        {{ @$class_name->class_name }}</a></li>
                                                 <li><a href="#" class="text-mute hover-primary"><i
                                                             class="fa fa-folder-open-o"></i>
                                                         {{ $cdata->course->course_name }}</a></li>

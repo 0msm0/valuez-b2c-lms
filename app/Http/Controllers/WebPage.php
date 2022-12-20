@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{LessonPlan, Reports};
+use App\Models\{LessonPlan, Reports, Program};
 
 class WebPage extends Controller
 {
@@ -28,10 +28,11 @@ class WebPage extends Controller
             $schoolId = $user->school_id;
             $class_id = $req->classid;
 
-            $lessonPlan = LessonPlan::with('program', 'course')->where(['course_id' => $req->course, 'class_id' => $class_id, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
+            $lessonPlan = LessonPlan::with('program', 'course')->whereRaw('FIND_IN_SET("' . $class_id . '", class_id)')->where(['course_id' => $req->course, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
             $report = Reports::where(['userid' => $userId, 'school' => $schoolId])->get('lesson_plan')->toArray();
             $complete_lesson = array_column($report, 'lesson_plan');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id'));
+            $class_name = Program::find($class_id);
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id','class_name'));
         }
     }
 
