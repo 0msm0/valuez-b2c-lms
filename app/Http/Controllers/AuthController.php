@@ -115,6 +115,7 @@ class AuthController extends Controller
         if (!empty($data['password'])) {
             $validate['password'] = ['required', Password::min(6)];
             $updateuser['password'] = Hash::make($data['password']);
+            $updateuser['view_pass'] = $data['password'];
         }
         $request->validate($validate);
         User::where('id', $data['id'])->update($updateuser);
