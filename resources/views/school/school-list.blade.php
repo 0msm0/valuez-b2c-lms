@@ -70,26 +70,23 @@
                                                     id="status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
                                                     data-status="{{ $sdata->status }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
-                                            <td>
-                                                <form id="schoolFrm-{{ $sdata->id }}"
-                                                    action="{{ route('school.remove', ['school' => $sdata->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    {{-- <a href="#"
+                                            <td> {{-- <a href="#"
                                                         class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5" title=""><i
                                                             class="fa fa-lock"></i></a> --}}
-                                                    <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"
-                                                        title="Edit School"><i class="fa fa-pencil-square-o"></i></a>
-                                                    <button type="button"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
-                                                        title="Delete School"
-                                                        onclick="confirm_delete({{ $sdata->id }})"><i
-                                                            class="fa fa-trash-o"></i></button>
-                                                    <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
-                                                        title="Manage Teacher"><i class="fa fa-user-o"></i></a>
-                                                </form>
+                                                <a href="{{ route('school.edit', ['school' => $sdata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"
+                                                    title="Edit School"><i class="fa fa-pencil-square-o"></i></a>
+
+
+                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-password-modal" title="Delete School"
+                                                    class="remove_school_data waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
+                                                    data-schoolid="{{ $sdata->id }}"><i class="fa fa-trash-o"></i></a>
+
+                                                <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
+                                                    title="Manage Teacher"><i class="fa fa-user-o"></i></a>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -103,17 +100,70 @@
         </div>
     </section>
     <!-- /.content -->
+
+    <!-- Info modal -->
+    <div class="modal fade" id="bs-password-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-pass">
+                        Verify your Account </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="ti-lock"></i></span>
+                            <input type="text" name="userpass" class="form-control" id="userpass">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <input type="hidden" id="remSchool" value="0" />
+                        <button class="btn btn-primary" type="submit" id="remove_school_user">Submit</button>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <p class="text-center" id="error-list"></p>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 @section('script-section')
     <script>
-        function confirm_delete(id) {
-            let text = "Are you sure want to delete ?.";
-            if (confirm(text) == true) {              
-                $("#schoolFrm-" + id).submit();
-            } else {
-                return false;
-            }
-        }
+        $('.remove_school_data').click(function() {
+            var schoolId = $(this).attr("data-schoolid");
+            $('#remSchool').val(schoolId);
+            $("#error-list").html('');
+        });
+
+        $('#remove_school_user').click(function() {
+            $("#error-list").html('').removeClass('text-danger text-success');
+            $.ajax({
+                url: "{{ route('school.remove') }}",
+                type: "POST",
+                data: {
+                    school: $("#remSchool").val(),
+                    userpass: $("#userpass").val(),
+                },
+                success: function(res) {
+                    if (res.success === true) {
+                        $("#error-list").addClass('text-success').html(res.msg);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    } else if (res.success === false) {
+                        $("#error-list").addClass('text-danger').html(res.msg);
+                    } else {
+                        alert(res);
+                    }
+                }
+            });
+        });
 
         $(document).ready(function() {
             $('.change_status').click(function() {

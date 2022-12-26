@@ -6,6 +6,7 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 
@@ -15,8 +16,8 @@ class SchoolController extends Controller
     public function index()
     {
         $school = School::with(['teacher' => function ($query) {
-            $query->where('usertype', '=', 'teacher');
-        }])->orderBy('id')->get();
+            $query->where('usertype', '=', 'teacher')->where(['is_deleted' => 0]);
+        }])->where(['is_deleted' => 0])->orderBy('id')->get();
 
         return view('school.school-list', compact('school'));
     }
@@ -128,9 +129,20 @@ class SchoolController extends Controller
 
     public function destroy(Request $request)
     {
-        $schoolId = $request->input('schoolid');
-        #DB::table('school')->where('id', $schoolId)->update(['is_deleted' => 1]);
-        return redirect(route('school.list'))->with('success', 'School deleted successfully');
+        $schoolId = $request->input('school');
+        $userPass = $request->input('userpass');
+        if (Auth::check()) {
+            $user = Auth::user();
+            if (Hash::check($userPass, $user->password)) {
+                DB::table('school')->where('id', $schoolId)->update(['is_deleted' => 1]);
+                DB::table('users')->where('school_id', $schoolId)->update(['is_deleted' => 1]);
+                return response()->json(['success' => true, 'msg' => 'School deleted successfully!']);
+            } else {
+                return response()->json(['success' => false, 'msg' => 'Entered Password Incorrect.']);
+            }
+        } else {
+            return response()->json(['success' => false, 'msg' => 'Somenthing Went Wrong!']);
+        }
     }
 
     public function change_status(Request $request)

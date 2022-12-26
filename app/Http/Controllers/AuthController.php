@@ -54,7 +54,7 @@ class AuthController extends Controller
     public function userlist(Request $request)
     {
         $schoolid = $request->input('school');
-        $userlist = DB::table('users')->where(['school_id' => $schoolid, 'usertype' => 'teacher'])->orderBy('id')->get();
+        $userlist = DB::table('users')->where(['school_id' => $schoolid, 'usertype' => 'teacher', 'is_deleted' => 0])->orderBy('id')->get();
         return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
@@ -132,8 +132,18 @@ class AuthController extends Controller
     public function destroy(Request $request)
     {
         $userId = $request->input('userid');
-        DB::table('users')->where('id', $userId)->update(['is_deleted' => 1]);
-        return redirect(route('teacher.list'))->with('success', 'User deleted successfully');
+        $userPass = $request->input('userpass');
+        if (Auth::check()) {
+            $user = Auth::user();
+            if (Hash::check($userPass, $user->password)) {
+                DB::table('users')->where('id', $userId)->update(['is_deleted' => 1]);
+                return response()->json(['success' => true, 'msg' => 'User deleted successfully!']);
+            } else {
+                return response()->json(['success' => false, 'msg' => 'Entered Password Incorrect.']);
+            }
+        } else {
+            return response()->json(['success' => false, 'msg' => 'Somenthing Went Wrong!']);
+        }
     }
 
     public function AdminDash()
@@ -181,7 +191,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $schoolid = $user->school_id;
-        $userlist = DB::table('users')->where(['school_id' => $user->school_id, 'usertype' => 'teacher'])->orderBy('id')->get();
+        $userlist = DB::table('users')->where(['school_id' => $user->school_id, 'usertype' => 'teacher', 'is_deleted' => 0])->orderBy('id')->get();
         return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
@@ -194,7 +204,7 @@ class AuthController extends Controller
     }
 
     // Generate token
-    public function getToken($length = 6)
+    public function getToken($length = 8)
     {
         return Str::random($length);
     }

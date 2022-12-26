@@ -59,28 +59,28 @@
                                                     data-status="{{ $udata->status }}">{{ $udata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
                                             <td>
-                                                <form action="{{ route('teacher.remove', ['userid' => $udata->id]) }}"
-                                                    method="POST">
-                                                    @csrf
 
-                                                    <button class="btn btn-sm btn-outline btn-primary mb-5 dropdown-toggle"
-                                                        type="button" data-bs-toggle="dropdown"><i
-                                                            class="icon ti-settings"></i>
-                                                        Password</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="reset_password dropdown-item" href="javascript:void(0);"
-                                                            data-userid="{{ $udata->id }}"><i class="fa fa-refresh"></i>
-                                                            Reset</a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="view_password dropdown-item"
-                                                            data-pass="{{ $udata->view_pass }}"
-                                                            href="javascript:void(0);"><i class="fa fa-eye"></i> View</a>
-                                                    </div>
-                                                    <a href="{{ route('teacher.edit', ['userid' => $udata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
-                                                    <button type="submit"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</button>
-                                                </form>
+
+                                                <button class="btn btn-sm btn-outline btn-primary mb-5 dropdown-toggle"
+                                                    type="button" data-bs-toggle="dropdown"><i
+                                                        class="icon ti-settings"></i>
+                                                    Password</button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="reset_password dropdown-item" href="javascript:void(0);"
+                                                        data-userid="{{ $udata->id }}"><i class="fa fa-refresh"></i>
+                                                        Reset</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="view_password dropdown-item"
+                                                        data-pass="{{ $udata->view_pass }}" href="javascript:void(0);"><i
+                                                            class="fa fa-eye"></i> View</a>
+                                                </div>
+                                                <a href="{{ route('teacher.edit', ['userid' => $udata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>
+                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-password-modal"
+                                                    class="remove_user_data waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
+                                                    data-userid="{{ $udata->id }}">Delete</a>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -94,6 +94,40 @@
         </div>
     </section>
     <!-- /.content -->
+
+
+    <!-- Info modal -->
+    <div class="modal fade" id="bs-password-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-pass">
+                        Verify your Account </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="ti-lock"></i></span>
+                            <input type="text" name="userpass" class="form-control" id="userpass">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <input type="hidden" id="remUser" value="0" />
+                        <button class="btn btn-primary" type="submit" id="remove_user">Submit</button>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <p class="text-center" id="error-list"></p>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script-section')
@@ -106,7 +140,7 @@
 
             $('.reset_password').click(function() {
                 let text;
-                if (confirm("Press a ok for Reset Password!") == true) {
+                if (confirm("Press Ok for Reset Password!") == true) {
                     $.ajax({
                         url: "{{ route('user.password') }}",
                         type: "POST",
@@ -124,7 +158,36 @@
                     text = "You canceled!";
                     console.log(text);
                 }
+            });
 
+            $('.remove_user_data').click(function() {
+                var userId = $(this).attr("data-userid");
+                $('#remUser').val(userId);
+                $("#error-list").html('');
+            });
+
+            $('#remove_user').click(function() {
+                $("#error-list").html('').removeClass('text-danger text-success');
+                $.ajax({
+                    url: "{{ route('teacher.remove') }}",
+                    type: "POST",
+                    data: {
+                        userid: $("#remUser").val(),
+                        userpass: $("#userpass").val(),
+                    },
+                    success: function(res) {
+                        if (res.success === true) {
+                            $("#error-list").addClass('text-success').html(res.msg);
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        } else if (res.success === false) {
+                            $("#error-list").addClass('text-danger').html(res.msg);
+                        } else {
+                            alert(res);
+                        }
+                    }
+                });
             });
 
             $('.change_status').click(function() {
