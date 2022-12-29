@@ -16,8 +16,9 @@
         });
     });
 </script>
-@yield('script-section')
+
 <!-- edulearn App -->
 <script src="{{ asset('assets/src/js/demo.js') }}"></script>
 <script src="{{ asset('assets/src/js/template.js') }}"></script>
 <script src="{{ asset('assets/src/js/pages/data-table.js') }}"></script>
+@yield('script-section')

@@ -6,7 +6,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonPlanController;
 use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\WebPage;
+use App\Http\Controllers\{WebPage, Notification};
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +90,10 @@ Route::middleware('auth')->prefix('teacher')->group(function () {
     Route::post('save-plan-report', [WebPage::class, 'setUserReport'])->name('report.save.plan');
 });
 
-Route::middleware('auth')->prefix('whats-new')->controller(AuthController::class)->group(function () {
+Route::middleware('auth')->prefix('whats-new')->controller(Notification::class)->group(function () {
+    Route::get('manage-notification', 'index')->name('notify.list');
+    Route::get('add-notification', 'addnewNotification')->name('notify.add');
+    Route::post('add-update-notify', 'addUpdateNotify')->name('notify.store');
 });
 Route::get('send-mail', function () {
     $details = [

@@ -167,6 +167,9 @@
                         <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
                             <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Instructional Module</span></a>
                         </li>
+                        <li class="{{ Request::is('whats-new/*') ? 'active' : '' }}">
+                            <a href="{{ route('notify.list') }}"><i data-feather="bell"></i><span>What's New</span></a>
+                        </li>
                         <li class="header">Account</li>
                         <li class="{{ Request::is('school/*') ? 'active' : '' }}">
                             <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage
