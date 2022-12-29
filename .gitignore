@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 /edulearn-education-html
+/uploads
 .env
 .env.backup
 .phpunit.result.cache
