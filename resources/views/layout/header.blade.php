@@ -158,22 +158,40 @@
                                     data-feather="home"></i><span>Dashboard</span></a>
                         </li>
                         <li class="{{ Request::is('grade/*') ? 'active' : '' }}">
-                            <a href="{{ route('program.list') }}"><i
-                                    data-feather="list"></i><span>Grade</span></a>
+                            <a href="{{ route('program.list') }}"><i data-feather="list"></i><span>Grade</span></a>
                         </li>
                         <li class="{{ Request::is('course/*') ? 'active' : '' }}">
                             <a href="{{ route('course.list') }}"><i data-feather="folder"></i><span>Course</span></a>
                         </li>
                         <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
-                            <a href="{{ route('lesson.plan.list') }}"><i data-feather="calendar"></i><span>Instructional Module</span></a>
+                            <a href="{{ route('lesson.plan.list') }}"><i
+                                    data-feather="calendar"></i><span>Instructional Module</span></a>
                         </li>
                         <li class="{{ Request::is('whats-new/*') ? 'active' : '' }}">
-                            <a href="{{ route('notify.list') }}"><i data-feather="bell"></i><span>What's New</span></a>
+                            <a href="{{ route('notify.list') }}"><i data-feather="bell"></i><span>What's
+                                    New</span></a>
                         </li>
                         <li class="header">Account</li>
-                        <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                            <a href="{{ route('school.list') }}"><i data-feather="grid"></i><span>Manage
-                                    School</span></a>
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="grid"></i>
+                                <span>Manage School</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                                    <a href="{{ route('school.list') }}"><i
+                                            class="icon-Commit"><span class="path1"></span><span
+                                                class="path2"></span></i>All School</a>
+                                </li>
+                                <li class="{{ url()->current() == route('school.admin') ? 'active' : '' }}">
+                                    <a href="{{ route('school.admin') }}"><i class="icon-Commit">
+                                            <span class="path1"></span><span class="path2"></span></i>School
+                                        Admin</a>
+                                </li>                               
+                            </ul>
                         </li>
                     @elseif(session('usertype') == 'admin')
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
@@ -205,8 +223,8 @@
                 <div class="sidebar-widgets">
                     <div class="mx-25 mb-30 pb-20 side-bx bg-primary-light rounded20">
                         <div class="text-center">
-                            <img src="{{ asset('assets/images/logo-valuez.png') }}"
-                                class="sideimg p-5" alt="">
+                            <img src="{{ asset('assets/images/logo-valuez.png') }}" class="sideimg p-5"
+                                alt="">
                             <h4 class="title-bx text-primary">Valuez</h4>
                         </div>
                     </div>

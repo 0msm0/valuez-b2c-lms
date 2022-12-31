@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
-use App\Models\{User, School};
+use App\Models\{User, School, LogsModel};
+use DataTables;
 
 
 class AuthController extends Controller
@@ -36,6 +37,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             session(['usertype' => $user->usertype]);
+            LogsModel::create(['userid' => $user->id, 'action' => 'login', 'logs_info' => json_encode(['info' => 'User Login', 'usertype' => $user->usertype])]);
             if ($user->usertype == 'superadmin') {
                 return redirect()->intended(route('admin-dashboard'))->withSuccess('Signed in');
             } else if ($user->usertype == 'teacher') {
@@ -195,9 +197,37 @@ class AuthController extends Controller
         return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
+    public function SchoolAdmin(Request $request){
+        
+        if ($request->ajax()) {   
+            $adminuserlist = User::query()->with('school')->where(['usertype' => 'admin', 'is_deleted' => 0]);
+            return Datatables::of($adminuserlist)
+                ->addIndexColumn()
+                ->editColumn('created_at', function ($row) {
+                    return date('Y-m-d', strtotime($row->created_at));
+                })
+                ->editColumn('school_id', function ($row) {
+                    return $row->school->school_name;
+                })
+                ->addColumn('action', function ($row) {
+                    $edit = '<a href="javascript:void(0)" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
+                    #$remove = '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">Delete</a>';
+                    return $edit;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }      
+        return view('users.schooladmin.admin');
+    }
+
     public function signOut(Request $request)
     {
-        Auth::logout();
+        $user = Auth::user();
+        $userId = $user->id;
+        if ($userId) {
+            LogsModel::create(['userid' => $userId, 'action' => 'logout', 'logs_info' => json_encode(['info' => 'User logout', 'usertype' => $user->usertype])]);
+            Auth::logout();
+        }
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('login');

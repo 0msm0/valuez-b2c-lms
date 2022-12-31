@@ -81,6 +81,8 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::post('teacher-edit', 'edituser')->name('teacher.update');
     Route::get('teacher-list', 'teacherList')->name('school.teacher.list');
     Route::post('reset-password', 'resetPassword')->name('user.password');
+
+    Route::get('manage-school-admin', 'SchoolAdmin')->name('school.admin');
 });
 
 Route::middleware('auth')->prefix('teacher')->group(function () {
