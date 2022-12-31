@@ -109,20 +109,23 @@ class SchoolController extends Controller
             'title' => 'required',
             // 'image' => 'required',
         ]);
-
         $schoolData = [
             'school_name' => $request->title,
             'primary_person' => $request->primary_person,
             'primary_email' => $request->primary_email,
             'primary_mobile' => $request->primary_mobile,
+            'second_email' => $request->secondary_email,
+            'second_mobile' => $request->secondary_mobile,
             'mobile' => $request->mobile,
             'address' => $request->address,
             'licence' => $request->licence,
+            'school_desc' => $request->school_desc,
+            'package_start' => $request->package_start,
+            'package_end' => $request->package_end,
             'is_deleted' => 0,
             'updated_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
         ];
-
         DB::table('school')->where('id', $request->id)->update($schoolData);
         return redirect(route('school.list'))->with(['message' => 'School Updated successfully!', 'status' => 'success']);
     }
