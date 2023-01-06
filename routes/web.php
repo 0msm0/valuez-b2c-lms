@@ -43,6 +43,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::post('school-edit', 'edit')->name('school.update');
     Route::post('school-status', 'change_status')->name('school.status');
     Route::post('teacher-status', 'change_user_status')->name('teacher.status');
+    Route::post('fetch-cities', 'CityList')->name('city.json');
 });
 
 Route::middleware('auth')->prefix('course')->controller(CourseController::class)->group(function () {

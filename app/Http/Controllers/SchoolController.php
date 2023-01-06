@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\School;
-use App\Models\User;
+use App\Models\{User, School, CitiesModel, StateModel};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +23,8 @@ class SchoolController extends Controller
 
     public function addschool()
     {
-        return view('school.school-add');
+        $states = StateModel::where("flag", 1)->get(["name", "id"]);
+        return view('school.school-add', compact('states'));
     }
 
     public function editschool(Request $request)
@@ -39,6 +39,10 @@ class SchoolController extends Controller
         $request->validate([
             'title' => 'required',
             'primary_email' => 'required|email|unique:school',
+            'primary_person' => 'required',           
+            'licence' => 'required',
+            'package_start' => 'required',
+            'package_end' => 'required',
             // 'image' => 'required',
         ]);
 
@@ -66,6 +70,9 @@ class SchoolController extends Controller
             'school_logo' => $imageName,
             'package_start' => $request->package_start,
             'package_end' => $request->package_end,
+            'state_id' => $request->state_id,
+            'city_id' => $request->city_id,
+            'pincode' => $request->pincode,
             'is_deleted' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
@@ -107,6 +114,11 @@ class SchoolController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'primary_person' => 'required',
+            'primary_email' => 'required',
+            'licence' => 'required',
+            'package_start' => 'required',
+            'package_end' => 'required',
             // 'image' => 'required',
         ]);
         $schoolData = [
@@ -162,5 +174,11 @@ class SchoolController extends Controller
         $status = ($request->status == 1) ? 0 : 1;
         DB::table('users')->where('id', $userId)->update(['status' => $status]);
         echo ($status == 1) ? 'Active' : 'Inactive';
+    }
+
+    public function CityList(Request $request)
+    {
+        $data['cities'] = CitiesModel::where("state_id", $request->state_id)->get(["city", "id"]);
+        return response()->json($data);
     }
 }

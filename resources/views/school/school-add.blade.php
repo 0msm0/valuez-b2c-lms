@@ -9,7 +9,8 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('school.list') }}">Manage School</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('school.list') }}">Manage
+                                    School</a></li>
                             <li class="breadcrumb-item active" aria-current="page">School Registration</li>
                         </ol>
                     </nav>
@@ -38,7 +39,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">School Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="title" class="form-control"
+                                        <input type="text" value="{{ old('title') }}" name="title" class="form-control"
                                             placeholder="Enter School Name">
                                         @error('title')
                                             <span class="text-danger">{{ $message }}</span>
@@ -49,7 +50,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">School Mobile <span class="text-danger">*</span></label>
-                                        <input type="text" name="mobile" class="form-control"
+                                        <input type="text" value="{{ old('mobile') }}" name="mobile" class="form-control"
                                             placeholder="Enter School Mobile">
                                         @error('mobile')
                                             <span class="text-danger">{{ $message }}</span>
@@ -60,7 +61,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">School Address <span class="text-danger">*</span></label>
-                                        <input type="text" name="address" class="form-control"
+                                        <input type="text" value="{{ old('address') }}" name="address" class="form-control"
                                             placeholder="Enter School Address">
                                         @error('address')
                                             <span class="text-danger">{{ $message }}</span>
@@ -80,10 +81,8 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School Remarks <span
-                                                class="text-danger">*</span></label>
-                                        <textarea  name="school_desc" class="form-control"
-                                            placeholder="Enter School specific details"></textarea>
+                                        <label class="form-label">School Remarks <span class="text-danger">*</span></label>
+                                        <textarea name="school_desc" class="form-control" placeholder="Enter School specific details">{{ old('school_desc') }}</textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -188,6 +187,52 @@
 
                             </div>
 
+                            <hr class="my-15">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">State</label>
+                                        <select class="form-control select2" name="state_id" style="width: 100%;"
+                                            id="state_id">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                                @php $stateIds = old('state_id'); @endphp
+                                                <option value="{{ $state->id }}"
+                                                    {{ !empty($stateIds) && in_array($state->id, $stateIds) ? 'selected' : '' }}>
+                                                    {{ $state->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('state_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">City</label>
+                                        <select class="form-control select2" name="city_id" style="width: 100%;"
+                                            id="city_id">
+                                            <option value="">Select City</option>
+                                        </select>
+                                        @error('city_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Pincode <span class="text-danger">*</span></label>
+                                        <input type="text" name="pincode" class="form-control"
+                                            placeholder="Enter Pincode">
+                                        @error('pincode')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                            </div>
                             <hr>
                             <div class="form-group">
                                 <label class="form-label">Status</label>
@@ -211,4 +256,31 @@
         </div>
     </section>
     <!-- /.content -->
+@endsection
+
+@section('script-section')
+    <script>
+        $(document).ready(function() {
+            $('#state_id').on('change', function() {
+                var idState = this.value;
+                $("#city_id").html('');
+                $.ajax({
+                    url: "{{ route('city.json') }}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $('#city_id').html('<option value="">Select City</option>');
+                        $.each(res.cities, function(key, value) {
+                            $("#city_id").append('<option value="' + value
+                                .id + '">' + value.city + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
