@@ -9,7 +9,8 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('school.list') }}">Manage School</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="{{ route('school.list') }}">Manage
+                                    School</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Update School</li>
                         </ol>
                     </nav>
@@ -72,10 +73,8 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School Remarks <span
-                                                class="text-danger">*</span></label>
-                                        <textarea  name="school_desc" class="form-control"
-                                            placeholder="Enter School specific details">{{ $school->school_desc }}</textarea>
+                                        <label class="form-label">School Remarks <span class="text-danger">*</span></label>
+                                        <textarea name="school_desc" class="form-control" placeholder="Enter School specific details">{{ $school->school_desc }}</textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -86,8 +85,10 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription Start date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" max='{{ date('Y-m-d',strtotime("+3 months", strtotime(date('Y-m-d')))) }}' name="package_start"
-                                            class="form-control" value="{{ $school->package_start }}" placeholder="Enter Subscription Start date">
+                                        <input type="date"
+                                            max='{{ date('Y-m-d', strtotime('+3 months', strtotime(date('Y-m-d')))) }}'
+                                            name="package_start" class="form-control" value="{{ $school->package_start }}"
+                                            placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -98,8 +99,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription end date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" name="package_end"
-                                            class="form-control" value="{{ $school->package_end }}" placeholder="Subscription end date">
+                                        <input type="date" name="package_end" class="form-control"
+                                            value="{{ $school->package_end }}" placeholder="Subscription end date">
                                         @error('package_end')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -126,8 +127,9 @@
                                     <div class="form-group">
                                         <label class="form-label">Primary Person Name<span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="primary_person" value="{{ $school->primary_person }}"
-                                            class="form-control" placeholder="Enter Person Name">
+                                        <input type="text" name="primary_person"
+                                            value="{{ $school->primary_person }}" class="form-control"
+                                            placeholder="Enter Person Name">
                                         @error('primary_person')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -145,9 +147,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Primary Mobile <span class="text-danger">*</span></label>
-                                        <input type="text" name="primary_mobile" value="{{ $school->primary_mobile }}"
-                                            class="form-control" placeholder="Enter Primary Mobile">
+                                        <label class="form-label">Primary Mobile <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="primary_mobile"
+                                            value="{{ $school->primary_mobile }}" class="form-control"
+                                            placeholder="Enter Primary Mobile">
                                         @error('primary_mobile')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -158,8 +162,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Secondary Email <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="secondary_email" value="{{ $school->second_email }}" class="form-control"
-                                            placeholder="Enter Secondary Email">
+                                        <input type="text" name="secondary_email" value="{{ $school->second_email }}"
+                                            class="form-control" placeholder="Enter Secondary Email">
                                         @error('secondary_email')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -169,9 +173,57 @@
                                     <div class="form-group">
                                         <label class="form-label">Secondary Mobile <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="secondary_mobile" value="{{ $school->second_mobile }}" class="form-control"
+                                        <input type="text" name="secondary_mobile"
+                                            value="{{ $school->second_mobile }}" class="form-control"
                                             placeholder="Enter Secondary Mobile">
                                         @error('secondary_mobile')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <hr class="my-15">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">State</label>
+                                        <select class="form-control select2" name="state_id" style="width: 100%;"
+                                            id="state_id">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                                @php $stateIds = $school->state_id; @endphp
+                                                <option value="{{ $state->id }}"
+                                                    {{ !empty($stateIds) && $state->id == $stateIds ? 'selected' : '' }}>
+                                                    {{ $state->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('state_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">City</label>
+                                        <select class="form-control select2" name="city_id" style="width: 100%;"
+                                            id="city_id">
+                                            <option value="">Select City</option>
+                                        </select>
+                                        @error('city_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Pincode <span class="text-danger">*</span></label>
+                                        <input type="text" name="pincode" value="{{ $school->pincode }}"
+                                            class="form-control" placeholder="Enter Pincode">
+                                        @error('pincode')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -205,4 +257,31 @@
         </div>
     </section>
     <!-- /.content -->
+@endsection
+
+@section('script-section')
+    <script>
+        $(document).ready(function() {
+            $('#state_id').on('change', function() {
+                var idState = this.value;
+                $("#city_id").html('');
+                $.ajax({
+                    url: "{{ route('city.json') }}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $('#city_id').html('<option value="">Select City</option>');
+                        $.each(res.cities, function(key, value) {
+                            $("#city_id").append('<option value="' + value
+                                .id + '">' + value.city + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

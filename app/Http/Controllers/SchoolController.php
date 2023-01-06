@@ -31,7 +31,8 @@ class SchoolController extends Controller
     {
         $schoolId = $request->input('school');
         $school = DB::table('school')->where('id', $schoolId)->first();
-        return view('school.school-edit', compact('school'));
+        $states = StateModel::where("flag", 1)->get(["name", "id"]);
+        return view('school.school-edit', compact('school', 'states'));
     }
 
     public function store(Request $request)
@@ -39,7 +40,7 @@ class SchoolController extends Controller
         $request->validate([
             'title' => 'required',
             'primary_email' => 'required|email|unique:school',
-            'primary_person' => 'required',           
+            'primary_person' => 'required',
             'licence' => 'required',
             'package_start' => 'required',
             'package_end' => 'required',
@@ -134,6 +135,9 @@ class SchoolController extends Controller
             'school_desc' => $request->school_desc,
             'package_start' => $request->package_start,
             'package_end' => $request->package_end,
+            'state_id' => $request->state_id,
+            'city_id' => $request->city_id,
+            'pincode' => $request->pincode,
             'is_deleted' => 0,
             'updated_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
