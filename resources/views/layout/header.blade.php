@@ -9,7 +9,7 @@
                     $school = App\Models\School::where('id', $schoolid)->first();
                     $logo = 'uploads/school/' . $school->school_logo;
                     $header_name = $school->school_name;
-                
+
                     $display_name = !empty($school->school_logo) ? 'd-none' : '';
                     $display_logo = empty($school->school_logo) ? 'd-none' : '';
                 } else {
@@ -182,15 +182,14 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                                    <a href="{{ route('school.list') }}"><i
-                                            class="icon-Commit"><span class="path1"></span><span
-                                                class="path2"></span></i>All School</a>
+                                    <a href="{{ route('school.list') }}"><i class="icon-Commit"><span
+                                                class="path1"></span><span class="path2"></span></i>All School</a>
                                 </li>
                                 <li class="{{ url()->current() == route('school.admin') ? 'active' : '' }}">
                                     <a href="{{ route('school.admin') }}"><i class="icon-Commit">
                                             <span class="path1"></span><span class="path2"></span></i>School
                                         Admin</a>
-                                </li>                               
+                                </li>
                             </ul>
                         </li>
                     @elseif(session('usertype') == 'admin')
@@ -201,10 +200,11 @@
                             <a href="{{ route('school.teacher.list') }}"><i data-feather="user"></i><span>Manage
                                     Teacher</span></a>
                         </li>
-                        {{-- <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                            <a href="{{ route('school.teacher.list') }}"><i data-feather="bell"></i><span>What's
-                                    new</span></a>
-                        </li> --}}
+
+                        <li class="{{ Request::is('whats-new/*') ? 'active' : '' }}">
+                            <a href="{{ route('notify.schoolview') }}"><i data-feather="bell"></i><span>What's
+                                    New</span></a>
+                        </li>
                     @elseif(session('usertype') == 'teacher')
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>

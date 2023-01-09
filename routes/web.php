@@ -44,6 +44,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::post('school-status', 'change_status')->name('school.status');
     Route::post('teacher-status', 'change_user_status')->name('teacher.status');
     Route::post('fetch-cities', 'CityList')->name('city.json');
+    Route::get('users-logs-list/{userid}', 'viewLogs')->name('user.logs.list');
 });
 
 Route::middleware('auth')->prefix('course')->controller(CourseController::class)->group(function () {
@@ -97,6 +98,7 @@ Route::middleware('auth')->prefix('whats-new')->controller(Notification::class)-
     Route::get('manage-notification', 'index')->name('notify.list');
     Route::get('add-notification', 'addnewNotification')->name('notify.add');
     Route::post('add-update-notify', 'addUpdateNotify')->name('notify.store');
+    Route::get('view-whats-new', 'viewNotify')->name('notify.schoolview');
 });
 Route::get('send-mail', function () {
     $details = [

@@ -48,6 +48,31 @@ class Notification extends Controller
     {
         $notifyId = $request->notifyId;
         NotificationModel::where('id', $notifyId)->delete();
-        return redirect(route('notify.list'))->with('success','What\'s New deleted successfully');
+        return redirect(route('notify.list'))->with('success', 'What\'s New deleted successfully');
+    }
+
+
+    public function viewNotify(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = NotificationModel::query();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('description', function ($row) {
+                    $created_at = date('Y-m-d', strtotime($row->created_at));
+                    $title = $row->title;
+                    $text_desc = $row->description;
+                    $view_notify = '<div class="media align-items-center">
+						  <div class="media-body">
+							<p class="fs-16"><a class="hover-primary" href="#">' . $title . '</a></p>
+							  <span class="text-fade fs-12">' . $created_at . '</span>
+						  </div>
+						</div><div class="media pt-0"><p class="text-mute">' . $text_desc . '</p></div>';
+                    return $view_notify;
+                })
+                ->rawColumns(['description'])
+                ->make(true);
+        }
+        return view('notification.view_notify');
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, School, CitiesModel, StateModel};
+use App\Models\{User, School, CitiesModel, StateModel, LogsModel};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use DataTables;
 use Mail;
 
 
@@ -184,5 +185,29 @@ class SchoolController extends Controller
     {
         $data['cities'] = CitiesModel::where("state_id", $request->state_id)->get(["city", "id"]);
         return response()->json($data);
+    }
+
+    public function viewLogs(Request $request)
+    {
+        $user = Auth::user();
+        $userId = $request->userid;
+        if(($user) && $user->usertype == "superadmin"){
+            $whercond = ['userid' => $userId];
+        }else{
+            $school_id = $user->school_id;
+            $whercond = ['userid' => $userId,'school_id' => $school_id];
+        }
+
+        if ($request->ajax()) {
+            $userLogs = LogsModel::query()->join('users', 'users.id', '=', 'userid')->where($whercond)->get();
+            return Datatables::of($userLogs)
+                ->addIndexColumn()
+                ->editColumn('logs_info', function ($row) {
+                    return json_decode($row->logs_info)->info . " at <strong>" . date('Y-m-d', strtotime($row->created_at)) . "</strong>";
+                })
+                ->rawColumns(['logs_info'])
+                ->make(true);
+        }
+        return view('users.userlogs', compact('userId'));
     }
 }

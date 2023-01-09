@@ -11,4 +11,9 @@ class LogsModel extends Model
     protected $table = 'logs';
     protected $primaryKey = 'id';
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'userid');
+    }
 }

@@ -81,6 +81,9 @@
                                                     class="remove_user_data waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
                                                     data-userid="{{ $udata->id }}">Delete</a>
 
+                                                <a href="{{ route('user.logs.list', ['userid' => $udata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-warning mb-5">Logs</a>
+
                                             </td>
                                         </tr>
                                     @endforeach
