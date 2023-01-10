@@ -65,10 +65,11 @@
             var table = $('#yajra-table').DataTable({
                 processing: true,
                 serverSide: true,
+                order:[],
                 ajax: "{{ route('school.admin') }}",
                 columns: [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'DT_RowIndex',
+                        orderable: false,
                     },
                     {
                         data: 'school_id',

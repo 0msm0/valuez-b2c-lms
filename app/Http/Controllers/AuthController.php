@@ -78,6 +78,18 @@ class AuthController extends Controller
         return view('users.teacher-edit', compact('user'));
     }
 
+    public function updateAdminUser(Request $request)
+    {
+        $userId = $request->userid;
+        $user = Auth::user();
+        $where_cond = ['usertype' => 'admin', 'id' => $userId];
+        if (session()->get('usertype') == 'admin') {
+            $where_cond['school_id'] = $user->school_id;
+        }
+        $user = DB::table('users')->where($where_cond)->first();       
+        return view('users.schooladmin.admin-edit', compact('user'));
+    }
+
     public function createuser(Request $request)
     {
         $request->validate([
@@ -112,6 +124,7 @@ class AuthController extends Controller
     {
         $data = $request->all();
         $school = $data['school'];
+        $pagetype = $data['pagetype'];
         $updateuser = ['name' => $data['name'], 'email' => $data['email']];
         $validate = ['name' => 'required', 'email' => 'required|email|unique:users,email,' . $data['id']];
         if (!empty($data['password'])) {
@@ -122,7 +135,9 @@ class AuthController extends Controller
         $request->validate($validate);
         User::where('id', $data['id'])->update($updateuser);
         $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $school]);
-        return redirect($redirect)->with('success', 'User Updated successfully');
+
+        $redirect_url = ($pagetype=='schooladmin')?route('school.admin'):$redirect;
+        return redirect($redirect_url)->with('success', 'User Updated successfully');
     }
 
     public function resetPassword(Request $request)
@@ -197,10 +212,11 @@ class AuthController extends Controller
         return view('users.teacher', compact('userlist', 'schoolid'));
     }
 
-    public function SchoolAdmin(Request $request){
-        
-        if ($request->ajax()) {   
-            $adminuserlist = User::query()->with('school')->where(['usertype' => 'admin', 'is_deleted' => 0]);
+    public function SchoolAdmin(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $adminuserlist = User::query()->with('school')->where(['usertype' => 'admin', 'users.is_deleted' => 0]);
             return Datatables::of($adminuserlist)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
@@ -210,13 +226,13 @@ class AuthController extends Controller
                     return $row->school->school_name;
                 })
                 ->addColumn('action', function ($row) {
-                    $edit = '<a href="javascript:void(0)" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
+                    $edit = '<a href="' . route('school.admin.edit', ['userid' => $row->id]) . '" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
                     #$remove = '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">Delete</a>';
                     return $edit;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        }      
+        }
         return view('users.schooladmin.admin');
     }
 

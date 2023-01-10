@@ -85,6 +85,7 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::post('reset-password', 'resetPassword')->name('user.password');
 
     Route::get('manage-school-admin', 'SchoolAdmin')->name('school.admin');
+    Route::get('update-school-admin/{userid}', 'updateAdminUser')->name('school.admin.edit');
 });
 
 Route::middleware('auth')->prefix('teacher')->group(function () {
@@ -107,6 +108,6 @@ Route::get('send-mail', function () {
         'title' => 'Mail from Valuez hut',
         'body' => 'This is for testing email using smtp'
     ];
-    \Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));
+    \Mail::to('itrahul.com@gmail.com')->send(new \App\Mail\TestMail($details));
     dd("Email is Sent.");
 });
