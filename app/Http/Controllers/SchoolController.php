@@ -191,19 +191,19 @@ class SchoolController extends Controller
     {
         $user = Auth::user();
         $userId = $request->userid;
-        if(($user) && $user->usertype == "superadmin"){
+        if (($user) && $user->usertype == "superadmin") {
             $whercond = ['userid' => $userId];
-        }else{
+        } else {
             $school_id = $user->school_id;
-            $whercond = ['userid' => $userId,'school_id' => $school_id];
+            $whercond = ['userid' => $userId, 'school_id' => $school_id];
         }
 
         if ($request->ajax()) {
-            $userLogs = LogsModel::query()->join('users', 'users.id', '=', 'userid')->where($whercond)->get();
+            $userLogs = LogsModel::query()->join('users as u', 'u.id', '=', 'userid')->where($whercond)->get(['logs.id', 'logs_info', 'action', 'logs.created_at']);
             return Datatables::of($userLogs)
                 ->addIndexColumn()
                 ->editColumn('logs_info', function ($row) {
-                    return json_decode($row->logs_info)->info . " at <strong>" . date('Y-m-d', strtotime($row->created_at)) . "</strong>";
+                    return json_decode($row->logs_info)->info . " at <strong>" . date('d-m-Y', strtotime($row->created_at)) . "</strong>";
                 })
                 ->rawColumns(['logs_info'])
                 ->make(true);

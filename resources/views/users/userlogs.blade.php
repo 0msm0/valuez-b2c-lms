@@ -63,10 +63,11 @@
             var table = $('#yajra-table').DataTable({
                 processing: true,
                 serverSide: true,
+                order:[],
                 ajax: "{{ route('user.logs.list', ['userid' => $userId]) }}",
                 columns: [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'DT_RowIndex',
+                        orderable: false,
                     },
                     {
                         data: 'action',
