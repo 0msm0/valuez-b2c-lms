@@ -75,7 +75,7 @@
                     },
                     {
                         data: 'logs_info',
-                        name: 'logs_info'
+                        name: 'id'
                     },
                     {
                         data: 'created_at',
