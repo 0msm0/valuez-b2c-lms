@@ -40,10 +40,10 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example2" class="table" style="width:100%">
+                            <table id="yajra-table" class="table" style="width:100%">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
+                                    <tr>                                      
+                                        <th>Image</th>
                                         <th>Title</th>
                                         <th>Class Name</th>
                                         <th>Course</th>
@@ -92,4 +92,56 @@
         </div>
     </section>
     <!-- /.content -->
+@endsection
+
+@section('script-section')
+    <script type="text/javascript">
+        $(function() {
+
+            var table = $('#yajra-table').DataTable({
+                processing: true,
+                serverSide: true,
+                order:[],
+                ajax: "{{ route('lesson.plan.list') }}",
+                columns: [
+                    {
+                        data: 'lesson_image',
+                        name: 'lesson_image',
+                        orderable: false,
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'class_name',
+                        name: 'class_name'
+                    },                    
+                    {
+                        data: 'course_name',
+                        name: 'course_name'
+                    },
+                    {
+                        data: 'lesson_no',
+                        name: 'lesson_no'
+                    },
+                    {
+                        data: 'video_url',
+                        name: 'video_url'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+
+        });
+    </script>
 @endsection

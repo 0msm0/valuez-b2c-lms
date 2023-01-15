@@ -192,6 +192,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="{{ Request::is('users/*') ? 'active' : '' }}">
+                            <a href="{{ route('users.admin.list') }}"><i data-feather="user"></i><span>Manage Users</span></a>
+                        </li>
                     @elseif(session('usertype') == 'admin')
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>

@@ -6,7 +6,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonPlanController;
 use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\{WebPage, Notification};
+use App\Http\Controllers\{WebPage, Notification, UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanControlle
     Route::get('manage-lesson-plan', 'index')->name('lesson.plan.list');
     Route::get('add-lesson-plan', 'addlessonplan')->name('lesson.plan.add');
     Route::get('update-lesson-plan', 'editlessonplan')->name('lesson.plan.edit');
-    Route::post('remove-lesson-plan', 'destroy')->name('lesson.plan.remove');
+    Route::get('remove-lesson-plan', 'destroy')->name('lesson.plan.remove');
     Route::post('lesson-plan-add', 'store')->name('lesson.plan.store');
     Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
 });
@@ -101,6 +101,11 @@ Route::middleware('auth')->prefix('whats-new')->controller(Notification::class)-
     Route::post('add-update-notify', 'addUpdateNotify')->name('notify.store');
     Route::get('view-whats-new', 'viewNotify')->name('notify.schoolview');
 });
+
+Route::middleware('auth')->prefix('users')->controller(UserController::class)->group(function () {
+    Route::get('manage-users', 'index')->name('users.admin.list');
+});
+
 Route::get('send-mail', function () {
     $details = [
         'view' => 'emails.test',
