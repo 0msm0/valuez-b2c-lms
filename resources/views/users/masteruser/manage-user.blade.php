@@ -4,12 +4,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">School Admin User</h4>
+                <h4 class="page-title">Manage Users</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Manage School Admin</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Content Admin</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">School Admin</h5>
+                        <h5 class="card-title mb-0">Content Admin</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
                                 <a href="{{ route('users.admin.add') }}"
