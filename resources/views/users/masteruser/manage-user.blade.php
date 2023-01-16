@@ -27,8 +27,8 @@
                         <h5 class="card-title mb-0">School Admin</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
-                                {{-- <a href="#"
-                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add School Admin</a> --}}
+                                <a href="{{ route('users.admin.add') }}"
+                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Content Admin</a>
                             </div>
                         </div>
                     </div>
@@ -41,6 +41,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Usertype</th>
+                                        <th>Status</th>
                                         <th>Datetime</th>
                                         <th>Action</th>
                                     </tr>
@@ -82,6 +83,10 @@
                     {
                         data: 'usertype',
                         name: 'usertype'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'created_at',

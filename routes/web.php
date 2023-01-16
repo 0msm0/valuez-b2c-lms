@@ -104,6 +104,10 @@ Route::middleware('auth')->prefix('whats-new')->controller(Notification::class)-
 
 Route::middleware('auth')->prefix('users')->controller(UserController::class)->group(function () {
     Route::get('manage-users', 'index')->name('users.admin.list');
+    Route::get('add-master-user', 'AddAdminUser')->name('users.admin.add');
+    Route::get('update-master-user', 'editAdminUser')->name('users.admin.edit');
+    Route::post('store-master-user', 'AddUpdateAdminUser')->name('users.admin.store');
+    Route::post('master-user-remove', 'destroy')->name('users.admin.remove');
 });
 
 Route::get('send-mail', function () {
