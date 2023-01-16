@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use App\Models\{User, School, LogsModel};
 use DataTables;
+use Mail;
 
 
 class AuthController extends Controller
@@ -107,16 +108,21 @@ class AuthController extends Controller
     public function create(array $data)
     {
         $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
+        $user_email = strtolower($data['email']);
+        $username = explode("@", $user_email);
+        $userId = trim($username[0]) . date('Yims');
         $add_user = [
             'name' => $data['name'],
             'email' => $data['email'],
             'school_id' => $data['school'],
             'usertype' => 'teacher',
             'status' => 1,
+            'username' => $userId,
             'view_pass' => $passWord,
             'password' => Hash::make($passWord)
         ];
         #print_r($add_user); die;
+        $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord]);
         return User::create($add_user);
     }
 
@@ -253,5 +259,17 @@ class AuthController extends Controller
     public function getToken($length = 8)
     {
         return Str::random($length);
+    }
+
+    public function UserAccountMail($data)
+    {
+        $details = [
+            'view' => 'emails.account',
+            'subject' => 'User Account creation Mail from Valuez',
+            'title' => $data['username'],
+            'userid' => $data['userid'],
+            'pass' => $data['pass']
+        ];
+        Mail::to($data['username'])->send(new \App\Mail\TestMail($details));
     }
 }
