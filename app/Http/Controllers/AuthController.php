@@ -87,7 +87,7 @@ class AuthController extends Controller
         if (session()->get('usertype') == 'admin') {
             $where_cond['school_id'] = $user->school_id;
         }
-        $user = DB::table('users')->where($where_cond)->first();       
+        $user = DB::table('users')->where($where_cond)->first();
         return view('users.schooladmin.admin-edit', compact('user'));
     }
 
@@ -130,7 +130,7 @@ class AuthController extends Controller
     {
         $data = $request->all();
         $school = $data['school'];
-        $pagetype = $data['pagetype'];
+        $pagetype = !empty($data['pagetype']) ? $data['pagetype'] : '';
         $updateuser = ['name' => $data['name'], 'email' => $data['email']];
         $validate = ['name' => 'required', 'email' => 'required|email|unique:users,email,' . $data['id']];
         if (!empty($data['password'])) {
@@ -140,16 +140,37 @@ class AuthController extends Controller
         }
         $request->validate($validate);
         User::where('id', $data['id'])->update($updateuser);
+        if (!empty($data['password'])) {
+            $details = [
+                'view' => 'emails.reset_password',
+                'subject' => 'User Account Password Reset Mail from Valuez',
+                'title' => $data['name'],
+                'email' => $data['email'],
+                'pass' => $data['password']
+            ];
+            Mail::to($data['email'])->send(new \App\Mail\TestMail($details));
+        }
         $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $school]);
 
-        $redirect_url = ($pagetype=='schooladmin')?route('school.admin'):$redirect;
+        $redirect_url = ($pagetype == 'schooladmin') ? route('school.admin') : $redirect;
         return redirect($redirect_url)->with('success', 'User Updated successfully');
     }
 
     public function resetPassword(Request $request)
     {
         $passWord = $this->getToken();
-        User::where('id', $request->userid)->update(['view_pass' => $passWord, 'password' => Hash::make($passWord)]);
+        $resetPass = User::where('id', $request->userid)->update(['view_pass' => $passWord, 'password' => Hash::make($passWord)]);
+        if ($resetPass) {
+            $user_email = User::where('id', $request->userid)->first();
+            $details = [
+                'view' => 'emails.reset_password',
+                'subject' => 'User Account Password Reset Mail from Valuez',
+                'title' => $user_email->name,
+                'email' => $user_email->email,
+                'pass' => $passWord
+            ];
+            Mail::to($user_email->email)->send(new \App\Mail\TestMail($details));
+        }
     }
 
     public function destroy(Request $request)
