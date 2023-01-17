@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\LessonPlan;
+use App\Models\{Course, LessonPlan,Program};
 use DataTables;
 
 class LessonPlanController extends Controller
@@ -38,16 +38,10 @@ class LessonPlanController extends Controller
                 })
                 ->rawColumns(['action', 'lesson_image', 'status'])
                 ->make(true);
-        }
-
-
-
-        $lessonplan = DB::table('lesson_plan')
-            ->join('master_class', 'master_class.id', '=', 'lesson_plan.class_id')
-            ->join('master_course', 'master_course.id', '=', 'lesson_plan.course_id')
-            ->select('lesson_plan.*', 'master_class.class_name', 'master_course.course_name')
-            ->orderBy('id')->get();
-        return view('lessonplan.lessonplan', compact('lessonplan'));
+        }      
+        $class_list = Program::where('status',1)->get();
+        $course_list = Course::where('status',1)->get();
+        return view('lessonplan.lessonplan', compact('class_list','course_list'));
     }
 
     public function addlessonplan()
