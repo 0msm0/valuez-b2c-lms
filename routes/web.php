@@ -6,7 +6,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonPlanController;
 use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\{WebPage, Notification, UserController};
+use App\Http\Controllers\{WebPage, Notification, ReportController, UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +110,9 @@ Route::middleware('auth')->prefix('users')->controller(UserController::class)->g
     Route::post('master-user-remove', 'destroy')->name('users.admin.remove');
 });
 
+Route::middleware('auth')->prefix('reports')->controller(ReportController::class)->group(function () {
+    Route::get('view-engagement', 'index')->name('report.school.view');
+});
 Route::get('send-mail', function () {
     $details = [
         'view' => 'emails.test',

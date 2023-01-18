@@ -3,7 +3,7 @@
         <!-- Logo -->
         <a href="{{ url('/') }}" class="logo">
             @php
-                if (session()->get('usertype') != 'superadmin') {
+                if (session()->get('usertype') != 'superadmin' && session()->get('usertype') != 'contentadmin') {
                     $user = Auth::user();
                     $schoolid = $user->school_id;
                     $school = App\Models\School::where('id', $schoolid)->first();
@@ -193,7 +193,17 @@
                             </ul>
                         </li>
                         <li class="{{ Request::is('users/*') ? 'active' : '' }}">
-                            <a href="{{ route('users.admin.list') }}"><i data-feather="user"></i><span>Manage Users</span></a>
+                            <a href="{{ route('users.admin.list') }}"><i data-feather="user"></i><span>Manage
+                                    Users</span></a>
+                        </li>
+                    @elseif(session('usertype') == 'contentadmin')
+                        <li class="{{ Request::is('admin-dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('admin-dashboard') }}"><i
+                                    data-feather="home"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="{{ Request::is('lesson-plan/*') ? 'active' : '' }}">
+                            <a href="{{ route('lesson.plan.list') }}"><i
+                                    data-feather="calendar"></i><span>Instructional Module</span></a>
                         </li>
                     @elseif(session('usertype') == 'admin')
                         <li class="{{ Request::is('dashboard') ? 'active' : '' }}">

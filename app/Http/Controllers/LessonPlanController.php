@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{Course, LessonPlan,Program};
+use App\Models\{Course, LessonPlan, Program};
 use DataTables;
 
 class LessonPlanController extends Controller
@@ -30,18 +30,18 @@ class LessonPlanController extends Controller
                 ->addColumn('action', function ($row) {
                     $edit_btn = '<a href="' . route('lesson.plan.edit', ['lessonplan' => $row->id]) . '"
                     class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
-                    $remove_btn = '<a href="' . route('lesson.plan.remove', ['lessonplan' => $row->id]) . '"
-                    class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</a>';
+                    $user = Auth::user();
+                    $remove_btn = ($user->usertype == "superadmin") ? ' <a href="' . route('lesson.plan.remove', ['lessonplan' => $row->id]) . '"
+                    class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</a>' : '';
                     $action_btn = $edit_btn . $remove_btn;
-
                     return $action_btn;
                 })
                 ->rawColumns(['action', 'lesson_image', 'status'])
                 ->make(true);
-        }      
-        $class_list = Program::where('status',1)->get();
-        $course_list = Course::where('status',1)->get();
-        return view('lessonplan.lessonplan', compact('class_list','course_list'));
+        }
+        $class_list = Program::where('status', 1)->get();
+        $course_list = Course::where('status', 1)->get();
+        return view('lessonplan.lessonplan', compact('class_list', 'course_list'));
     }
 
     public function addlessonplan()
@@ -142,7 +142,7 @@ class LessonPlanController extends Controller
     public function destroy(Request $request)
     {
         $lessonId = $request->input('lessonplan');
-        $user = Auth::user();       
+        $user = Auth::user();
         if (($user) && $user->usertype == "superadmin") {
             DB::table('lesson_plan')->where('id', $lessonId)->delete();
             return redirect(route('lesson.plan.list'))->with('success', 'Lesson Plan deleted successfully');

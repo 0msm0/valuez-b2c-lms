@@ -39,7 +39,7 @@ class AuthController extends Controller
             $user = Auth::user();
             session(['usertype' => $user->usertype]);
             LogsModel::create(['userid' => $user->id, 'action' => 'login', 'logs_info' => json_encode(['info' => 'User Login', 'usertype' => $user->usertype])]);
-            if ($user->usertype == 'superadmin') {
+            if ($user->usertype == 'superadmin' || $user->usertype == 'contentadmin') {
                 return redirect()->intended(route('admin-dashboard'))->withSuccess('Signed in');
             } else if ($user->usertype == 'teacher') {
                 return redirect()->intended(route('teacher.class.list'))->withSuccess('Signed in');
