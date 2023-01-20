@@ -12,4 +12,14 @@ class Reports extends Model
     protected $primaryKey = 'id';
 
     protected $guarded = [];
+
+    public function lessonplan()
+    {
+        return $this->hasOne(LessonPlan::class, 'id', 'lesson_plan');
+    }
+
+    public function userinfo()
+    {
+        return $this->hasOne(User::class, 'id', 'userid');
+    }
 }
