@@ -131,7 +131,7 @@
                     </a>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
-                <li class="btn-group nav-item d-xl-inline-flex d-none">
+                <li class="btn-group nav-item d-none">
                     <a href="#" data-provide="fullscreen"
                         class="waves-effect waves-light nav-link btn-primary-light svg-bt-icon" title="Full Screen">
                         <i data-feather="maximize"></i>

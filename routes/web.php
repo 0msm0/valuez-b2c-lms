@@ -19,16 +19,16 @@ use App\Http\Controllers\{WebPage, Notification, ReportController, UserControlle
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('isLogin')->get('/', function () {
+    return redirect(route('login'));
 });
 
 Route::get('home', [AuthController::class, 'dashboard']);
+Route::get('signout', [AuthController::class,'signout'])->name('signout');
 
-Route::controller(AuthController::class)->group(function () {
+Route::middleware('isLogin')->controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
-    Route::post('process-login', 'authuser')->name('login.process');
-    Route::get('signout', 'signout')->name('signout');
+    Route::post('process-login', 'authuser')->name('login.process');   
 });
 
 Route::middleware('auth')->get('master-dashboard', [AuthController::class, 'AdminDash'])->name('admin-dashboard');

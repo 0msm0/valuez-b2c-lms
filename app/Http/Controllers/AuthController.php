@@ -265,12 +265,12 @@ class AuthController extends Controller
 
     public function signOut(Request $request)
     {
-        $user = Auth::user();
-        $userId = $user->id;
-        if ($userId) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $userId = $user->id;
             LogsModel::create(['userid' => $userId, 'action' => 'logout', 'logs_info' => json_encode(['info' => 'User logout', 'usertype' => $user->usertype])]);
-            Auth::logout();
         }
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('login');
