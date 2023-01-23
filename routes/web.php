@@ -63,6 +63,8 @@ Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanControlle
     Route::get('remove-lesson-plan', 'destroy')->name('lesson.plan.remove');
     Route::post('lesson-plan-add', 'store')->name('lesson.plan.store');
     Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
+
+    Route::get('sort-instruction-module', 'sortLessonPlan')->name('lesson.plan.sorting');
 });
 
 Route::middleware('auth')->prefix('grade')->controller(ProgramController::class)->group(function () {

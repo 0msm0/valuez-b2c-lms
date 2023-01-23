@@ -148,4 +148,22 @@ class LessonPlanController extends Controller
             return redirect(route('lesson.plan.list'))->with('success', 'Lesson Plan deleted successfully');
         }
     }
+
+    public function sortLessonPlan(Request $request)
+    {
+        if ($request->ajax()) {
+            $type = $request->type;
+            if ($type == 'grade') {
+                $courseId = $request->courseid;
+                $class_list = LessonPlan::where(['course_id' => $courseId])->selectRaw('GROUP_CONCAT(class_id) as grade')->groupBy('course_id')->first();
+                $grades = array_unique(explode(",", $class_list->grade));
+                if (!empty($grades)) {
+                    $program_list = Program::where('status', 1)->whereIn('id', $grades)->get(['id','class_name']);
+                }
+            }
+            return $program_list;
+        }
+        $course_list = DB::table('master_course')->where('status', 1)->get();
+        return view('lessonplan.lessonplan-sorting', compact('course_list'));
+    }
 }
