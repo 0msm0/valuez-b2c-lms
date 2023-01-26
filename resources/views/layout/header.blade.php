@@ -9,7 +9,7 @@
                     $school = App\Models\School::where('id', $schoolid)->first();
                     $logo = 'uploads/school/' . $school->school_logo;
                     $header_name = $school->school_name;
-
+                
                     $display_name = !empty($school->school_logo) ? 'd-none' : '';
                     $display_logo = empty($school->school_logo) ? 'd-none' : '';
                 } else {
@@ -172,25 +172,8 @@
                                     New</span></a>
                         </li>
                         <li class="header">Account</li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i data-feather="grid"></i>
-                                <span>Manage School</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                                    <a href="{{ route('school.list') }}"><i class="icon-Commit"><span
-                                                class="path1"></span><span class="path2"></span></i>All School</a>
-                                </li>
-                                <li class="{{ url()->current() == route('school.admin') ? 'active' : '' }}">
-                                    <a href="{{ route('school.admin') }}"><i class="icon-Commit">
-                                            <span class="path1"></span><span class="path2"></span></i>School
-                                        Admin</a>
-                                </li>
-                            </ul>
+                        <li class="{{ Request::is('school/*') ? 'active' : '' }}">
+                            <a href="{{ route('school.list') }}"><i data-feather="grid"></i>Manage School</a>
                         </li>
                         <li class="{{ Request::is('users/*') ? 'active' : '' }}">
                             <a href="{{ route('users.admin.list') }}"><i data-feather="user"></i><span>Manage

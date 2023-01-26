@@ -46,7 +46,7 @@
                                         <th>School</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Contact</th>
+                                        {{-- <th>Contact</th> --}}
                                         <th>Licence</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -62,7 +62,7 @@
                                             <td>{{ $sdata->school_name }}</td>
                                             <td>{{ $sdata->primary_person }}</td>
                                             <td>{{ $sdata->primary_email }}</td>
-                                            <td>{{ $sdata->primary_mobile }}</td>
+                                            {{-- <td>{{ $sdata->primary_mobile }}</td> --}}
                                             <td><span class="badge badge-pill badge-primary">{{ $sdata->teacher->count() }}
                                                     / {{ $sdata->licence }}</span></td>
                                             <td><a href="javascript:void(0);"
@@ -82,14 +82,13 @@
                                                     data-bs-target="#bs-password-modal" title="Delete School"
                                                     class="remove_school_data waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5"
                                                     data-schoolid="{{ $sdata->id }}"><i class="fa fa-trash-o"></i></a>
+                                                <a href="{{ route('report.school.view', ['school' => $sdata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-warning mb-5"
+                                                    title="View Analytics"><i class="fa fa-bar-chart"></i></a>
 
                                                 <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
                                                     class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
-                                                    title="Manage Teacher"><i class="fa fa-user-o"></i></a>
-
-                                               <a href="{{ route('report.school.view', ['school' => $sdata->id]) }}"
-                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-warning mb-5"
-                                                        title="View Analytics"><i class="fa fa-bar-chart"></i></a>
+                                                    title="Manage Teacher"><i class="fa fa-user-o"></i> Teacher</a>
 
                                             </td>
                                         </tr>

@@ -35,12 +35,16 @@
                             <div id="class-filter" class="px-3"></div>
                             <div id="course-filter" class="px-3"></div>
 
+                            <a href="{{ route('lesson.plan.sorting') }}"
+                                class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5 me-2">Instructional
+                                Sorting
+                            </a>
                             <a href="{{ route('lesson.plan.add') }}"
                                 class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Instructional
                                 Module
                             </a>
                         </div>
-                
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -51,7 +55,6 @@
                                         <th>Title</th>
                                         <th>Class Name</th>
                                         <th>Course</th>
-                                        <th>Lesson No</th>
                                         <th>Video Link</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -97,10 +100,6 @@
                     {
                         data: 'course_name',
                         name: 'master_course.course_name'
-                    },
-                    {
-                        data: 'lesson_no',
-                        name: 'lesson_no'
                     },
                     {
                         data: 'video_url',
