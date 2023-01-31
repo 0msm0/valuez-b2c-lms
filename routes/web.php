@@ -28,7 +28,7 @@ Route::get('signout', [AuthController::class,'signout'])->name('signout');
 
 Route::middleware('isLogin')->controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
-    Route::post('process-login', 'authuser')->name('login.process');   
+    Route::post('process-login', 'authuser')->name('login.process');
 });
 
 Route::middleware('auth')->get('master-dashboard', [AuthController::class, 'AdminDash'])->name('admin-dashboard');
@@ -65,6 +65,7 @@ Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanControlle
     Route::post('lesson-plan-edit', 'edit')->name('lesson.plan.update');
 
     Route::get('sort-instruction-module', 'sortLessonPlan')->name('lesson.plan.sorting');
+    Route::post('sort-update-lesson-module', 'updateSortingNumber')->name('lesson.plan.sorting.update');
 });
 
 Route::middleware('auth')->prefix('grade')->controller(ProgramController::class)->group(function () {

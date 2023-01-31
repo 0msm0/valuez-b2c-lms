@@ -166,11 +166,11 @@ class LessonPlanController extends Controller
             if ($type == 'lessonplan') {
                 $grade = $request->grade;
                 $courseid = $request->courseid;
-                $lessonplan = LessonPlan::where(['course_id' => $courseid])->whereRaw('FIND_IN_SET("'.$grade.'",class_id)')->get();               
+                $lessonplan = LessonPlan::where(['course_id' => $courseid])->whereRaw('FIND_IN_SET("' . $grade . '",class_id)')->get();
                 $lesson_html = '';
                 if ($lessonplan->first()) {
                     foreach ($lessonplan as $ldata) {
-                        $lesson_html .= '<a class="media media-single" href="#">                
+                        $lesson_html .= '<a class="media media-single" href="#" id="' . $ldata->id . '">
                 <span class="title text-mute">' . $ldata->title . '</span>
                  </a>';
                     }
@@ -179,8 +179,12 @@ class LessonPlanController extends Controller
             }
             exit;
         }
-        
+
         $course_list = DB::table('master_course')->where('status', 1)->get();
         return view('lessonplan.lessonplan-sorting', compact('course_list'));
+    }
+
+    public function updateSortingNumber(Request $request){
+        dd($request->all());
     }
 }

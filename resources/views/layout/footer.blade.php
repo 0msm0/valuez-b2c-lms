@@ -18,6 +18,7 @@
 </script>
 
 <!-- edulearn App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('assets/src/js/demo.js') }}"></script>
 <script src="{{ asset('assets/src/js/template.js') }}"></script>
 <script src="{{ asset('assets/src/js/pages/data-table.js') }}"></script>

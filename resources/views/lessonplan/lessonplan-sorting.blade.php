@@ -125,4 +125,35 @@
             });
         });
     </script>
+
+
+    <script type="text/javascript">
+        $(".media-list").sortable({
+            delay: 100,
+            stop: function() {
+                var selectedData = new Array();
+                $('.media-list>a').each(function() {
+                    selectedData.push($(this).attr("id"));
+                });
+                updateOrder(selectedData);
+            }
+        });
+
+        function updateOrder(data) {
+            var gradeId = $('input[name="grade"]:checked').val();
+            var courseId = $('#course_id').val();
+            $.ajax({
+                url: "{{ route('lesson.plan.sorting.update') }}",
+                type: 'post',
+                data: {
+                    position: data,
+                    grade: gradeId,
+                    courseid: courseId
+                },
+                success: function(res) {
+                    console.log(res);
+                }
+            })
+        }
+    </script>
 @endsection
