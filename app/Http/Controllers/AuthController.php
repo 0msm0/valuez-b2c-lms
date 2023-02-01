@@ -143,7 +143,7 @@ class AuthController extends Controller
         if (!empty($data['password'])) {
             $details = [
                 'view' => 'emails.reset_password',
-                'subject' => 'User Account Password Reset Mail from Valuez',
+                'subject' => $data['name'].' Your Account Password Reset by admin - Valuez',
                 'title' => $data['name'],
                 'email' => $data['email'],
                 'pass' => $data['password']
@@ -164,7 +164,7 @@ class AuthController extends Controller
             $user_email = User::where('id', $request->userid)->first();
             $details = [
                 'view' => 'emails.reset_password',
-                'subject' => 'User Account Password Reset Mail from Valuez',
+                'subject' => 'User Account Password Reset - Valuez',
                 'title' => $user_email->name,
                 'email' => $user_email->email,
                 'pass' => $passWord

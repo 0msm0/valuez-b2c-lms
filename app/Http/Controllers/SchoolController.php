@@ -96,7 +96,7 @@ class SchoolController extends Controller
             'username' => $userId,
         ];
         User::create($schoolAdmin);
-        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass]);
+        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass,'email' => $user_email]);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
     }
 
@@ -104,12 +104,12 @@ class SchoolController extends Controller
     {
         $details = [
             'view' => 'emails.account',
-            'subject' => 'User Account creation Mail from Valuez',
+            'subject' => 'School Admin Account creation Mail from Valuez',
             'title' => $data['username'],
             'userid' => $data['userid'],
             'pass' => $data['pass']
         ];
-        Mail::to('test@lms.democlicks.com')->send(new \App\Mail\TestMail($details));
+        Mail::to($data['email'])->send(new \App\Mail\TestMail($details));
     }
 
     public function edit(Request $request)
