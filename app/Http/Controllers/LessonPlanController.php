@@ -169,9 +169,16 @@ class LessonPlanController extends Controller
                 $lessonplan = LessonPlan::where(['course_id' => $courseid])->whereRaw('FIND_IN_SET("' . $grade . '",class_id)')->get();
                 $lesson_html = '';
                 if ($lessonplan->first()) {
+                    $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $courseid, 'class_id' => $grade])->get(['lesson_id', 'position_order'])->toArray();
+                    $postionId = 0;
                     foreach ($lessonplan as $ldata) {
+                        if (!empty($lessonplan_sort_list)) {
+                            $sortKey = array_search($ldata->id, array_column($lessonplan_sort_list, 'lesson_id'));
+                            $postionId = $lessonplan_sort_list[$sortKey]->position_order;
+                        }
                         $lesson_html .= '<a class="media media-single" href="#" id="' . $ldata->id . '">
                 <span class="title text-mute">' . $ldata->title . '</span>
+                <span class="badge badge-pill badge-primary">' . $postionId . '</span>
                  </a>';
                     }
                 }
@@ -184,7 +191,24 @@ class LessonPlanController extends Controller
         return view('lessonplan.lessonplan-sorting', compact('course_list'));
     }
 
-    public function updateSortingNumber(Request $request){
-        dd($request->all());
+    public function updateSortingNumber(Request $request)
+    {
+        $position = $request->position;
+        $classId = $request->grade;
+        $courseId = $request->courseid;
+        $i = 1;
+        if (!empty($position)) {
+            foreach ($position as $k => $v) {
+                DB::table('plan_sorting')->updateOrInsert(
+                    [
+                        'course_id' => (int)$courseId,
+                        'class_id' => (int)$classId,
+                        'lesson_id' => (int)$v
+                    ],
+                    ['position_order' => $i]
+                );
+                $i++;
+            }
+        }
     }
 }
