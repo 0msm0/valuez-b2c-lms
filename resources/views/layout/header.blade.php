@@ -9,7 +9,7 @@
                     $school = App\Models\School::where('id', $schoolid)->first();
                     $logo = 'uploads/school/' . $school->school_logo;
                     $header_name = $school->school_name;
-                
+
                     $display_name = !empty($school->school_logo) ? 'd-none' : '';
                     $display_logo = empty($school->school_logo) ? 'd-none' : '';
                 } else {
@@ -202,8 +202,8 @@
                                     New</span></a>
                         </li>
                     @elseif(session('usertype') == 'teacher')
-                        <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
-                            <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
+                        <li class="{{ Request::is('teacher.class.history') ? 'active' : '' }}">
+                            <a href="{{ route('teacher.class.history') }}"><i data-feather="home"></i><span>View History</span></a>
                         </li>
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
                             <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade

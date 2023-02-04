@@ -6,7 +6,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Instructional Module Analytics</h5>
+                        <h5 class="card-title mb-0">View History</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
                                 {{-- <a href="#"
@@ -22,8 +22,7 @@
                                         <th>#</th>
                                         <th>Grade</th>
                                         <th>Course</th>
-                                        <th>Lesson plan</th>
-                                        <th>Teacher</th>
+                                        <th>Instruction Module</th>
                                         <th>Datetime</th>
                                     </tr>
                                 </thead>
@@ -45,11 +44,12 @@
 @section('script-section')
     <script type="text/javascript">
         $(function() {
+
             var table = $('#yajra-table').DataTable({
                 processing: true,
                 serverSide: true,
                 order: [],
-                ajax: "{{ route('report.school.view', ['school' => $school]) }}",
+                ajax: "{{ route('teacher.class.history') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         orderable: false,
@@ -65,10 +65,6 @@
                     {
                         data: 'lessonplan.title',
                         name: 'lessonplan.title'
-                    },
-                    {
-                        data: 'userinfo.name',
-                        name: 'userinfo.name'
                     },
                     {
                         data: 'created_at',

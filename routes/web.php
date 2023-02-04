@@ -115,6 +115,7 @@ Route::middleware('auth')->prefix('users')->controller(UserController::class)->g
 
 Route::middleware('auth')->prefix('reports')->controller(ReportController::class)->group(function () {
     Route::get('view-engagement', 'index')->name('report.school.view');
+    Route::get('view-history', 'viewTeacherSummary')->name('teacher.class.history');
 });
 Route::get('send-mail', function () {
     $details = [
