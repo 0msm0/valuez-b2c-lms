@@ -152,6 +152,7 @@
                 },
                 success: function(res) {
                     console.log(res);
+                    $('.choose-grade').change();
                 }
             })
         }

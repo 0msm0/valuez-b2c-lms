@@ -166,21 +166,29 @@ class LessonPlanController extends Controller
             if ($type == 'lessonplan') {
                 $grade = $request->grade;
                 $courseid = $request->courseid;
-                $lessonplan = LessonPlan::where(['course_id' => $courseid])->whereRaw('FIND_IN_SET("' . $grade . '",class_id)')->get();
+                $lessonplan = LessonPlan::where(['course_id' => $courseid])->whereRaw('FIND_IN_SET("' . $grade . '",class_id)')->get(['id', 'title']);
                 $lesson_html = '';
                 if ($lessonplan->first()) {
                     $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $courseid, 'class_id' => $grade])->get(['lesson_id', 'position_order'])->toArray();
                     $postionId = 0;
-                    foreach ($lessonplan as $ldata) {
+                    $sortedList = [];
+                    foreach ($lessonplan as $lessondata) {
                         if (!empty($lessonplan_sort_list)) {
-                            $sortKey = array_search($ldata->id, array_column($lessonplan_sort_list, 'lesson_id'));
+                            $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
                             $postionId = $lessonplan_sort_list[$sortKey]->position_order;
                         }
-                        $lesson_html .= '<a class="media media-single" href="#" id="' . $ldata->id . '">
-                <span class="title text-mute">' . $ldata->title . '</span>
-                <span class="badge badge-pill badge-primary">' . $postionId . '</span>
-                 </a>';
+                        $sortedList[$postionId] = ['id' => $lessondata->id, 'title' => $lessondata->title, 'position' => $postionId];
                     }
+                    // print_r($sortedList);
+                    $orderedItems = collect($sortedList)->sortBy('position');
+                    foreach ($orderedItems as $pos => $ldata) {
+                        $lesson_html .= '<a class="media media-single" href="#" id="' . $ldata['id'] . '">
+                                        <span class="title text-mute">' . $ldata['title'] . '</span>
+                                        <span class="badge badge-pill badge-primary">' . $pos . '</span>
+                                        </a>';
+                    }
+
+
                 }
                 return $lesson_html;
             }
