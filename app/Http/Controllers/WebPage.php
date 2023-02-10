@@ -35,18 +35,23 @@ class WebPage extends Controller
 
             $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $req->course, 'class_id' => $class_id])->get(['lesson_id', 'position_order'])->toArray();
 
-            foreach ($lessonPlan as $lessondata) {
+            foreach ($lessonPlan as $sk => $lessondata) {
                 if (!empty($lessonplan_sort_list)) {
                     $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
-                    $postionId = $lessonplan_sort_list[$sortKey]->position_order;
-                }else{
-                    $postionId = 0;
+                    if ($sortKey > 0) {
+                        $postionId = $lessonplan_sort_list[$sortKey]->position_order;
+                    } else {
+                        $postionId = $sk++;
+                    }
+                } else {
+                    $postionId = $lessondata->id;
                 }
                 $sortedList[$postionId] = $lessondata;
                 $sortedList[$postionId]['position'] = $postionId;
             }
+            dd($sortedList);
             $lessonPlan = collect($sortedList)->sortBy('position');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id','class_name'));
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name'));
         }
     }
 
