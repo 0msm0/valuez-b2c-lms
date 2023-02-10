@@ -49,7 +49,6 @@ class WebPage extends Controller
                 $sortedList[$postionId] = $lessondata;
                 $sortedList[$postionId]['position'] = $postionId;
             }
-            dd($sortedList);
             $lessonPlan = collect($sortedList)->sortBy('position');
             return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name'));
         }
