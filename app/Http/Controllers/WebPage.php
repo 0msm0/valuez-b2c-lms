@@ -39,6 +39,8 @@ class WebPage extends Controller
                 if (!empty($lessonplan_sort_list)) {
                     $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
                     $postionId = $lessonplan_sort_list[$sortKey]->position_order;
+                }else{
+                    $postionId = 0;
                 }
                 $sortedList[$postionId] = $lessondata;
                 $sortedList[$postionId]['position'] = $postionId;
