@@ -4,7 +4,7 @@
             <img src="{{ url('uploads/school') }}/{{ !empty($school_data->school_logo != '') ? $school_data->school_logo : 'no_image.png' }}"
                 height="64" class="bg-light mt-2" alt="{{ $school_data->school_name }}">
         </div>
-        <div class="col-sm-9 col-xl-12 col-xxl-9">
+        <div class="col-sm-9 col-xl-12 col-xxl-9 text-center mt-2">
             <strong>{{ $school_data->school_name }}</strong>
             <p class="text-fade">{{ $school_data->school_desc }}</p>
         </div>
