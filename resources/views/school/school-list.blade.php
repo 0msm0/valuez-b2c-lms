@@ -59,7 +59,10 @@
                                                     width="32" height="32" class="bg-light my-n1"
                                                     alt="{{ $sdata->school_name }}">
                                             </td>
-                                            <td>{{ $sdata->school_name }}</td>
+                                            <td> <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                    data-bs-target="#bs-school-modal" class="preview_school_data"
+                                                    data-school="{{ $sdata->id }}"
+                                                    title="Preview School">{{ $sdata->school_name }}</a></td>
                                             <td>{{ $sdata->primary_person }}</td>
                                             <td>{{ $sdata->primary_email }}</td>
                                             {{-- <td>{{ $sdata->primary_mobile }}</td> --}}
@@ -135,6 +138,23 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!-- Info modal -->
+    <div class="modal fade" id="bs-school-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-school">
+                        School Detail </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="viewSchool"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 @section('script-section')
     <script>
@@ -142,6 +162,20 @@
             var schoolId = $(this).attr("data-schoolid");
             $('#remSchool').val(schoolId);
             $("#error-list").html('');
+        });
+
+        $('.preview_school_data').click(function() {
+            var schoolId = $(this).attr("data-school");
+            $.ajax({
+                url: "{{ route('school.preview') }}",
+                type: "POST",
+                data: {
+                    school: schoolId,
+                },
+                success: function(res) {
+                    $("#viewSchool").html(res);
+                }
+            });
         });
 
         $('#remove_school_user').click(function() {

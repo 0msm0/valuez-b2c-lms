@@ -39,6 +39,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::get('add-new-school', 'addschool')->name('school.add');
     Route::get('update-school', 'editschool')->name('school.edit');
     Route::post('remove-school', 'destroy')->name('school.remove');
+    Route::post('preview-school', 'previewSchool')->name('school.preview');
     Route::post('school-add', 'store')->name('school.store');
     Route::post('school-edit', 'edit')->name('school.update');
     Route::post('school-status', 'change_status')->name('school.status');

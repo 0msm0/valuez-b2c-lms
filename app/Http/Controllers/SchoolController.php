@@ -239,4 +239,14 @@ class SchoolController extends Controller
         }
         return view('users.userlogs', compact('userId'));
     }
+
+    public function previewSchool(Request $request)
+    {
+        $school_id = $request->school;
+        if ($school_id > 0) {
+            $school_data = School::find($school_id);
+            $city_state = CitiesModel::with('state')->where(["state_id" => $school_data->state_id, "id" => $school_data->city_id])->first();
+            return view('school.preview_school', compact('school_data', 'city_state'));
+        }
+    }
 }
