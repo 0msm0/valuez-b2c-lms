@@ -82,6 +82,7 @@
             var table = $('#yajra-table').DataTable({
                 processing: true,
                 serverSide: true,
+                pageLength: 25,
                 order: [],
                 ajax: "{{ route('lesson.plan.list') }}",
                 columns: [{

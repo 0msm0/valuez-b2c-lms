@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription Start date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" min='{{ date('Y-m-d') }}' name="package_start"
+                                        <input type="date" value="{{ old('package_start') }}" min='{{ date('Y-m-d') }}' name="package_start"
                                             class="form-control" placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
@@ -105,7 +105,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription end date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" min='{{ date('Y-m-d') }}' name="package_end"
+                                        <input type="date" value="{{ old('package_end') }}" min='{{ date('Y-m-d') }}' name="package_end"
                                             class="form-control" placeholder="Subscription end date">
                                         @error('package_end')
                                             <span class="text-danger">{{ $message }}</span>
@@ -123,6 +123,26 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Grade</label>
+                                        <select class="form-control" name="grade_ids[]" style="width: 100%;"
+                                            id="grade_ids" multiple="multiple">
+                                            <option value="">Select Grade</option>
+                                            @foreach ($grades as $grade)
+                                                @php $gradeIds = old('grade_ids'); @endphp
+                                                <option value="{{ $grade->id }}"
+                                                    {{ !empty($gradeIds) && in_array($grade->id, $gradeIds) ? 'selected' : '' }}>
+                                                    {{ $grade->class_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('grade_ids')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                             </div>
 
                             <h4 class="box-title text-primary mb-0 mt-20"><i class="ti-envelope me-15"></i> Contact Info
@@ -133,7 +153,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Primary Person Name<span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="primary_person" class="form-control"
+                                        <input type="text" name="primary_person" value="{{ old('primary_person') }}" class="form-control"
                                             placeholder="Enter Person Name">
                                         @error('primary_person')
                                             <span class="text-danger">{{ $message }}</span>
@@ -143,7 +163,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label">Primary Email <span class="text-danger">*</span></label>
-                                        <input type="text" name="primary_email" class="form-control"
+                                        <input type="text" name="primary_email" value="{{ old('primary_email') }}" class="form-control"
                                             placeholder="Enter Primary Email">
                                         @error('primary_email')
                                             <span class="text-danger">{{ $message }}</span>
@@ -154,7 +174,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Primary Mobile <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="primary_mobile" class="form-control"
+                                        <input type="text" name="primary_mobile" value="{{ old('primary_mobile') }}" class="form-control"
                                             placeholder="Enter Primary Mobile">
                                         @error('primary_mobile')
                                             <span class="text-danger">{{ $message }}</span>
@@ -166,7 +186,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Secondary Email <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="secondary_email" class="form-control"
+                                        <input type="text" name="secondary_email" value="{{ old('secondary_email') }}" class="form-control"
                                             placeholder="Enter Secondary Email">
                                         @error('secondary_email')
                                             <span class="text-danger">{{ $message }}</span>
@@ -177,7 +197,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Secondary Mobile <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="secondary_mobile" class="form-control"
+                                        <input type="text" name="secondary_mobile" value="{{ old('secondary_mobile') }}" class="form-control"
                                             placeholder="Enter Secondary Mobile">
                                         @error('secondary_mobile')
                                             <span class="text-danger">{{ $message }}</span>
@@ -198,7 +218,7 @@
                                             @foreach ($states as $state)
                                                 @php $stateIds = old('state_id'); @endphp
                                                 <option value="{{ $state->id }}"
-                                                    {{ !empty($stateIds) && in_array($state->id, $stateIds) ? 'selected' : '' }}>
+                                                    {{ !empty($stateIds) && ($state->id == $stateIds) ? 'selected' : '' }}>
                                                     {{ $state->name }}</option>
                                             @endforeach
                                         </select>
@@ -261,6 +281,11 @@
 @section('script-section')
     <script>
         $(document).ready(function() {
+
+            $('.select2').select2();
+            $('#grade_ids').select2({
+                tags:true
+            });
             $('#state_id').on('change', function() {
                 var idState = this.value;
                 $("#city_id").html('');

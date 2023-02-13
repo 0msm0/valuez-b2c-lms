@@ -117,6 +117,26 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Grade</label>
+                                        <select class="form-control" name="grade_ids[]" style="width: 100%;"
+                                            id="grade_ids" multiple="multiple">
+                                            <option value="">Select Grade</option>
+                                            @foreach ($grades as $grade)
+                                                @php $gradeIds = ($grade_ids)?$grade_ids:old('grade_ids'); @endphp
+                                                <option value="{{ $grade->id }}"
+                                                    {{ !empty($gradeIds) && in_array($grade->id, $gradeIds) ? 'selected' : '' }}>
+                                                    {{ $grade->class_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('grade_ids')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                             </div>
 
                             <h4 class="box-title text-primary mb-0 mt-20"><i class="ti-envelope me-15"></i> Contact Info
@@ -262,6 +282,7 @@
 @section('script-section')
     <script>
         $(document).ready(function() {
+            var cityId = {{ $school->city_id }};
             $('#state_id').on('change', function() {
                 var idState = this.value;
                 $("#city_id").html('');
@@ -276,12 +297,21 @@
                     success: function(res) {
                         $('#city_id').html('<option value="">Select City</option>');
                         $.each(res.cities, function(key, value) {
+                            var select_city = (cityId > 0 && value.id == cityId) ?
+                                'selected' : '';
                             $("#city_id").append('<option value="' + value
-                                .id + '">' + value.city + '</option>');
+                                .id + '" ' + select_city + '>' + value.city +
+                                '</option>');
                         });
                     }
                 });
             });
+
+            $('#state_id').change();
+            $('#grade_ids').select2({
+                tags: true
+            });
+
         });
     </script>
 @endsection

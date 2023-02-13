@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, School, CitiesModel, StateModel, LogsModel};
+use App\Models\{User, School, CitiesModel, StateModel, LogsModel, Program, Package};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,8 @@ class SchoolController extends Controller
     public function addschool()
     {
         $states = StateModel::where("flag", 1)->get(["name", "id"]);
-        return view('school.school-add', compact('states'));
+        $grades = Program::where("status", 1)->get(["class_name", "id"]);
+        return view('school.school-add', compact('states', 'grades'));
     }
 
     public function editschool(Request $request)
@@ -33,7 +34,10 @@ class SchoolController extends Controller
         $schoolId = $request->input('school');
         $school = DB::table('school')->where('id', $schoolId)->first();
         $states = StateModel::where("flag", 1)->get(["name", "id"]);
-        return view('school.school-edit', compact('school', 'states'));
+        $grades = Program::where("status", 1)->get(["class_name", "id"]);
+        $package = Package::where('school_id', $schoolId)->get(['grade'])->toArray();
+        $grade_ids = ($package) ? array_column($package, 'grade') : [];
+        return view('school.school-edit', compact('school', 'states', 'grades', 'grade_ids'));
     }
 
     public function store(Request $request)
@@ -45,6 +49,7 @@ class SchoolController extends Controller
             'licence' => 'required',
             'package_start' => 'required',
             'package_end' => 'required',
+            'grade_ids' => 'required',
             // 'image' => 'required',
         ]);
 
@@ -95,8 +100,15 @@ class SchoolController extends Controller
             'school_id' => $school_id,
             'username' => $userId,
         ];
+        if (!empty($request->grade_ids)) {
+            $package_info = [];
+            foreach ($request->grade_ids as $grade) {
+                $package_info[] = ['grade' => $grade, 'school_id' => $school_id, 'status' => 1, 'package_start' => $request->package_start, 'package_end' => $request->package_end];
+            }
+            Package::insert($package_info);
+        }
         User::create($schoolAdmin);
-        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass,'email' => $user_email]);
+        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass, 'email' => $user_email]);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
     }
 
@@ -121,6 +133,7 @@ class SchoolController extends Controller
             'licence' => 'required',
             'package_start' => 'required',
             'package_end' => 'required',
+            'grade_ids' => 'required',
             // 'image' => 'required',
         ]);
         $schoolData = [
@@ -143,6 +156,22 @@ class SchoolController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
             'status' => $request->status,
         ];
+
+        if (!empty($request->grade_ids)) {
+            $package_info = [];
+            $package = Package::where('school_id', $request->id)->get(['grade'])->toArray();
+            $grade_ids = ($package) ? array_column($package, 'grade') : [];
+            $remove_grade = array_diff($grade_ids, $request->grade_ids);
+            if (!empty($remove_grade)) {
+                Package::whereIn('grade', $remove_grade)->where(['school_id' => $request->id])->delete();
+            }
+
+            foreach ($request->grade_ids as $grade) {
+                $package_info = ['status' => 1, 'package_start' => $request->package_start, 'package_end' => $request->package_end];
+                Package::updateOrCreate(['grade' => $grade, 'school_id' => $request->id], $package_info);
+            }
+        }
+
         DB::table('school')->where('id', $request->id)->update($schoolData);
         return redirect(route('school.list'))->with(['message' => 'School Updated successfully!', 'status' => 'success']);
     }
