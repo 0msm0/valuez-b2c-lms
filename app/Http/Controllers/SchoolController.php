@@ -245,8 +245,16 @@ class SchoolController extends Controller
         $school_id = $request->school;
         if ($school_id > 0) {
             $school_data = School::find($school_id);
+            $package = Package::with('grade')->where('school_id', $school_id)->get()->toArray();
             $city_state = CitiesModel::with('state')->where(["state_id" => $school_data->state_id, "id" => $school_data->city_id])->first();
-            return view('school.preview_school', compact('school_data', 'city_state'));
+            $grade_name = [];
+            if (!empty($package)) {
+                foreach ($package as $grade) {
+                    $grade_name[] = $grade['grade']['class_name'];
+                }
+            }
+            $grades = implode(", ", $grade_name);
+            return view('school.preview_school', compact('school_data', 'city_state', 'grades'));
         }
     }
 }

@@ -11,4 +11,9 @@ class Package extends Model
     protected $table = 'package';
     protected $primaryKey = 'id';
     protected $guarded = [];
+
+    public function grade()
+    {
+        return $this->hasOne(Program::class, 'id', 'grade');
+    }
 }

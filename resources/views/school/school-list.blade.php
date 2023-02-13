@@ -44,8 +44,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>School</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
+                                        {{-- <th>Name</th> --}}
+                                        {{-- <th>Email</th> --}}
                                         {{-- <th>Contact</th> --}}
                                         <th>Licence</th>
                                         <th>Status</th>
@@ -60,11 +60,11 @@
                                                     alt="{{ $sdata->school_name }}">
                                             </td>
                                             <td> <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#bs-school-modal" class="preview_school_data"
+                                                    data-bs-target="#bs-school-modal" class="fw-bold preview_school_data"
                                                     data-school="{{ $sdata->id }}"
                                                     title="Preview School">{{ $sdata->school_name }}</a></td>
-                                            <td>{{ $sdata->primary_person }}</td>
-                                            <td>{{ $sdata->primary_email }}</td>
+                                            {{-- <td>{{ $sdata->primary_person }}</td>
+                                            <td>{{ $sdata->primary_email }}</td> --}}
                                             {{-- <td>{{ $sdata->primary_mobile }}</td> --}}
                                             <td><span class="badge badge-pill badge-primary">{{ $sdata->teacher->count() }}
                                                     / {{ $sdata->licence }}</span></td>
@@ -144,7 +144,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header py-3">
                     <h4 class="modal-title" id="modal-label-school">
                         School Detail </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>

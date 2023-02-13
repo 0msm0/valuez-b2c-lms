@@ -1,4 +1,4 @@
-<div class="card-body">
+<div class="card-body p-0">
     <div class="row g-0">
         <div class="col-sm-3 col-xl-12 col-xxl-3 text-center">
             <img src="{{ url('uploads/school') }}/{{ !empty($school_data->school_logo != '') ? $school_data->school_logo : 'no_image.png' }}"
@@ -27,9 +27,19 @@
             <tr>
                 <th>Address</th>
                 <td class="text-fade">
+                    {{ $school_data->address }}
                     {{ $city_state ? $city_state->city . ', ' . $city_state->state->name : '' }},
                     {{ $school_data->pincode }}
                 </td>
+            </tr>
+            <tr>
+                <th>Subscription </th>
+                <td class="text-fade">{{ date('d-M-Y', strtotime($school_data->package_start)) }} -
+                    {{ date('d-M-Y', strtotime($school_data->package_end)) }}</td>
+            </tr>
+            <tr>
+                <th>Grade </th>
+                <td class="text-fade">{{ $grades }}</td>
             </tr>
             <tr>
                 <th>Status</th>
