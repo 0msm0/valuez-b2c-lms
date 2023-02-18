@@ -70,7 +70,7 @@
                                                         data-userid="{{ $udata->id }}"><i class="fa fa-refresh"></i>
                                                         Reset</a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="view_password dropdown-item"
+                                                    <a class="view_password dropdown-item" data-email="{{ $udata->email }}"
                                                         data-pass="{{ $udata->view_pass }}" href="javascript:void(0);"><i
                                                             class="fa fa-eye"></i> View</a>
                                                 </div>
@@ -131,14 +131,80 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div class="modal fade" id="bs-viewpass-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-pass">
+                        <i class="fa fa-info-circle text-info fs-25"></i> User Account Login Info
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="d-flex align-items-center mb-30">
+                        <div class="me-15 h-40 w-40 rounded text-center">
+                            <i class="fa fa-envelope-o text-primary fs-30"></i>
+                        </div>
+                        <div class="d-flex flex-column flex-grow-1 me-2">
+                            <span class="text-dark hover-primary mb-1 fs-16" id="viewEmail"></span>
+                        </div>
+                        <a href="javascript:void(0);" class="badge badge-xl badge-primary-light click2copy"
+                            data-copy="email"><span class="fw-600"><i class="fa fa-copy"></i></span></a>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-30">
+                        <div class="me-15 h-40 w-40 rounded text-center">
+                            <i class="fa fa-lock text-primary fs-30"></i>
+                        </div>
+                        <div class="d-flex flex-column flex-grow-1 me-2">
+                            <span class="text-dark hover-primary mb-1 fs-16" id="viewPass"></span>
+                        </div>
+                        <a href="javascript:void(0);" class="badge badge-xl badge-primary-light click2copy"
+                            data-copy="pass"><span class="fw-600"><i class="fa fa-copy"></i></span></a>
+                    </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script-section')
     <script>
+        $('.click2copy').click(function() {
+            var copyType = $(this).attr('data-copy');
+            if (copyType == "pass") {
+                copytext = $("#viewPass").text();
+            } else if (copyType == "email") {
+                copytext = $("#viewEmail").text();
+            }
+            //Copy to clipboard
+            var temp = document.createElement('input');
+            var texttoCopy = "copytextfff";
+            temp.type = 'input';
+            temp.setAttribute('value', texttoCopy);
+            document.body.appendChild(temp);
+            temp.select();
+            temp.setSelectionRange(0, 99999); // For mobile devices
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copytext);
+            temp.remove();
+            alert('Copy to Clipboard');
+            return false;
+        });
+
+
         $(document).ready(function() {
             $('.view_password').click(function() {
                 var viewPass = $(this).attr('data-pass');
-                alert("Password : " + viewPass);
+                var viewEmail = $(this).attr('data-email');
+                $("#viewPass").text(viewPass);
+                $("#viewEmail").text(viewEmail);
+                $('#bs-viewpass-modal').modal('show');
+                // alert("Password : " + viewPass);
             });
 
             $('.reset_password').click(function() {
