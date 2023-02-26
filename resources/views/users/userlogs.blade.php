@@ -68,6 +68,7 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'action',

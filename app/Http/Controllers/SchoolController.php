@@ -118,7 +118,7 @@ class SchoolController extends Controller
             'view' => 'emails.account',
             'subject' => 'School Admin Account creation Mail from Valuez',
             'title' => $data['username'],
-            'userid' => $data['userid'],
+            'userid' => $data['email'],
             'pass' => $data['pass']
         ];
         Mail::to($data['email'])->send(new \App\Mail\TestMail($details));

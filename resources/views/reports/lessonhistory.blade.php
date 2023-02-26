@@ -16,8 +16,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="yajra-table" class="table" style="width:100%">
-                                <thead>
+                            <table id="yajra-table" class="table b-1 border-primary" style="width:100%">
+                                <thead class="bg-primary">
                                     <tr>
                                         <th>#</th>
                                         <th>Grade</th>
@@ -54,6 +54,7 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'grade',
@@ -69,7 +70,7 @@
                     },
                     {
                         data: 'created_at',
-                        name: 'created_at',
+                        name: 'reports.created_at',
                     },
 
                 ]

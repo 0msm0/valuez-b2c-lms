@@ -61,7 +61,7 @@
 
         <div class="navbar-custom-menu r-side">
             <ul class="nav navbar-nav">
-                <li class="btn-group d-md-inline-flex d-none">
+                {{-- <li class="btn-group d-md-inline-flex d-none">
                     <a href="javascript:void(0)" title="skin Change" class="waves-effect skin-toggle waves-light">
                         <label class="switch">
                             <input type="checkbox" data-mainsidebarskin="toggle" id="toggle_left_sidebar_skin">
@@ -69,7 +69,7 @@
                             <span class="switch-off"><i data-feather="moon"></i></span>
                         </label>
                     </a>
-                </li>
+                </li> --}}
                 <li class="dropdown notifications-menu btn-group">
                     <a href="#" class="waves-effect waves-light btn-primary-light svg-bt-icon bg-transparent"
                         data-bs-toggle="dropdown" title="Notifications">
@@ -201,13 +201,13 @@
                             <a href="{{ route('notify.schoolview') }}"><i data-feather="bell"></i><span>What's
                                     New</span></a>
                         </li>
-                    @elseif(session('usertype') == 'teacher')
-                        <li class="{{ Request::is('teacher.class.history') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.class.history') }}"><i data-feather="home"></i><span>View History</span></a>
-                        </li>
+                    @elseif(session('usertype') == 'teacher')                       
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
                             <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade
                                     list</span></a>
+                        </li>
+                        <li class="{{ Request::is('teacher.class.history') ? 'active' : '' }}">
+                            <a href="{{ route('teacher.class.history') }}"><i data-feather="calendar"></i><span>Module completion</span></a>
                         </li>
                     @endif
                     <li>
