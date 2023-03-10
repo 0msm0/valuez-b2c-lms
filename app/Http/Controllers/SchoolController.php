@@ -210,6 +210,13 @@ class SchoolController extends Controller
         echo ($status == 1) ? 'Active' : 'Inactive';
     }
 
+    public function change_school_demo_status(Request $request)
+    {
+        $schoolId = $request->school;
+        $status = ($request->status == 1) ? 0 : 1;
+        School::where('id', $schoolId)->update(['is_demo' => $status]);
+        echo ($status == 1) ? 'Yes' : 'No';
+    }
     public function CityList(Request $request)
     {
         $data['cities'] = CitiesModel::where("state_id", $request->state_id)->get(["city", "id"]);

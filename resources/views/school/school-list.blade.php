@@ -49,6 +49,7 @@
                                         {{-- <th>Contact</th> --}}
                                         <th>Licence</th>
                                         <th>Status</th>
+                                        <th>Demo</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -73,6 +74,11 @@
                                                     id="status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
                                                     data-status="{{ $sdata->status }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
+                                            <td><a href="javascript:void(0);"
+                                                class="change_school_demo_status text-white badge bg-{{ $sdata->is_demo == 1 ? 'success' : 'danger' }}"
+                                                id="demo_status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
+                                                data-status="{{ $sdata->is_demo }}">{{ $sdata->is_demo == 1 ? 'Yes' : 'No' }}</a>
+                                        </td>
                                             <td> {{-- <a href="#"
                                                         class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5" title=""><i
                                                             class="fa fa-lock"></i></a> --}}
@@ -220,6 +226,28 @@
                             $('#status_' + id).addClass('bg-success').removeClass('bg-danger');
                         } else {
                             $('#status_' + id).addClass('bg-danger').removeClass('bg-success');
+                        }
+                    }
+                });
+            });
+
+            $('.change_school_demo_status').click(function() {
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+                $.ajax({
+                    url: "{{ route('school.demo.status') }}",
+                    type: "POST",
+                    data: {
+                        school: id,
+                        status: status
+                    },
+                    success: function(data) {
+                        var csts = (status == 1) ? 0 : 1;
+                        $('#demo_status_' + id).text(data).attr('data-status', csts);
+                        if (csts == 1) {
+                            $('#demo_status_' + id).addClass('bg-success').removeClass('bg-danger');
+                        } else {
+                            $('#demo_status_' + id).addClass('bg-danger').removeClass('bg-success');
                         }
                     }
                 });

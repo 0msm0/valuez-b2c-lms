@@ -57,6 +57,7 @@
                                         <th>Course</th>
                                         <th>Video Link</th>
                                         <th>Status</th>
+                                        <th>Demo</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -111,6 +112,10 @@
                         name: 'status'
                     },
                     {
+                        data: 'is_demo',
+                        name: 'is_demo'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -158,6 +163,30 @@
                 }
             });
 
+        });
+
+
+        $(document).on('click', '.change_status', function() {
+            console.log("hello");
+            var id = $(this).attr('data-id');
+            var status = $(this).attr('data-status');
+            $.ajax({
+                url: "{{ route('lesson.demo.status') }}",
+                type: "POST",
+                data: {
+                    lessonid: id,
+                    status: status
+                },
+                success: function(data) {
+                    var csts = (status == 1) ? 0 : 1;
+                    $('#status_' + id).text(data).attr('data-status', csts);
+                    if (csts == 1) {
+                        $('#status_' + id).addClass('bg-success').removeClass('bg-danger');
+                    } else {
+                        $('#status_' + id).addClass('bg-danger').removeClass('bg-success');
+                    }
+                }
+            });
         });
     </script>
 @endsection

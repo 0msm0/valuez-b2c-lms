@@ -27,6 +27,10 @@ class LessonPlanController extends Controller
                     $span_btn = '<span class="badge bg-' . ($row->status == 1 ? 'success' : 'danger') . '">' . ($row->status == 1 ? 'Active' : 'Inactive') . '</span>';
                     return $span_btn;
                 })
+                ->editColumn('is_demo', function ($row) {
+                    $demo_btn = '<a href="javascript:void(0);"  id="status_' . $row->id . '" data-id="' . $row->id . '" data-status="' . $row->is_demo . '" class="change_status text-white badge bg-' . ($row->is_demo == 1 ? 'success' : 'danger') . '">' . ($row->is_demo == 1 ? 'Yes' : 'No') . '</a>';
+                    return $demo_btn;
+                })
                 ->addColumn('action', function ($row) {
                     $edit_btn = '<a href="' . route('lesson.plan.edit', ['lessonplan' => $row->id]) . '"
                     class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
@@ -36,7 +40,8 @@ class LessonPlanController extends Controller
                     $action_btn = $edit_btn . $remove_btn;
                     return $action_btn;
                 })
-                ->rawColumns(['action', 'lesson_image', 'status'])
+
+                ->rawColumns(['action', 'is_demo', 'lesson_image', 'status'])
                 ->make(true);
         }
         $class_list = Program::where('status', 1)->get();
@@ -187,8 +192,6 @@ class LessonPlanController extends Controller
                                         <span class="badge badge-pill badge-primary">' . $pos . '</span>
                                         </a>';
                     }
-
-
                 }
                 return $lesson_html;
             }
@@ -218,5 +221,13 @@ class LessonPlanController extends Controller
                 $i++;
             }
         }
+    }
+
+    public function change_demo_status(Request $request)
+    {
+        $lessonId = $request->lessonid;
+        $status = ($request->status == 1) ? 0 : 1;
+        LessonPlan::where('id', $lessonId)->update(['is_demo' => $status]);
+        echo ($status == 1) ? 'Yes' : 'No';
     }
 }

@@ -44,6 +44,7 @@ Route::middleware('auth')->prefix('school')->controller(SchoolController::class)
     Route::post('school-edit', 'edit')->name('school.update');
     Route::post('school-status', 'change_status')->name('school.status');
     Route::post('teacher-status', 'change_user_status')->name('teacher.status');
+    Route::post('school-demo-status-update', 'change_school_demo_status')->name('school.demo.status');
     Route::post('fetch-cities', 'CityList')->name('city.json');
     Route::get('users-logs-list/{userid}', 'viewLogs')->name('user.logs.list');
 });
@@ -67,6 +68,7 @@ Route::middleware('auth')->prefix('lesson-plan')->controller(LessonPlanControlle
 
     Route::get('sort-instruction-module', 'sortLessonPlan')->name('lesson.plan.sorting');
     Route::post('sort-update-lesson-module', 'updateSortingNumber')->name('lesson.plan.sorting.update');
+    Route::post('lesson-plan-demo-status', 'change_demo_status')->name('lesson.demo.status');
 });
 
 Route::middleware('auth')->prefix('grade')->controller(ProgramController::class)->group(function () {
