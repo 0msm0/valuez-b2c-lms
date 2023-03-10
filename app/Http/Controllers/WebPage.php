@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{LessonPlan, Reports, Program};
+use App\Models\{LessonPlan, Reports, Program, School};
 
 class WebPage extends Controller
 {
@@ -32,7 +32,7 @@ class WebPage extends Controller
             $report = Reports::where(['userid' => $userId, 'school' => $schoolId])->get('lesson_plan')->toArray();
             $complete_lesson = array_column($report, 'lesson_plan');
             $class_name = Program::find($class_id);
-
+            $check_premium = School::find($schoolId);
             $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $req->course, 'class_id' => $class_id])->get(['lesson_id', 'position_order'])->toArray();
 
             foreach ($lessonPlan as $sk => $lessondata) {
@@ -50,7 +50,7 @@ class WebPage extends Controller
                 $sortedList[$postionId]['position'] = $postionId;
             }
             $lessonPlan = collect($sortedList)->sortBy('position');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name'));
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name','check_premium'));
         }
     }
 

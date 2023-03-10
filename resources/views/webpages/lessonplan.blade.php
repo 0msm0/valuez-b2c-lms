@@ -54,30 +54,34 @@
                                         </div>
 
                                         <div class="justify-content-center align-items-center">
-                                            @if ($cdata->lesson_desc)
-                                                <button type="button" class="btn btn-info btn-sm mb-5"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
-                                                    Instructions</button>
-                                            @endif
+                                            @if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0)
+                                                @if ($cdata->lesson_desc)
+                                                    <button type="button" class="btn btn-info btn-sm mb-5"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#bs-info-modal-{{ $cdata->id }}">Read
+                                                        Instructions</button>
+                                                @endif
 
-                                            @if ($cdata->video_info_url)
-                                                <button id="vid-btn-{{ $cdata->id }}" data-src="{{ $info_video }}"
-                                                    data-title="{{ $cdata->title }}" type="button"
-                                                    class="video-btn btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
-                                                    data-bs-target="#bs-video-modal">Instructions
-                                                    Video</button>
-                                                {{-- <a class="popup-youtube btn btn-primary" href="{{ $video_url }}">Open
+                                                @if ($cdata->video_info_url)
+                                                    <button id="vid-btn-{{ $cdata->id }}"
+                                                        data-src="{{ $info_video }}" data-title="{{ $cdata->title }}"
+                                                        type="button" class="video-btn btn btn-warning btn-sm mb-5"
+                                                        data-bs-toggle="modal" data-bs-target="#bs-video-modal">Instructions
+                                                        Video</button>
+                                                    {{-- <a class="popup-youtube btn btn-primary" href="{{ $video_url }}">Open
                                                     YouTube video</a> --}}
-                                            @endif
+                                                @endif
 
-                                            <button id="read-btn-{{ $cdata->id }}" data-id="{{ $cdata->id }}"
-                                                type="button"
-                                                class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
-                                                    ? 'Completed'
-                                                    : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
+                                                <button id="read-btn-{{ $cdata->id }}" data-id="{{ $cdata->id }}"
+                                                    type="button"
+                                                    class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
+                                                        ? 'Completed'
+                                                        : 'Mark
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
+                                            @else
+                                            <button class="btn btn-warning btn-sm mb-5">Buy Subscription</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
