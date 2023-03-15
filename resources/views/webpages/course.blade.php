@@ -36,7 +36,7 @@
                                         <div class="mt-30 pro-dec text-center">
                                             <h5 class="fw-500"><a href="#">{{ $cdata->course_name }}</a></h5>
                                             <div class="price-dle d-flex justify-content-center align-items-center">
-                                                <a href="{{ route('teacher.lesson.list', ['classid' => $cdata->class_id,'course'=> $cdata->course_id]) }}"
+                                                <a href="{{ route('teacher.lesson.list', ['classid' => $classId,'course'=> $cdata->course_id]) }}"
                                                     class="btn btn-sm btn-primary me-2">View Instruction Modules</a>
                                             </div>
                                         </div>

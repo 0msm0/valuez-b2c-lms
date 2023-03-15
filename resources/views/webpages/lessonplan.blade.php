@@ -30,14 +30,19 @@
                     @if ($lessonPlan->first())
                         @foreach ($lessonPlan as $cdata)
                             @php
-                                $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
-                                $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
+                                if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0) {
+                                    $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
+                                    $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
+                                } else {
+                                    $main_video = $info_video = '#';
+                                }
                             @endphp
                             <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
                                     <img class="video-btn"
                                         src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
-                                        alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}" data-bs-toggle="modal"
+                                        alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}"
+                                        data-bs-toggle="modal{{ $main_video == '#' ? '#' : '' }}"
                                         data-src="{{ $main_video }}" data-bs-target="#bs-video-modal" />
 
                                     <div class="card-body">
@@ -52,9 +57,8 @@
                                                         {{ $cdata->course->course_name }}</a></li>
                                             </ul>
                                         </div>
-
-                                        <div class="justify-content-center align-items-center">
-                                            @if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0)
+                                        @if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0)
+                                            <div class="justify-content-center align-items-center">
                                                 @if ($cdata->lesson_desc)
                                                     <button type="button" class="btn btn-info btn-sm mb-5"
                                                         data-bs-toggle="modal"
@@ -77,12 +81,25 @@
                                                     class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                         ? 'Completed'
                                                         : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
-                                            @else
-                                            <button class="btn btn-warning btn-sm mb-5">Buy Subscription</button>
-                                            @endif
-                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
+
+                                            </div>
+                                        @else
+                                            <div class="card-footer justify-content-between d-flex px-0 pb-0">
+                                               
+                                                <ul class="list-inline mb-0">
+                                                    <li><button class="btn btn-warning btn-sm mb-5">Buy
+                                                            Subscription</button></li>
+                                                </ul>
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item">
+                                                        <button type="button" class="waves-effect waves-circle btn btn-circle btn-info btn-xs mb-5"><i class="mdi mdi-lock"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>

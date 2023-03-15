@@ -11,13 +11,15 @@ class WebPage extends Controller
 {
     public function courselist(Request $req)
     {
-        $course = LessonPlan::join("master_course as mc", "mc.id", "=", "lesson_plan.course_id")
-            ->where(['class_id' => $req->class, 'lesson_plan.status' => 1])
+        $classId = $req->class;
+        $course = LessonPlan::join("master_course as mc", "mc.id", "=", "lesson_plan.course_id")            
+            ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
+            ->where(['lesson_plan.status' => 1])
             ->groupBy('lesson_plan.course_id')
             ->orderBy('lesson_plan.id')
             ->selectRaw('lesson_plan.id,mc.course_name,mc.course_image,class_id,course_id')
             ->get();
-        return view('webpages.course', compact('course'));
+        return view('webpages.course', compact('course','classId'));
     }
 
     public function lessonPlan(Request $req)
@@ -34,7 +36,7 @@ class WebPage extends Controller
             $class_name = Program::find($class_id);
             $check_premium = School::find($schoolId);
             $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $req->course, 'class_id' => $class_id])->get(['lesson_id', 'position_order'])->toArray();
-
+            $sortedList = [];
             foreach ($lessonPlan as $sk => $lessondata) {
                 if (!empty($lessonplan_sort_list)) {
                     $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
@@ -50,7 +52,7 @@ class WebPage extends Controller
                 $sortedList[$postionId]['position'] = $postionId;
             }
             $lessonPlan = collect($sortedList)->sortBy('position');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name','check_premium'));
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name', 'check_premium'));
         }
     }
 
@@ -95,7 +97,8 @@ class WebPage extends Controller
     }
 
     /**public page */
-    public function getDemo(Request $req){
+    public function getDemo(Request $req)
+    {
         return view('webpages.get-demo');
     }
 }

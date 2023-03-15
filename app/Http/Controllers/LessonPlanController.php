@@ -23,6 +23,10 @@ class LessonPlanController extends Controller
                     return '<img src="' . url('uploads/lessonplan/' . $ImagePath) . '" width="32" height="32" class="bg-light my-n1"
                     alt="' . $row->title . '">';
                 })
+                ->addColumn('class_name', function ($row) {
+                    $class_list_name = Program::whereIn('id',explode(",",$row->class_id))->get(['class_name'])->toArray();
+                    return array_column($class_list_name,'class_name');
+                })
                 ->editColumn('status', function ($row) {
                     $span_btn = '<span class="badge bg-' . ($row->status == 1 ? 'success' : 'danger') . '">' . ($row->status == 1 ? 'Active' : 'Inactive') . '</span>';
                     return $span_btn;
