@@ -93,4 +93,9 @@ class WebPage extends Controller
         }
         return $video_url;
     }
+
+    /**public page */
+    public function getDemo(Request $req){
+        return view('webpages.get-demo');
+    }
 }

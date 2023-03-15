@@ -120,6 +120,8 @@ Route::middleware('auth')->prefix('reports')->controller(ReportController::class
     Route::get('view-engagement', 'index')->name('report.school.view');
     Route::get('view-history', 'viewTeacherSummary')->name('teacher.class.history');
 });
+
+Route::get('getdemo', [WebPage::class, 'getDemo'])->name('get.demo.page');
 Route::get('send-mail', function () {
     $details = [
         'view' => 'emails.test',
