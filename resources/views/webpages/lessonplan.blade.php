@@ -31,19 +31,26 @@
                         @foreach ($lessonPlan as $cdata)
                             @php
                                 if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0) {
+                                    $is_demo_content = 1;
                                     $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
                                     $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
                                 } else {
-                                    $main_video = $info_video = '#';
+                                    $main_video = $info_video = $is_demo_content = '#';
                                 }
                             @endphp
                             <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
+                                    @if ($is_demo_content == '#')
+                                        <div class="position-absolute r-0"><button type="button"
+                                                class="waves-effect waves-circle btn btn-circle btn-info btn-md mb-5" data-bs-toggle="modal"
+                                                data-bs-target="#bs-video-modal-demo"><i
+                                                    class="mdi mdi-lock fs-2"></i></button></div>
+                                    @endif
                                     <img class="video-btn"
                                         src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
-                                        alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}"
-                                        data-bs-toggle="modal{{ $main_video == '#' ? '#' : '' }}"
-                                        data-src="{{ $main_video }}" data-bs-target="#bs-video-modal" />
+                                        alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}" data-bs-toggle="modal"
+                                        data-src="{{ $main_video }}"
+                                        data-bs-target="#bs-video-modal{{ $main_video == '#' ? '-demo' : '' }}" />
 
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $cdata->title }}</h5>
@@ -81,22 +88,18 @@
                                                     class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                         ? 'Completed'
                                                         : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            complete' }}</button>
 
                                             </div>
                                         @else
                                             <div class="card-footer justify-content-between d-flex px-0 pb-0">
-                                               
+
                                                 <ul class="list-inline mb-0">
-                                                    <li><button class="btn btn-warning btn-sm mb-5">Buy
+                                                    <li><button class="btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
+                                                            data-bs-target="#bs-video-modal-demo">Buy
                                                             Subscription</button></li>
-                                                </ul>
-                                                <ul class="list-inline mb-0">
-                                                    <li class="list-inline-item">
-                                                        <button type="button" class="waves-effect waves-circle btn btn-circle btn-info btn-xs mb-5"><i class="mdi mdi-lock"></i></button>
-                                                    </li>
-                                                </ul>
+                                                </ul>                                                
                                             </div>
                                         @endif
 
@@ -135,6 +138,23 @@
         </div>
     </section>
     <!-- /.content -->
+
+
+    <!-- Info modal -->
+    <div class="modal fade" id="bs-video-modal-demo" tabindex="-1" role="dialog" aria-labelledby="modal-label-demo"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-">Alert</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You need to buy subscription.</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Main Video Modal -->
     <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

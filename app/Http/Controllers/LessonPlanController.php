@@ -186,7 +186,7 @@ class LessonPlanController extends Controller
                             $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
                             $postionId = $lessonplan_sort_list[$sortKey]->position_order;
                         }
-                        $sortedList[$postionId] = ['id' => $lessondata->id, 'title' => $lessondata->title, 'position' => $postionId];
+                        $sortedList[] = ['id' => $lessondata->id, 'title' => $lessondata->title, 'position' => $postionId];
                     }
                     // print_r($sortedList);
                     $orderedItems = collect($sortedList)->sortBy('position');
