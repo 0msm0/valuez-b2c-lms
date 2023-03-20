@@ -42,8 +42,8 @@
                                 <div class="card">
                                     @if ($is_demo_content == '#')
                                         <div class="position-absolute r-0"><button type="button"
-                                                class="waves-effect waves-circle btn btn-circle btn-info btn-md mb-5" data-bs-toggle="modal"
-                                                data-bs-target="#bs-video-modal-demo"><i
+                                                class="waves-effect waves-circle btn btn-circle btn-info btn-md mb-5"
+                                                data-bs-toggle="modal" data-bs-target="#bs-video-modal-demo"><i
                                                     class="mdi mdi-lock fs-2"></i></button></div>
                                     @endif
                                     <img class="video-btn"
@@ -88,8 +88,8 @@
                                                     class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                         ? 'Completed'
                                                         : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            complete' }}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        complete' }}</button>
 
                                             </div>
                                         @else
@@ -99,7 +99,7 @@
                                                     <li><button class="btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
                                                             data-bs-target="#bs-video-modal-demo">Buy
                                                             Subscription</button></li>
-                                                </ul>                                                
+                                                </ul>
                                             </div>
                                         @endif
 
@@ -150,7 +150,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
-                    <p>You need to buy subscription.</p>
+                    <p>Hello <b id="school_name"></b>,</p>
+
+                    <p>The academic year subscription of our "Near Future Technologies + NEP Values education package for
+                        21st
+                        Century school" gives you access to following:</p><br />
+
+                    <p>- Near Future Tech knowledge in easy, fun way (50+ modules)</p>
+                    <p>- Future Ready Bulletins (56 bulletins & more every 2 weeks)</p>
+                    <p>- NEP Values modules (Grade Nursery to 5)</p><br />
+
+                    <p>Easy teacher guidance with each module, and can seamlessly blend into your curriculum.</p><br />
+
+                    <p>Contact your school admin or write to <b>support@valuezhut.com</b> for a full subscription.</p>
+
+                    <p>Your partner in 21st century learner journey,<br />
+                        Valuez: Conversations Matter</p>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -184,7 +199,8 @@
 @section('script-section')
     <script language="javascript" type="text/javascript">
         $(function() {
-
+            var school_name = $("#get_schoolname").text();
+            $("#school_name").html(school_name);
             $('.mark-as-read').click(function() {
                 var videoId = $(this).attr('data-id');
                 $.ajax({

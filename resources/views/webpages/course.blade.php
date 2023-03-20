@@ -49,19 +49,21 @@
                                             ->where(['lesson_plan.status' => 1, 'course_id' => $cdata->course_id])
                                             ->selectRaw('count(lesson_plan.id) as total_atmpt_plan')
                                             ->first();
-
+                                        
                                         $percentage_course = ($course_coverge->total_atmpt_plan / $cdata->total_plan) * 100;
-                                        $percentage_val = ($percentage_course>=100)?100:$percentage_course;
+                                        $percentage_val = $percentage_course >= 100 ? 100 : $percentage_course;
                                     @endphp
                                     <div class="box-footer justify-content-around d-flex">
                                         <div class="progress progress-xl" style="width:100%;height:20px;">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                role="progressbar" style="width: {{ intval($percentage_val) }}%;" aria-valuenow="{{ intval($percentage_val) }}" aria-valuemin="0"
+                                                role="progressbar" style="width: {{ intval($percentage_val) }}%;"
+                                                aria-valuenow="{{ intval($percentage_val) }}" aria-valuemin="0"
                                                 aria-valuemax="100">
-                                                <strong>{{ $course_coverge->total_atmpt_plan }}/{{ $cdata->total_plan }}</strong></div>
+                                                <strong>{{ $course_coverge->total_atmpt_plan }}/{{ $cdata->total_plan }}</strong>
+                                            </div>
                                         </div>
                                         <div class="ms-2">
-                                            <button class="btn btn-xs btn-primary" data-bs-toggle="modal"
+                                            <button class="btn btn-xs btn-primary getProgress" data-bs-toggle="modal"
                                                 data-bs-target="#bs-progress-modal"
                                                 data-id="{{ $cdata->course_id }}">View</button>
                                         </div>
@@ -101,5 +103,25 @@
     </div><!-- /.modal -->
 @endsection
 
-
+@section('script-section')
+    <script language="javascript" type="text/javascript">
+        $(function() {
+            $('.getProgress').click(function() {
+                var courseId = $(this).attr('data-id');
+                var gradeId = {{ $classId }};
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('teacher.grade.course.history') }}",
+                    data: {
+                        courseId: courseId,
+                        classId: gradeId,
+                    },                  
+                    success: function(data) {
+                        console.log(data);                       
+                    }
+                });
+            });
+        });
+    </script>
+@endsection
 {{-- {{ $classId }} --}}

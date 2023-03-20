@@ -59,4 +59,16 @@ class ReportController extends Controller
         }
         return view('reports.lessonhistory');
     }
+
+    public function viewTeacherGradeSummary(Request $request)
+    {
+        $user = Auth::user();
+        if (($user) && $user->usertype == "teacher") {           
+            if ($request->ajax()) {
+                $data = Reports::where(['school' => $user->school_id, 'userid' => $user->id])->get()->toArray();
+                return response()->json($data);
+            }
+        }       
+    }
+
 }
