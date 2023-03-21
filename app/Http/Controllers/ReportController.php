@@ -47,12 +47,11 @@ class ReportController extends Controller
                         return $course->course_name;
                     })
                     ->editColumn('grade', function ($row) {
-                        $program = Program::whereIn('id', explode(',', $row->lessonplan->class_id))->get(['class_name'])->toArray();
-                        $class_name = array_column($program, 'class_name');
-                        return $class_name;
+                        $program = Program::find($row->classId);                        
+                        return $program->class_name;
                     })
                     ->editColumn('created_at', function ($row) {
-                        return $row->created_at;
+                        return date('Y-m-d', strtotime($row->created_at));
                     })
                     ->make(true);
             }
@@ -63,12 +62,11 @@ class ReportController extends Controller
     public function viewTeacherGradeSummary(Request $request)
     {
         $user = Auth::user();
-        if (($user) && $user->usertype == "teacher") {           
+        if (($user) && $user->usertype == "teacher") {
             if ($request->ajax()) {
-                $data = Reports::where(['school' => $user->school_id, 'userid' => $user->id])->get()->toArray();
+                $data = Reports::where(['school' => $user->school_id, 'userid' => $user->id, 'lesson_plan.course_id' => $request->courseId, 'classId' => $request->classId])->join('lesson_plan', 'lesson_plan.id', '=', 'reports.lesson_plan')->selectRaw('lesson_plan.title,CAST(reports.created_at as date) as created_report')->get()->toArray();
                 return response()->json($data);
             }
-        }       
+        }
     }
-
 }

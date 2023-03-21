@@ -45,8 +45,8 @@
                                     </div>
                                     @php
                                         $course_coverge = App\Models\LessonPlan::join('reports as r', 'r.lesson_plan', '=', 'lesson_plan.id')
-                                            ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
-                                            ->where(['lesson_plan.status' => 1, 'course_id' => $cdata->course_id])
+                                            // ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
+                                            ->where(['lesson_plan.status' => 1, 'course_id' => $cdata->course_id, 'classId' => $classId])
                                             ->selectRaw('count(lesson_plan.id) as total_atmpt_plan')
                                             ->first();
                                         
@@ -96,7 +96,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="view-history"></div>
+                    <table id="yajra-table" class="table b-1 border-primary" style="width:100%">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th>#</th>
+                                <th>Instruction Module</th>
+                                <th>Datetime</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-dark" id="view-history">
+
+                        </tbody>
+                    </table>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -107,6 +118,7 @@
     <script language="javascript" type="text/javascript">
         $(function() {
             $('.getProgress').click(function() {
+                $('#view-history').html('<tr><td colspan=2>No Data Found</td></tr>');
                 var courseId = $(this).attr('data-id');
                 var gradeId = {{ $classId }};
                 $.ajax({
@@ -115,9 +127,15 @@
                     data: {
                         courseId: courseId,
                         classId: gradeId,
-                    },                  
+                    },
                     success: function(data) {
-                        console.log(data);                       
+                        var html_row;
+                        $(data).each(function(i, k) {
+                            i++;
+                            html_row += '<tr><td>' + i + '</td><td>' + k.title +
+                                '</td><td>' + k.created_report + '</td></tr>';
+                        })
+                        $('#view-history').html(html_row);
                     }
                 });
             });

@@ -18,7 +18,7 @@ class WebPage extends Controller
             ->groupBy('lesson_plan.course_id')
             ->orderBy('lesson_plan.id')
             ->selectRaw('count(lesson_plan.id) as total_plan,mc.course_name,mc.course_image,class_id,course_id')
-            ->get();            
+            ->get();
         return view('webpages.course', compact('course', 'classId'));
     }
 
@@ -31,14 +31,14 @@ class WebPage extends Controller
             $class_id = $req->classid;
 
             $lessonPlan = LessonPlan::with('program', 'course')
-            ->leftJoin('plan_sorting','plan_sorting.lesson_id','=','lesson_plan.id')
-            ->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)')->where(['lesson_plan.course_id' => $req->course, 'lesson_plan.status' => 1])->selectRaw('lesson_plan.*,plan_sorting.position_order')->orderBy('plan_sorting.position_order')->get();       
+                ->leftJoin('plan_sorting', 'plan_sorting.lesson_id', '=', 'lesson_plan.id')
+                ->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)')->where(['lesson_plan.course_id' => $req->course, 'lesson_plan.status' => 1])->selectRaw('lesson_plan.*,plan_sorting.position_order')->orderBy('plan_sorting.position_order')->get();
 
-            $report = Reports::where(['userid' => $userId, 'school' => $schoolId])->get('lesson_plan')->toArray();
+            $report = Reports::where(['userid' => $userId, 'school' => $schoolId, 'classId' => $class_id])->get('lesson_plan')->toArray();
             $complete_lesson = array_column($report, 'lesson_plan');
             $class_name = Program::find($class_id);
             $check_premium = School::find($schoolId);
-            
+
             return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name', 'check_premium'));
         }
     }
@@ -50,8 +50,10 @@ class WebPage extends Controller
             $userId = $user->id;
             $schoolId = $user->school_id;
             $userType = $user->usertype;
+            $classId = $req->gradeId;
+
             if ($userType == 'teacher') {
-                $addReport = ['userid' => $userId, 'school' => $schoolId, 'lesson_plan' => $req->planId];
+                $addReport = ['userid' => $userId, 'school' => $schoolId, 'lesson_plan' => $req->planId, 'classId' => $classId];
                 Reports::updateOrCreate($addReport);
                 return "update";
             } else {

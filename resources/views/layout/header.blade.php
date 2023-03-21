@@ -61,7 +61,7 @@
                 </li>
                 <li class="btn-group nav-item">
                     <div class="d-flex pt-1 align-items-center">                       
-                        <img src="{{ 'https://lms.democlicks.com/valuez-hut/' . $logo }}"
+                        <img src="{{ asset($logo) }}"
                             class="bg-primary-light h-40" alt="">
                     </div>
                 </li>
@@ -229,7 +229,7 @@
                 <div class="sidebar-widgets">
                     <div class="mx-25 mb-30 pb-20 side-bx">
                         <div class="text-center">
-                            <img src="{{ 'https://lms.democlicks.com/valuez-hut/' . $logo }}" class="sideimg p-5"
+                            <img src="{{ asset($logo) }}" class="sideimg p-5"
                                 alt="">
                             <h4 class="title-bx text-primary" id="get_schoolname" data-text="{{ $header_name }}">{{ $header_name }}</h4>
                         </div>
