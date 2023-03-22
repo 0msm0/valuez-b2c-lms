@@ -30,15 +30,27 @@
                     @if ($lessonPlan->first())
                         @foreach ($lessonPlan as $cdata)
                             @php
-                                $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
-                                $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
+                                if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0) {
+                                    $is_demo_content = 1;
+                                    $main_video = !empty($cdata->video_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_url) : '';
+                                    $info_video = !empty($cdata->video_info_url) ? App\Http\Controllers\WebPage::getVideoUrl($cdata->video_info_url) : '';
+                                } else {
+                                    $main_video = $info_video = $is_demo_content = '#';
+                                }
                             @endphp
                             <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
+                                    @if ($is_demo_content == '#')
+                                        <div class="position-absolute r-0"><button type="button"
+                                                class="waves-effect waves-circle btn btn-circle btn-info btn-md mb-5"
+                                                data-bs-toggle="modal" data-bs-target="#bs-video-modal-demo"><i
+                                                    class="mdi mdi-lock fs-2"></i></button></div>
+                                    @endif
                                     <img class="video-btn"
                                         src="{{ url('uploads/lessonplan') }}/{{ $cdata->lesson_image ? $cdata->lesson_image : 'no_image.png' }}"
                                         alt="{{ $cdata->title }}" data-title="{{ $cdata->title }}" data-bs-toggle="modal"
-                                        data-src="{{ $main_video }}" data-bs-target="#bs-video-modal" />
+                                        data-src="{{ $main_video }}"
+                                        data-bs-target="#bs-video-modal{{ $main_video == '#' ? '-demo' : '' }}" />
 
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $cdata->title }}</h5>
@@ -52,9 +64,8 @@
                                                         {{ $cdata->course->course_name }}</a></li>
                                             </ul>
                                         </div>
-
-                                        <div class="justify-content-center align-items-center">
-                                            @if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0)
+                                        @if (($cdata->is_demo == 1 && $check_premium->is_demo == 1) || $check_premium->is_demo == 0)
+                                            <div class="justify-content-center align-items-center">
                                                 @if ($cdata->lesson_desc)
                                                     <button type="button" class="btn btn-info btn-sm mb-5"
                                                         data-bs-toggle="modal"
@@ -72,17 +83,26 @@
                                                     YouTube video</a> --}}
                                                 @endif
 
-                                                <button id="read-btn-{{ $cdata->id }}" data-id="{{ $cdata->id }}"
-                                                    type="button"
+                                                <button id="read-btn-{{ $cdata->id }}" data-grade="{{ $class_id }}"
+                                                    data-id="{{ $cdata->id }}" type="button"
                                                     class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                         ? 'Completed'
                                                         : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                complete' }}</button>
-                                            @else
-                                            <button class="btn btn-warning btn-sm mb-5">Buy Subscription</button>
-                                            @endif
-                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            complete' }}</button>
+
+                                            </div>
+                                        @else
+                                            <div class="card-footer justify-content-between d-flex px-0 pb-0">
+
+                                                <ul class="list-inline mb-0">
+                                                    <li><button class="btn btn-warning btn-sm mb-5" data-bs-toggle="modal"
+                                                            data-bs-target="#bs-video-modal-demo">Buy
+                                                            Subscription</button></li>
+                                                </ul>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -119,6 +139,38 @@
     </section>
     <!-- /.content -->
 
+
+    <!-- Info modal -->
+    <div class="modal fade" id="bs-video-modal-demo" tabindex="-1" role="dialog" aria-labelledby="modal-label-demo"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label-">Alert</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Hello <b id="school_name"></b>,</p>
+
+                    <p>The academic year subscription of our "Near Future Technologies + NEP Values education package for
+                        21st
+                        Century school" gives you access to following:</p><br />
+
+                    <p>- Near Future Tech knowledge in easy, fun way (50+ modules)</p>
+                    <p>- Future Ready Bulletins (56 bulletins & more every 2 weeks)</p>
+                    <p>- NEP Values modules (Grade Nursery to 5)</p><br />
+
+                    <p>Easy teacher guidance with each module, and can seamlessly blend into your curriculum.</p><br />
+
+                    <p>Contact your school admin or write to <b>support@valuezhut.com</b> for a full subscription.</p>
+
+                    <p>Your partner in 21st century learner journey,<br />
+                        Valuez: Conversations Matter</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <!-- Main Video Modal -->
     <div class="modal fade" id="bs-video-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -147,14 +199,17 @@
 @section('script-section')
     <script language="javascript" type="text/javascript">
         $(function() {
-
+            var school_name = $("#get_schoolname").text();
+            $("#school_name").html(school_name);
             $('.mark-as-read').click(function() {
                 var videoId = $(this).attr('data-id');
+                var classId = $(this).attr('data-grade');
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('report.save.plan') }}",
                     data: {
                         planId: videoId,
+                        gradeId: classId,
                     },
                     beforeSend: function() {
                         $('#read-btn-' + videoId).html("Please wait..");

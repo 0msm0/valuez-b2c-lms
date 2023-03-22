@@ -9,7 +9,7 @@
                     $school = App\Models\School::where('id', $schoolid)->first();
                     $logo = 'uploads/school/' . $school->school_logo;
                     $header_name = $school->school_name;
-
+                
                     $display_name = !empty($school->school_logo) ? 'd-none' : '';
                     $display_logo = empty($school->school_logo) ? 'd-none' : '';
                 } else {
@@ -19,13 +19,16 @@
                     $display_logo = '';
                 }
             @endphp
+
+
             <!-- logo-->
-            <div class="logo-mini {{ $display_logo }}">
-                <span class="light-logo"><img src="{{ asset($logo) }}" alt="logo" style="max-height:60px;"></span>
+            <div class="logo-mini">
+                <span class="light-logo"><img src="{{ asset('assets/images/logo-valuez.png') }}" alt="logo"
+                        style="max-height:60px;"></span>
             </div>
-            <div class="logo-lg {{ $display_name }}">
+            {{-- <div class="logo-lg {{ $display_name }}">
                 {{ $header_name }}
-            </div>
+            </div> --}}
 
         </a>
     </div>
@@ -54,6 +57,12 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </li>
+                <li class="btn-group nav-item">
+                    <div class="d-flex pt-1 align-items-center">                       
+                        <img src="{{ asset($logo) }}"
+                            class="bg-primary-light h-40" alt="">
                     </div>
                 </li>
             </ul>
@@ -201,13 +210,14 @@
                             <a href="{{ route('notify.schoolview') }}"><i data-feather="bell"></i><span>What's
                                     New</span></a>
                         </li>
-                    @elseif(session('usertype') == 'teacher')                       
+                    @elseif(session('usertype') == 'teacher')
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
                             <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade
                                     list</span></a>
                         </li>
                         <li class="{{ Request::is('teacher.class.history') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.class.history') }}"><i data-feather="calendar"></i><span>Module completion</span></a>
+                            <a href="{{ route('teacher.class.history') }}"><i
+                                    data-feather="calendar"></i><span>Module completion</span></a>
                         </li>
                     @endif
                     <li>
@@ -217,11 +227,11 @@
                 </ul>
 
                 <div class="sidebar-widgets">
-                    <div class="mx-25 mb-30 pb-20 side-bx bg-primary-light rounded20">
+                    <div class="mx-25 mb-30 pb-20 side-bx">
                         <div class="text-center">
-                            <img src="{{ asset('assets/images/logo-valuez.png') }}" class="sideimg p-5"
+                            <img src="{{ asset($logo) }}" class="sideimg p-5"
                                 alt="">
-                            <h4 class="title-bx text-primary">Valuez</h4>
+                            <h4 class="title-bx text-primary" id="get_schoolname" data-text="{{ $header_name }}">{{ $header_name }}</h4>
                         </div>
                     </div>
                 </div>

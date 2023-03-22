@@ -11,13 +11,15 @@ class WebPage extends Controller
 {
     public function courselist(Request $req)
     {
+        $classId = $req->class;
         $course = LessonPlan::join("master_course as mc", "mc.id", "=", "lesson_plan.course_id")
-            ->where(['class_id' => $req->class, 'lesson_plan.status' => 1])
+            ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
+            ->where(['lesson_plan.status' => 1])
             ->groupBy('lesson_plan.course_id')
             ->orderBy('lesson_plan.id')
-            ->selectRaw('lesson_plan.id,mc.course_name,mc.course_image,class_id,course_id')
+            ->selectRaw('count(lesson_plan.id) as total_plan,mc.course_name,mc.course_image,class_id,course_id')
             ->get();
-        return view('webpages.course', compact('course'));
+        return view('webpages.course', compact('course', 'classId'));
     }
 
     public function lessonPlan(Request $req)
@@ -28,29 +30,16 @@ class WebPage extends Controller
             $schoolId = $user->school_id;
             $class_id = $req->classid;
 
-            $lessonPlan = LessonPlan::with('program', 'course')->whereRaw('FIND_IN_SET("' . $class_id . '", class_id)')->where(['course_id' => $req->course, 'lesson_plan.status' => 1])->orderBy('lesson_plan.lesson_no')->get();
-            $report = Reports::where(['userid' => $userId, 'school' => $schoolId])->get('lesson_plan')->toArray();
+            $lessonPlan = LessonPlan::with('program', 'course')
+                ->leftJoin('plan_sorting', 'plan_sorting.lesson_id', '=', 'lesson_plan.id')
+                ->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)')->where(['lesson_plan.course_id' => $req->course, 'lesson_plan.status' => 1])->selectRaw('lesson_plan.*,plan_sorting.position_order')->orderBy('plan_sorting.position_order')->get();
+
+            $report = Reports::where(['userid' => $userId, 'school' => $schoolId, 'classId' => $class_id])->get('lesson_plan')->toArray();
             $complete_lesson = array_column($report, 'lesson_plan');
             $class_name = Program::find($class_id);
             $check_premium = School::find($schoolId);
-            $lessonplan_sort_list = DB::table('plan_sorting')->where(['course_id' => $req->course, 'class_id' => $class_id])->get(['lesson_id', 'position_order'])->toArray();
 
-            foreach ($lessonPlan as $sk => $lessondata) {
-                if (!empty($lessonplan_sort_list)) {
-                    $sortKey = array_search($lessondata->id, array_column($lessonplan_sort_list, 'lesson_id'));
-                    if ($sortKey > 0) {
-                        $postionId = $lessonplan_sort_list[$sortKey]->position_order;
-                    } else {
-                        $postionId = $sk++;
-                    }
-                } else {
-                    $postionId = $lessondata->id;
-                }
-                $sortedList[$postionId] = $lessondata;
-                $sortedList[$postionId]['position'] = $postionId;
-            }
-            $lessonPlan = collect($sortedList)->sortBy('position');
-            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name','check_premium'));
+            return view('webpages.lessonplan', compact('lessonPlan', 'complete_lesson', 'class_id', 'class_name', 'check_premium'));
         }
     }
 
@@ -61,8 +50,10 @@ class WebPage extends Controller
             $userId = $user->id;
             $schoolId = $user->school_id;
             $userType = $user->usertype;
+            $classId = $req->gradeId;
+
             if ($userType == 'teacher') {
-                $addReport = ['userid' => $userId, 'school' => $schoolId, 'lesson_plan' => $req->planId];
+                $addReport = ['userid' => $userId, 'school' => $schoolId, 'lesson_plan' => $req->planId, 'classId' => $classId];
                 Reports::updateOrCreate($addReport);
                 return "update";
             } else {
@@ -95,7 +86,8 @@ class WebPage extends Controller
     }
 
     /**public page */
-    public function getDemo(Request $req){
+    public function getDemo(Request $req)
+    {
         return view('webpages.get-demo');
     }
 }
