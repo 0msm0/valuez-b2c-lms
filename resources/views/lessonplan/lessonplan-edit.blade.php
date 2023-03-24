@@ -75,11 +75,11 @@
                             </div>
 
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="form-label">Lesson No</label>
                                 <input type="text" name="lesson_no" class="form-control"
                                     value="{{ $lessonplan->lesson_no }}" placeholder="Enter Lesson No">
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label class="form-label">Lesson Instructions</label>
                                 <textarea id="lesson_inst" name="lesson_desc" class="form-control" placeholder="Enter Lesson Instructions">{{ $lessonplan->lesson_desc }}</textarea>

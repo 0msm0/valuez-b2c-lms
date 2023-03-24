@@ -180,8 +180,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Email <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Email </label>
                                         <input type="text" name="secondary_email" value="{{ $school->second_email }}"
                                             class="form-control" placeholder="Enter Secondary Email">
                                         @error('secondary_email')
@@ -191,8 +190,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Mobile <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Mobile </label>
                                         <input type="text" name="secondary_mobile"
                                             value="{{ $school->second_mobile }}" class="form-control"
                                             placeholder="Enter Secondary Mobile">
