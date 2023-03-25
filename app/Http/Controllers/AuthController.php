@@ -102,28 +102,41 @@ class AuthController extends Controller
         $data = $request->all();
         $check = $this->create($data);
         $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $data['school']]);
-        return redirect($redirect)->withSuccess('User added successfully!');
+        if ($check == "error") {
+            return redirect($redirect)->with('error', 'Maximum licences limit reached.');
+        } else {
+            return redirect($redirect)->withSuccess('User added successfully!');
+        }
     }
 
     public function create(array $data)
     {
-        $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
-        $user_email = strtolower($data['email']);
-        $username = explode("@", $user_email);
-        $userId = trim($username[0]) . date('Yims');
-        $add_user = [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'school_id' => $data['school'],
-            'usertype' => 'teacher',
-            'status' => 1,
-            'username' => $userId,
-            'view_pass' => $passWord,
-            'password' => Hash::make($passWord)
-        ];
-        #print_r($add_user); die;
-        $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord]);
-        return User::create($add_user);
+        $check_school_user = School::with(['teacher' => function ($query) {
+            $query->where('usertype', '=', 'teacher')->where(['is_deleted' => 0]);
+        }])->where(['is_deleted' => 0])->orderBy('id')->first();
+
+        $total_teacher = $check_school_user->teacher->count();       
+        if ($check_school_user->licence > $total_teacher) {
+            $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
+            $user_email = strtolower($data['email']);
+            $username = explode("@", $user_email);
+            $userId = trim($username[0]) . date('Yims');
+            $add_user = [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'school_id' => $data['school'],
+                'usertype' => 'teacher',
+                'status' => 1,
+                'username' => $userId,
+                'view_pass' => $passWord,
+                'password' => Hash::make($passWord)
+            ];
+            #print_r($add_user); die;
+            $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord]);
+            return User::create($add_user);
+        } else {
+            return "error";
+        }
     }
 
     public function edituser(Request $request)
@@ -143,7 +156,7 @@ class AuthController extends Controller
         if (!empty($data['password'])) {
             $details = [
                 'view' => 'emails.reset_password',
-                'subject' => $data['name'].' Your Account Password Reset by admin - Valuez',
+                'subject' => $data['name'] . ' Your Account Password Reset by admin - Valuez',
                 'title' => $data['name'],
                 'email' => $data['email'],
                 'pass' => $data['password']

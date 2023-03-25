@@ -81,7 +81,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School Remarks <span class="text-danger">*</span></label>
+                                        <label class="form-label">School Remarks</label>
                                         <textarea name="school_desc" class="form-control" placeholder="Enter School specific details">{{ old('school_desc') }}</textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription Start date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" value="{{ old('package_start') }}" min='{{ date('Y-m-d') }}' name="package_start"
+                                        <input type="date" value="{{ old('package_start') }}" min='{{ date('Y-m-d', strtotime("-12 month")) }}' name="package_start"
                                             class="form-control" placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
