@@ -179,7 +179,7 @@
 
 @section('script-section')
     <script>
-        $('.click2copy').click(function() {
+        $(document).on('click', '.click2copy', function() {
             var copyType = $(this).attr('data-copy');
             if (copyType == "pass") {
                 copytext = $("#viewPass").text();
@@ -203,7 +203,8 @@
 
 
         $(document).ready(function() {
-            $('.view_password').click(function() {
+
+            $(document).on('click', '.view_password', function() {
                 var viewPass = $(this).attr('data-pass');
                 var viewEmail = $(this).attr('data-email');
                 $("#viewPass").text(viewPass);
@@ -212,7 +213,7 @@
                 // alert("Password : " + viewPass);
             });
 
-            $('.reset_password').click(function() {
+            $(document).on('click', '.reset_password', function() {
                 let text;
                 if (confirm("Press Ok for Reset Password!") == true) {
                     $.ajax({
@@ -234,13 +235,13 @@
                 }
             });
 
-            $('.remove_user_data').click(function() {
+            $(document).on('click', '.remove_user_data', function() {
                 var userId = $(this).attr("data-userid");
                 $('#remUser').val(userId);
                 $("#error-list").html('');
             });
 
-            $('#remove_user').click(function() {
+            $(document).on('click', '#remove_user', function() {
                 $("#error-list").html('').removeClass('text-danger text-success');
                 $.ajax({
                     url: "{{ route('teacher.remove') }}",
@@ -264,7 +265,7 @@
                 });
             });
 
-            $('.change_status').click(function() {
+            $(document).on('click', '.change_status', function() {
                 var id = $(this).attr('data-id');
                 var status = $(this).attr('data-status');
                 $.ajax({

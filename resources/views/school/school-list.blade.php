@@ -171,13 +171,13 @@
 @endsection
 @section('script-section')
     <script>
-        $('.remove_school_data').click(function() {
+        $(document).on('click', '.remove_school_data', function() {
             var schoolId = $(this).attr("data-schoolid");
             $('#remSchool').val(schoolId);
             $("#error-list").html('');
         });
 
-        $('.preview_school_data').click(function() {
+        $(document).on('click', '.preview_school_data', function() {
             var schoolId = $(this).attr("data-school");
             $.ajax({
                 url: "{{ route('school.preview') }}",
@@ -191,7 +191,7 @@
             });
         });
 
-        $('#remove_school_user').click(function() {
+        $(document).on('click', '#remove_school_user', function() {
             $("#error-list").html('').removeClass('text-danger text-success');
             $.ajax({
                 url: "{{ route('school.remove') }}",
@@ -216,7 +216,7 @@
         });
 
         $(document).ready(function() {
-            $('.change_status').click(function() {
+            $(document).on('click', '.change_status', function() {
                 var id = $(this).attr('data-id');
                 var status = $(this).attr('data-status');
                 $.ajax({
@@ -238,9 +238,10 @@
                 });
             });
 
-            $('.change_school_demo_status').click(function() {
+            $(document).on('click', '.change_school_demo_status', function() {
                 var id = $(this).attr('data-id');
                 var status = $(this).attr('data-status');
+                console.log(id);
                 $.ajax({
                     url: "{{ route('school.demo.status') }}",
                     type: "POST",
