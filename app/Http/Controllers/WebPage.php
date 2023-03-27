@@ -32,6 +32,7 @@ class WebPage extends Controller
 
             $lessonPlan = LessonPlan::with('program', 'course')
                 ->leftJoin('plan_sorting', 'plan_sorting.lesson_id', '=', 'lesson_plan.id')
+                ->groupBy('lesson_plan.id')
                 ->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)')->where(['lesson_plan.course_id' => $req->course, 'lesson_plan.status' => 1])->selectRaw('lesson_plan.*,plan_sorting.position_order')->orderBy('plan_sorting.position_order')->get();
 
             $report = Reports::where(['userid' => $userId, 'school' => $schoolId, 'classId' => $class_id])->get('lesson_plan')->toArray();
@@ -65,7 +66,7 @@ class WebPage extends Controller
     public static function getVideoUrl($video_src = "")
     {
         $parsed = parse_url($video_src);
-        $checkUrlHost = explode('.', $parsed['host']);
+        $checkUrlHost = isset($parsed['host'])?explode('.', $parsed['host']):[];
         if (in_array('youtube', $checkUrlHost)) {
             $video_id = explode('?v=', $video_src);
             if (empty($video_id[1])) {
