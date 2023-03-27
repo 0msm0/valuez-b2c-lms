@@ -24,8 +24,8 @@ class LessonPlanController extends Controller
                     alt="' . $row->title . '">';
                 })
                 ->addColumn('class_name', function ($row) {
-                    $class_list_name = Program::whereIn('id',explode(",",$row->class_id))->get(['class_name'])->toArray();
-                    return array_column($class_list_name,'class_name');
+                    $class_list_name = Program::whereIn('id', explode(",", $row->class_id))->get(['class_name'])->toArray();
+                    return array_column($class_list_name, 'class_name');
                 })
                 ->editColumn('status', function ($row) {
                     $span_btn = '<span class="badge bg-' . ($row->status == 1 ? 'success' : 'danger') . '">' . ($row->status == 1 ? 'Active' : 'Inactive') . '</span>';
@@ -43,8 +43,12 @@ class LessonPlanController extends Controller
                     class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5">Delete</a>' : '';
                     $action_btn = $edit_btn . $remove_btn;
                     return $action_btn;
+                })->filter(function ($query) {
+                    if (request()->has('class_id')) {
+                        $class_id = request('class_id');
+                        $query->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)');
+                    }                   
                 })
-
                 ->rawColumns(['action', 'is_demo', 'lesson_image', 'status'])
                 ->make(true);
         }
@@ -72,15 +76,19 @@ class LessonPlanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'video_url' => 'required',
-            'lesson_no' => 'required',
+        $valid_rule = [
+            'title' => 'required',         
+            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'], 
             'class_id' => 'required',
             'course_id' => 'required',
             'image' => 'required',
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        ];
+
+        if(!empty($request->video_info_url)){
+            $valid_rule['video_info_url'] = ['regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'];
+        }
+        $request->validate($valid_rule);
 
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/lessonplan/';
@@ -93,7 +101,7 @@ class LessonPlanController extends Controller
             'title' => $request->title,
             'video_url' => $request->video_url,
             'video_info_url' => $request->video_info_url,
-            'lesson_no' => $request->lesson_no,
+            'lesson_no' => 0,
             'lesson_desc' => $request->lesson_desc,
             'class_id' => implode(",", $request->class_id),
             'course_id' => $request->course_id,
@@ -107,14 +115,17 @@ class LessonPlanController extends Controller
 
     public function edit(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'video_url' => 'required',
-            'lesson_no' => 'required',
+        $valid_rule = [
+            'title' => 'required',         
+            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'], 
             'class_id' => 'required',
-            'course_id' => 'required',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+            'course_id' => 'required',            
+        ];
+        if(!empty($request->video_info_url)){
+            $valid_rule['video_info_url'] = ['regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'];
+        }
+        $request->validate($valid_rule);
+
 
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/lessonplan/';
@@ -131,7 +142,7 @@ class LessonPlanController extends Controller
             'title' => $request->title,
             'video_url' => $request->video_url,
             'video_info_url' => $request->video_info_url,
-            'lesson_no' => $request->lesson_no,
+            'lesson_no' => 0,
             'lesson_desc' => $request->lesson_desc,
             'class_id' => implode(",", $request->class_id),
             'course_id' => $request->course_id,

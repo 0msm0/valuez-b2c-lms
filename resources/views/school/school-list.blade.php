@@ -27,6 +27,13 @@
                         {{ $message }}
                     </div>
                 @endif
+
+                @if (session('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">School</h5>
@@ -75,10 +82,10 @@
                                                     data-status="{{ $sdata->status }}">{{ $sdata->status == 1 ? 'Active' : 'Inactive' }}</a>
                                             </td>
                                             <td><a href="javascript:void(0);"
-                                                class="change_school_demo_status text-white badge bg-{{ $sdata->is_demo == 1 ? 'success' : 'danger' }}"
-                                                id="demo_status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
-                                                data-status="{{ $sdata->is_demo }}">{{ $sdata->is_demo == 1 ? 'Yes' : 'No' }}</a>
-                                        </td>
+                                                    class="change_school_demo_status text-white badge bg-{{ $sdata->is_demo == 1 ? 'success' : 'danger' }}"
+                                                    id="demo_status_{{ $sdata->id }}" data-id="{{ $sdata->id }}"
+                                                    data-status="{{ $sdata->is_demo }}">{{ $sdata->is_demo == 1 ? 'Yes' : 'No' }}</a>
+                                            </td>
                                             <td> {{-- <a href="#"
                                                         class="waves-effect waves-light btn btn-sm btn-outline btn-danger mb-5" title=""><i
                                                             class="fa fa-lock"></i></a> --}}
@@ -245,9 +252,11 @@
                         var csts = (status == 1) ? 0 : 1;
                         $('#demo_status_' + id).text(data).attr('data-status', csts);
                         if (csts == 1) {
-                            $('#demo_status_' + id).addClass('bg-success').removeClass('bg-danger');
+                            $('#demo_status_' + id).addClass('bg-success').removeClass(
+                                'bg-danger');
                         } else {
-                            $('#demo_status_' + id).addClass('bg-danger').removeClass('bg-success');
+                            $('#demo_status_' + id).addClass('bg-danger').removeClass(
+                                'bg-success');
                         }
                     }
                 });

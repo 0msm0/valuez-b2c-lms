@@ -87,14 +87,15 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="form-label">Lesson No <span class="text-danger">*</span></label>
                                 <input type="number" name="lesson_no" value="{{ old('lesson_no') }}" class="form-control"
                                     placeholder="Enter Lesson No">
                                 @error('lesson_no')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                            </div>
+                            </div> --}}
+
                             <div class="form-group">
                                 <label class="form-label">Lesson Instructions</label>
                                 <textarea id="lesson_inst" rows="3" name="lesson_desc" class="form-control"

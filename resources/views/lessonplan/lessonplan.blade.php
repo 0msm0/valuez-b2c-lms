@@ -97,7 +97,7 @@
                     },
                     {
                         data: 'class_name',
-                        name: 'master_class.class_name'
+                        name: 'class_id'
                     },
                     {
                         data: 'course_name',
@@ -137,7 +137,7 @@
                             });
                         @foreach ($class_list as $cdata)
                             select.append(
-                                '<option value="{{ $cdata->class_name }}" data-id="{{ $cdata->id }}">{{ $cdata->class_name }}</option>'
+                                '<option value="{{ $cdata->id }}" data-id="{{ $cdata->id }}">{{ $cdata->class_name }}</option>'
                             );
                         @endforeach
                     });

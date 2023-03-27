@@ -73,7 +73,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School Remarks <span class="text-danger">*</span></label>
+                                        <label class="form-label">School Remarks</label>
                                         <textarea name="school_desc" class="form-control" placeholder="Enter School specific details">{{ $school->school_desc }}</textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
@@ -85,9 +85,9 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription Start date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date"
-                                            max='{{ date('Y-m-d', strtotime('+3 months', strtotime(date('Y-m-d')))) }}'
-                                            name="package_start" class="form-control" value="{{ $school->package_start }}"
+                                        <input type="date" min='{{ date('Y-m-d', strtotime('-12 month')) }}'
+                                            max='{{ date('Y-m-d', strtotime('+6 months')) }}' name="package_start"
+                                            class="form-control" value="{{ $school->package_start }}"
                                             placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
@@ -180,8 +180,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Email <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Email </label>
                                         <input type="text" name="secondary_email" value="{{ $school->second_email }}"
                                             class="form-control" placeholder="Enter Secondary Email">
                                         @error('secondary_email')
@@ -191,8 +190,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Mobile <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Mobile </label>
                                         <input type="text" name="secondary_mobile"
                                             value="{{ $school->second_mobile }}" class="form-control"
                                             placeholder="Enter Secondary Mobile">

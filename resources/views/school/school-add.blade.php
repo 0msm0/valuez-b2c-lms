@@ -81,7 +81,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">School Remarks <span class="text-danger">*</span></label>
+                                        <label class="form-label">School Remarks</label>
                                         <textarea name="school_desc" class="form-control" placeholder="Enter School specific details">{{ old('school_desc') }}</textarea>
                                         @error('school_desc')
                                             <span class="text-danger">{{ $message }}</span>
@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Subscription Start date <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" value="{{ old('package_start') }}" min='{{ date('Y-m-d') }}' name="package_start"
+                                        <input type="date" value="{{ old('package_start') }}" min='{{ date('Y-m-d', strtotime("-12 month")) }}' name="package_start"
                                             class="form-control" placeholder="Enter Subscription Start date">
                                         @error('package_start')
                                             <span class="text-danger">{{ $message }}</span>
@@ -163,7 +163,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-label">Primary Email <span class="text-danger">*</span></label>
-                                        <input type="text" name="primary_email" value="{{ old('primary_email') }}" class="form-control"
+                                        <input type="email" name="primary_email" value="{{ old('primary_email') }}" class="form-control"
                                             placeholder="Enter Primary Email">
                                         @error('primary_email')
                                             <span class="text-danger">{{ $message }}</span>
@@ -184,9 +184,8 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Email <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" name="secondary_email" value="{{ old('secondary_email') }}" class="form-control"
+                                        <label class="form-label">Secondary Email </label>
+                                        <input type="email" name="secondary_email" value="{{ old('secondary_email') }}" class="form-control"
                                             placeholder="Enter Secondary Email">
                                         @error('secondary_email')
                                             <span class="text-danger">{{ $message }}</span>
@@ -195,8 +194,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">Secondary Mobile <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Secondary Mobile </label>
                                         <input type="text" name="secondary_mobile" value="{{ old('secondary_mobile') }}" class="form-control"
                                             placeholder="Enter Secondary Mobile">
                                         @error('secondary_mobile')
