@@ -46,7 +46,7 @@
                                     @php
                                         $course_coverge = App\Models\LessonPlan::join('reports as r', 'r.lesson_plan', '=', 'lesson_plan.id')
                                             // ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
-                                            ->where(['lesson_plan.status' => 1, 'course_id' => $cdata->course_id, 'classId' => $classId])
+                                            ->where(['lesson_plan.status' => 1, 'course_id' => $cdata->course_id, 'classId' => $classId, 'userid' => $userId])
                                             ->selectRaw('count(lesson_plan.id) as total_atmpt_plan')
                                             ->first();
                                         

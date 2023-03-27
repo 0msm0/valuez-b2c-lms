@@ -11,6 +11,9 @@ class WebPage extends Controller
 {
     public function courselist(Request $req)
     {
+        $user = Auth::user();
+        $userId = $user->id;
+        $schoolId = $user->school_id;
         $classId = $req->class;
         $course = LessonPlan::join("master_course as mc", "mc.id", "=", "lesson_plan.course_id")
             ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
@@ -19,7 +22,7 @@ class WebPage extends Controller
             ->orderBy('lesson_plan.id')
             ->selectRaw('count(lesson_plan.id) as total_plan,mc.course_name,mc.course_image,class_id,course_id')
             ->get();
-        return view('webpages.course', compact('course', 'classId'));
+        return view('webpages.course', compact('course', 'classId','userId'));
     }
 
     public function lessonPlan(Request $req)
