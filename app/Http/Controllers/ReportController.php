@@ -51,7 +51,7 @@ class ReportController extends Controller
                         return $program->class_name;
                     })
                     ->editColumn('created_at', function ($row) {
-                        return date('Y-m-d', strtotime($row->created_at));
+                        return date('d-m-Y h:i A', strtotime($row->created_at));
                     })
                     ->make(true);
             }

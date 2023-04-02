@@ -7,6 +7,7 @@
 <script src="{{ asset('assets/icons/feather-icons/feather.min.js') }}"></script>
 <script src="{{ asset('assets/vendor_components/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('assets/vendor_components/select2/dist/js/select2.full.js') }}"></script>
+<script src="{{ asset('assets/vendor_components/sweetalert/sweetalert.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $.ajaxSetup({

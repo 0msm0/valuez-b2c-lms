@@ -88,8 +88,8 @@
                                                     class="btn btn-{{ in_array($cdata->id, $complete_lesson) ? 'success' : 'dark mark-as-read' }} btn-sm">{{ in_array($cdata->id, $complete_lesson)
                                                         ? 'Completed'
                                                         : 'Mark
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            as
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            complete' }}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        as
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        complete' }}</button>
 
                                             </div>
                                         @else
@@ -204,25 +204,45 @@
             $('.mark-as-read').click(function() {
                 var videoId = $(this).attr('data-id');
                 var classId = $(this).attr('data-grade');
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('report.save.plan') }}",
-                    data: {
-                        planId: videoId,
-                        gradeId: classId,
-                    },
-                    beforeSend: function() {
-                        $('#read-btn-' + videoId).html("Please wait..");
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        if (data == 'update') {
-                            $('#read-btn-' + videoId).html("Completed").addClass("btn-success")
-                                .removeClass("btn-dark");
-                        } else {
-                            console.log(data);
-                            $('#read-btn-' + videoId).html("Error");
-                        }
+                swal({
+                    title: "Are you sure?",
+                    text: "This is one way action. Click Yes only after teaching this module in the class",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#fec801",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                      
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('report.save.plan') }}",
+                            data: {
+                                planId: videoId,
+                                gradeId: classId,
+                            },
+                            beforeSend: function() {
+                                $('#read-btn-' + videoId).html("Please wait..");
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                if (data == 'update') {
+                                    $('#read-btn-' + videoId).html("Completed")
+                                        .addClass("btn-success")
+                                        .removeClass("btn-dark");
+                                    swal("Completed!",
+                                        "Your Module has been marked as completed.",
+                                        "success");
+                                } else {
+                                    console.log(data);
+                                    $('#read-btn-' + videoId).html("Error");
+                                }
+                            }
+                        });
+
                     }
                 });
             });
