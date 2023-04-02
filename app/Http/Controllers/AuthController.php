@@ -113,9 +113,10 @@ class AuthController extends Controller
     {
         $check_school_user = School::with(['teacher' => function ($query) {
             $query->where('usertype', '=', 'teacher')->where(['is_deleted' => 0]);
-        }])->where(['is_deleted' => 0])->orderBy('id')->first();
+        }])->where(['is_deleted' => 0,'id'=>$data['school']])->orderBy('id')->first();
 
-        $total_teacher = $check_school_user->teacher->count();       
+        $total_teacher = $check_school_user->teacher->count();  
+   
         if ($check_school_user->licence > $total_teacher) {
             $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
             $user_email = strtolower($data['email']);
