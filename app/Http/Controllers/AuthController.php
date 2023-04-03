@@ -306,6 +306,6 @@ class AuthController extends Controller
             'pass' => $data['pass'],
             'school_name' => $data['school_name'],
         ];
-        Mail::to($data['username'])->send(new \App\Mail\TestMail($details));
+        #Mail::to($data['username'])->send(new \App\Mail\TestMail($details));
     }
 }
