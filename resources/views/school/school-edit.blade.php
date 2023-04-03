@@ -71,6 +71,15 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="formFile" class="form-label">School Image </label>
+                                        <input class="form-control" type="file" name="image" id="formFile">
+                                        <img src="{{ url('uploads/school') }}/{{ $school->school_logo ? $school->school_logo : 'no_image.png' }}"
+                                            width="50px">
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label">School Remarks</label>
@@ -265,6 +274,7 @@
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <input type="hidden" name="id" value="{{ $school->id }}">
+                            <input type="hidden" name="old_image" value="{{ $school->school_logo }}">
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </form>

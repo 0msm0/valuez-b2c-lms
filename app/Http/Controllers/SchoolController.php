@@ -137,6 +137,18 @@ class SchoolController extends Controller
             'grade_ids' => 'required',
             // 'image' => 'required',
         ]);
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'uploads/school/';
+            $originalname = $image->hashName();
+            $imageName = "plan_" . date('Ymd') . '_' . $originalname;
+            $image->move($destinationPath, $imageName);
+            $image_path = $destinationPath . $request->old_image;
+            @unlink($image_path);
+        } else {
+            $imageName = $request->old_image;
+        }
+
         $schoolData = [
             'school_name' => $request->title,
             'primary_person' => $request->primary_person,
@@ -148,6 +160,7 @@ class SchoolController extends Controller
             'address' => $request->address,
             'licence' => $request->licence,
             'school_desc' => $request->school_desc,
+            'school_logo' => $imageName,
             'package_start' => $request->package_start,
             'package_end' => $request->package_end,
             'state_id' => $request->state_id,
