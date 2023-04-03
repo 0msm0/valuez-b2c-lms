@@ -64,7 +64,7 @@ class ReportController extends Controller
         $user = Auth::user();
         if (($user) && $user->usertype == "teacher") {
             if ($request->ajax()) {
-                $data = Reports::where(['school' => $user->school_id, 'userid' => $user->id, 'lesson_plan.course_id' => $request->courseId, 'classId' => $request->classId])->join('lesson_plan', 'lesson_plan.id', '=', 'reports.lesson_plan')->selectRaw('lesson_plan.title,CAST(reports.created_at as date) as created_report')->get()->toArray();
+                $data = Reports::where(['school' => $user->school_id, 'userid' => $user->id, 'lesson_plan.course_id' => $request->courseId, 'classId' => $request->classId])->join('lesson_plan', 'lesson_plan.id', '=', 'reports.lesson_plan')->selectRaw('lesson_plan.title,DATE_FORMAT(reports.created_at, "%d-%m-%Y %h:%i %p") as created_report')->get()->toArray();
                 return response()->json($data);
             }
         }

@@ -113,10 +113,10 @@ class AuthController extends Controller
     {
         $check_school_user = School::with(['teacher' => function ($query) {
             $query->where('usertype', '=', 'teacher')->where(['is_deleted' => 0]);
-        }])->where(['is_deleted' => 0,'id'=>$data['school']])->orderBy('id')->first();
+        }])->where(['is_deleted' => 0, 'id' => $data['school']])->orderBy('id')->first();
 
-        $total_teacher = $check_school_user->teacher->count();  
-   
+        $total_teacher = $check_school_user->teacher->count();
+
         if ($check_school_user->licence > $total_teacher) {
             $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
             $user_email = strtolower($data['email']);
@@ -133,7 +133,7 @@ class AuthController extends Controller
                 'password' => Hash::make($passWord)
             ];
             #print_r($add_user); die;
-            $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord]);
+            $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord, 'school_name' => $check_school_user->school_name]);
             return User::create($add_user);
         } else {
             return "error";
@@ -303,7 +303,8 @@ class AuthController extends Controller
             'subject' => 'User Account creation Mail from Valuez',
             'title' => $data['username'],
             'userid' => $data['userid'],
-            'pass' => $data['pass']
+            'pass' => $data['pass'],
+            'school_name' => $data['school_name'],
         ];
         Mail::to($data['username'])->send(new \App\Mail\TestMail($details));
     }

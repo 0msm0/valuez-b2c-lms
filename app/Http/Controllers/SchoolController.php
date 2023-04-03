@@ -108,7 +108,7 @@ class SchoolController extends Controller
             Package::insert($package_info);
         }
         User::create($schoolAdmin);
-        $this->schoolAdminMail(['username' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass, 'email' => $user_email]);
+        $this->schoolAdminMail(['title' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass, 'email' => $user_email, 'school_name' => $request->title]);
         return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
     }
 
@@ -117,9 +117,10 @@ class SchoolController extends Controller
         $details = [
             'view' => 'emails.account',
             'subject' => 'School Admin Account creation Mail from Valuez',
-            'title' => $data['username'],
-            'userid' => $data['email'],
-            'pass' => $data['pass']
+            'title' => $data['title'],
+            'username' => $data['email'],
+            'pass' => $data['pass'],
+            'school_name' => $data['school_name'],
         ];
         Mail::to($data['email'])->send(new \App\Mail\TestMail($details));
     }

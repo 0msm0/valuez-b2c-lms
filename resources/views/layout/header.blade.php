@@ -59,6 +59,7 @@
                         </div>
                     </div>
                 </li>
+                <li class="btn-group nav-item"><h4 class="title-bx text-primary">{{ $header_name }}</h4></li>
                 <li class="btn-group nav-item">
                     <div class="d-flex pt-1 align-items-center">                       
                         <img src="{{ asset($logo) }}"
