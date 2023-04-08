@@ -21,7 +21,7 @@ class ReportController extends Controller
                     return $course->course_name;
                 })
                 ->editColumn('grade', function ($row) {
-                    $program = Program::whereIn('id', explode(',', $row->lessonplan->class_id))->get(['class_name'])->toArray();
+                    $program = Program::where('id', $row->classId)->get(['class_name'])->toArray();
                     $class_name = array_column($program, 'class_name');
                     return $class_name;
                 })

@@ -207,7 +207,7 @@
                 swal({
                     title: "Are you sure?",
                     text: "This is one way action. Click Yes only after teaching this module in the class",
-                    type: "warning",
+                    // type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#fec801",
                     confirmButtonText: "Yes",

@@ -59,13 +59,13 @@
                         </div>
                     </div>
                 </li>
-                <li class="btn-group nav-item"><h4 class="title-bx text-primary">{{ $header_name }}</h4></li>
+                {{-- <li class="btn-group nav-item"><h4 class="title-bx text-primary">{{ $header_name }}</h4></li>
                 <li class="btn-group nav-item">
                     <div class="d-flex pt-1 align-items-center">                       
                         <img src="{{ asset($logo) }}"
                             class="bg-primary-light h-40" alt="">
                     </div>
-                </li>
+                </li> --}}
             </ul>
         </div>
 
@@ -80,7 +80,7 @@
                         </label>
                     </a>
                 </li> --}}
-                <li class="dropdown notifications-menu btn-group">
+                {{-- <li class="dropdown notifications-menu btn-group">
                     <a href="#" class="waves-effect waves-light btn-primary-light svg-bt-icon bg-transparent"
                         data-bs-toggle="dropdown" title="Notifications">
                         <i data-feather="bell"></i>
@@ -120,7 +120,7 @@
                             <a href="#">View all</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 @php
                     $user_type = session('usertype') == 'superadmin' ? 'Super Admin' : session('usertype');
                     $fullname = auth()->user()->name;
