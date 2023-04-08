@@ -15,6 +15,7 @@ class WebPage extends Controller
         $userId = $user->id;
         $schoolId = $user->school_id;
         $classId = $req->class;
+        $class_name = Program::find($classId);
         $course = LessonPlan::join("master_course as mc", "mc.id", "=", "lesson_plan.course_id")
             ->whereRaw('FIND_IN_SET("' . $classId . '", class_id)')
             ->where(['lesson_plan.status' => 1])
@@ -22,7 +23,7 @@ class WebPage extends Controller
             ->orderBy('lesson_plan.id')
             ->selectRaw('count(lesson_plan.id) as total_plan,mc.course_name,mc.course_image,class_id,course_id')
             ->get();
-        return view('webpages.course', compact('course', 'classId','userId'));
+        return view('webpages.course', compact('course', 'classId','userId','class_name'));
     }
 
     public function lessonPlan(Request $req)

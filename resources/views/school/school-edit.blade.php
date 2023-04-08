@@ -189,6 +189,17 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                        <label class="form-label">Password</label>
+                                        <input type="text" name="primary_password" value=""
+                                            class="form-control" placeholder="Enter New Password">
+                                        @error('primary_password')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label class="form-label">Secondary Email </label>
                                         <input type="text" name="secondary_email" value="{{ $school->second_email }}"
                                             class="form-control" placeholder="Enter Secondary Email">

@@ -171,6 +171,17 @@ class SchoolController extends Controller
             'status' => $request->status,
         ];
 
+        $admin_user_data = [
+            'name' => $request->primary_person,
+            'email' => $request->primary_email,
+        ];
+
+        if (!empty($request->primary_password)) {
+            $admin_user_data['view_pass'] = $request->primary_password;
+            $admin_user_data['password'] = Hash::make($request->primary_password);
+            User::where(['school_id' => $request->id, 'usertype' => 'admin'])->update($admin_user_data);
+        }
+
         if (!empty($request->grade_ids)) {
             $package_info = [];
             $package = Package::where('school_id', $request->id)->get(['grade'])->toArray();
@@ -267,15 +278,15 @@ class SchoolController extends Controller
         if ($school_id > 0) {
             $school_data = School::find($school_id);
             $package = Package::with('grade')->where('school_id', $school_id)->get()->toArray();
-           
+
             $city_state = CitiesModel::with('state')->where(["state_id" => $school_data->state_id, "id" => $school_data->city_id])->first();
             $grade_name = [];
-            if (!empty($package)) {              
+            if (!empty($package)) {
                 foreach ($package as $grade) {
                     $grade_name[] = @$grade['grade']['class_name'];
                 }
-            }          
-            $grades = implode(",", $grade_name);    
+            }
+            $grades = implode(",", $grade_name);
             return view('school.preview_school', compact('school_data', 'city_state', 'grades'));
         }
     }

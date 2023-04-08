@@ -10,7 +10,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><i class="mdi mdi-home-outline"></i></li>
                             <li class="breadcrumb-item" aria-current="page"><a
-                                    href="{{ route('teacher.class.list') }}">Grade</a></li>
+                                    href="{{ route('teacher.class.list') }}" id="grade-name">{{ $class_name->class_name; }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Course</li>
                         </ol>
                     </nav>
