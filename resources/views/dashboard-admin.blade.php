@@ -50,7 +50,7 @@
                     <div class="box-body p-xl-0 text-center">
                         <h3 class="px-30 mb-20">Have More<br>Knowledge to share?</h3>
                         <a href="{{ route('lesson.plan.add') }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
-                                class="fa fa-plus me-15"></i> Create New Lesson Plan</a>
+                                class="fa fa-plus me-15"></i> Create New Instructional Module</a>
                     </div>
                 </div>
                 <div class="row">
