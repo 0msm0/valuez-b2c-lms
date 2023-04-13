@@ -38,7 +38,7 @@
                                     $main_video = $info_video = $is_demo_content = '#';
                                 }
                             @endphp
-                            <div class="col-xl-6 col-md-6 col-12 px-4">
+                            <div class="col-xl-4 col-md-6 col-12 px-4">
                                 <div class="card">
                                     @if ($is_demo_content == '#')
                                         <div class="position-absolute r-0"><button type="button"
