@@ -174,13 +174,14 @@ class SchoolController extends Controller
         $admin_user_data = [
             'name' => $request->primary_person,
             'email' => $request->primary_email,
+            'status' => 1,
         ];
 
         if (!empty($request->primary_password)) {
             $admin_user_data['view_pass'] = $request->primary_password;
             $admin_user_data['password'] = Hash::make($request->primary_password);
-            User::where(['school_id' => $request->id, 'usertype' => 'admin'])->update($admin_user_data);
         }
+        User::where(['school_id' => $request->id, 'usertype' => 'admin'])->update($admin_user_data);
 
         if (!empty($request->grade_ids)) {
             $package_info = [];

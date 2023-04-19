@@ -255,26 +255,9 @@ class AuthController extends Controller
 
     public function SchoolAdmin(Request $request)
     {
-
-        if ($request->ajax()) {
-            $adminuserlist = User::query()->with('school')->where(['usertype' => 'admin', 'users.is_deleted' => 0]);
-            return Datatables::of($adminuserlist)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($row) {
-                    return date('Y-m-d', strtotime($row->created_at));
-                })
-                ->editColumn('school_id', function ($row) {
-                    return $row->school->school_name;
-                })
-                ->addColumn('action', function ($row) {
-                    $edit = '<a href="' . route('school.admin.edit', ['userid' => $row->id]) . '" class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Edit</a>';
-                    #$remove = '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">Delete</a>';
-                    return $edit;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('users.schooladmin.admin');
+        $schoolid = $request->school;
+        $userlist = User::where(['school_id' => $schoolid, 'usertype' => 'admin', 'users.is_deleted' => 0])->orderBy('id')->get();
+        return view('users.schooladmin.admin', compact('userlist','schoolid'));
     }
 
     public function signOut(Request $request)

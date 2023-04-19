@@ -102,9 +102,13 @@
                                                     class="waves-effect waves-light btn btn-sm btn-outline btn-warning mb-5"
                                                     title="View Analytics"><i class="fa fa-bar-chart"></i></a>
 
+                                                <a href="{{ route('school.admin', ['school' => $sdata->id]) }}"
+                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5"
+                                                    title="Manage Admin"><i class="fa fa-user-o"></i> Admin</a>
+
                                                 <a href="{{ route('teacher.list', ['school' => $sdata->id]) }}"
-                                                    class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
-                                                    title="Manage Teacher"><i class="fa fa-user-o"></i> Teacher</a>
+                                                        class="waves-effect waves-light btn btn-sm btn-outline btn-primary mb-5"
+                                                        title="Manage Teacher"><i class="fa fa-user-o"></i> Teacher</a>
 
                                             </td>
                                         </tr>
