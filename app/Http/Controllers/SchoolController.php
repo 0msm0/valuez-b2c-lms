@@ -130,13 +130,17 @@ class SchoolController extends Controller
         $request->validate([
             'title' => 'required',
             'primary_person' => 'required',
-            'primary_email' => 'required',
-            'licence' => 'required',
+            'primary_email' => 'required|email|unique:users,email',
+            'licence' => 'required|numeric',
             'package_start' => 'required',
             'package_end' => 'required',
             'grade_ids' => 'required',
             // 'image' => 'required',
         ]);
+
+        if (!empty($request->licence)) {
+
+        }
 
         if ($image = $request->file('image')) {
             $destinationPath = 'uploads/school/';
