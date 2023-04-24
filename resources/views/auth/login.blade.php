@@ -22,7 +22,7 @@
 </head>
 
 <body class="hold-transition theme-primary bg-img"
-    style="background-image: url({{ asset('assets/images/auth-bg/bg-16.jpg') }})">
+    style="background-image: url({{ asset('assets/images/auth-bg/bg-20.png') }})">
 
     <div class="container h-p100">
         <div class="row align-items-center justify-content-md-center h-p100">
