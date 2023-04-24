@@ -47,8 +47,8 @@ class LessonPlanController extends Controller
                     if (request()->has('class_id')) {
                         $class_id = request('class_id');
                         $query->whereRaw('FIND_IN_SET("' . $class_id . '", lesson_plan.class_id)');
-                    }                   
-                })
+                    }
+                },true)
                 ->rawColumns(['action', 'is_demo', 'lesson_image', 'status'])
                 ->make(true);
         }
@@ -77,8 +77,8 @@ class LessonPlanController extends Controller
     public function store(Request $request)
     {
         $valid_rule = [
-            'title' => 'required',         
-            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'], 
+            'title' => 'required',
+            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
             'class_id' => 'required',
             'course_id' => 'required',
             'image' => 'required',
@@ -116,10 +116,10 @@ class LessonPlanController extends Controller
     public function edit(Request $request)
     {
         $valid_rule = [
-            'title' => 'required',         
-            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'], 
+            'title' => 'required',
+            'video_url' => ['required','regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'],
             'class_id' => 'required',
-            'course_id' => 'required',            
+            'course_id' => 'required',
         ];
         if(!empty($request->video_info_url)){
             $valid_rule['video_info_url'] = ['regex:/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i'];

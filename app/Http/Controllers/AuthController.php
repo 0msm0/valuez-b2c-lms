@@ -133,7 +133,7 @@ class AuthController extends Controller
                 'password' => Hash::make($passWord)
             ];
             #print_r($add_user); die;
-            $this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord, 'school_name' => $check_school_user->school_name]);
+            #$this->UserAccountMail(['username' => $data['email'], 'userid' => $userId, 'pass' => $passWord, 'school_name' => $check_school_user->school_name]);
             return User::create($add_user);
         } else {
             return "error";
