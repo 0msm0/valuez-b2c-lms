@@ -85,7 +85,7 @@ class WebPage extends Controller
             $para_vimeo = count($video_id) > 1 ? '?h=' . $video_id[1] : '';
             $video_url = 'https://player.vimeo.com/video/' . $video_id[0] . $para_vimeo;
         } else {
-            $video_url = '';
+            $video_url = isset($parsed['host'])?$video_src:"";
         }
         return $video_url;
     }
