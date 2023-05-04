@@ -22,7 +22,7 @@
 </head>
 
 <body class="hold-transition theme-primary bg-img"
-    style="background-image: url({{ asset('assets/images/auth-bg/bg-20.png') }})">
+    style="background-image: url({{ asset('assets/images/auth-bg/bg-20.png') }});background-size: contain;background-position: bottom; ">
 
     <div class="container h-p100">
         <div class="row align-items-center justify-content-md-center h-p100">
@@ -64,7 +64,7 @@
 
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 mt-4">
+                                        <div class="col-auto mt-4">
                                             <div class="checkbox">
                                                 <input type="checkbox" id="basic_checkbox_1" name="remember">
                                                 <label for="basic_checkbox_1">Remember Me</label>
