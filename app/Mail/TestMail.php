@@ -31,6 +31,6 @@ class TestMail extends Mailable
     public function build()
     {
         $data = $this->details;
-        return $this->from('support@valuezhut.com','Valuez Hut test')->subject($data['subject'])->view($data['view']);
+        return $this->from('support@valuezhut.com','Valuez Hut')->subject($data['subject'])->view($data['view']);
     }
 }
