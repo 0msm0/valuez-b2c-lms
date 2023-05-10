@@ -18,9 +18,10 @@ class checkAdminRole
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if ($user->usertype != 'superadmin' || $user->usertype != 'contentadmin') {
+        if (in_array($user->usertype, ['superadmin','contentadmin'])) {
+            return $next($request);
+        } else {
             return redirect(route('login'));
         }
-        return $next($request);
     }
 }
