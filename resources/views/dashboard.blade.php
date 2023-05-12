@@ -19,10 +19,15 @@
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
                                                 <div>
-                                                    <h5 class="mb-0">Subscription validity</h5>
-                                                    <p class="mb-0 text-white-70">
+                                                    <h5 class="mb-0">Subscription details</h5><br>
+                                                    @if ($is_demo == 0) 
                                                         {{ date('d-m-Y', strtotime($school->package_start)) }} -
                                                         {{ date('d-m-Y', strtotime($school->package_end)) }}</p>
+                                                    @else
+                                                        {{ 'Free Trial | Limited Version | No Time Limit' }} <br >
+                                                        <a href="{{ route('teacher.add', ['school' => $schoolid]) }}" class=""><i
+                                                            class="fa fa-plus"></i> Purchase Full Version</a> | INR 999                                                    
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

@@ -413,10 +413,11 @@ class AuthController extends Controller
                 $interval = $package_start->diff($package_end);
                 $time_left = $interval->format('%a');
 
+                $is_demo = $school->is_demo;
                 // dd($package_start);
                 // dd($school->licence, $school->activelicences());
                 $licences_remaining = $school->licence - $school->activelicences();
-                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user', 'licences_remaining'));
+                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user', 'licences_remaining', 'is_demo'));
             } else {
                 return view('dashboard-teacher');
             }
