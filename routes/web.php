@@ -13,7 +13,7 @@ use App\Http\Controllers\{WebPage, Notification, ReportController, UserControlle
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for your applicationregister These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -28,7 +28,11 @@ Route::get('signout', [AuthController::class, 'signout'])->name('signout');
 
 Route::middleware('isLogin')->controller(AuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
+    Route::get('register', 'register')->name('register');
+
     Route::post('process-login', 'authuser')->name('login.process');
+    Route::post('process-register', 'authuserregister')->name('register.process');
+
 });
 
 Route::middleware(['auth', 'isAdmin'])->get('master-dashboard', [AuthController::class, 'AdminDash'])->name('admin-dashboard');

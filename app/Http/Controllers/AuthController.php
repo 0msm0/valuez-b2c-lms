@@ -10,15 +10,169 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use App\Models\{User, School, LogsModel};
 use DataTables;
-use Mail;
-
+// use Mail;
+use Psy\Readline\Hoa\Console;
+use App\Models\Package;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+
+    public function register()
+    {
+        return view('auth.register');
+    }
+
+    public function authuserregister(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required',
+
+        ]);
+        $name = $request->name;
+        $email = $request->email;
+        $username = $request->email;
+        $password = $request->password;
+        $confirm_password = $request->confirm_password;
+
+        if ($password == $confirm_password) {
+            $user_details = [
+                'name' => $name,
+                'email' => $email,
+                'usertype' => 'admin',
+                'password' => Hash::make($password),
+                'view_pass' => $password
+            ];
+            $this->create_school_and_schooladmin($user_details);
+            // User::create($user_details);
+            print_r($user_details);
+        }
+        else {
+            return back()->withErrors([
+                'password' => 'Password does not match with Confirm Password.',
+            ]);
+        }
+
+        if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            Auth::attempt(['email' => $username, 'password' => $password]);
+        } else {
+            Auth::attempt(['username' => $username, 'password' => $password]);
+        }
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            session(['usertype' => $user->usertype]);
+            LogsModel::create(['userid' => $user->id, 'action' => 'login', 'logs_info' => json_encode(['info' => 'User Login', 'usertype' => $user->usertype])]);
+            if ($user->usertype == 'superadmin' || $user->usertype == 'contentadmin') {
+                return redirect()->intended(route('admin-dashboard'))->withSuccess('Signed in');
+            } else if ($user->usertype == 'teacher') {
+                return redirect()->intended(route('teacher.class.list'))->withSuccess('Signed in');
+            } else if ($user->usertype == 'admin') {
+                return redirect()->intended(route('school.teacher.list'))->withSuccess('Signed in');
+            }
+        }
+
+        #return redirect("login")->withSuccess('Login details are not valid');
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+
+    public function create_school_and_schooladmin($requestdata)
+    {
+        /*
+        $requestdata->validate([
+            'title' => 'required',
+            'primary_email' => 'required|email|unique:school',
+            'primary_person' => 'required',
+            'licence' => 'required',
+            'package_start' => 'required',
+            'package_end' => 'required',
+            'grade_ids' => 'required',
+            // 'image' => 'required',
+        ]);
+        */
+
+        // if ($image = $requestdata->file('school_logo')) {
+        //     $destinationPath = 'uploads/school/';
+        //     $originalname = $image->hashName();
+        //     $imageName = "school_" . date('Ymd') . '_' . $originalname;
+        //     $image->move($destinationPath, $imageName);
+        // } else {
+        //     $imageName = "";
+        // }
+
+        $schoolData = [
+            'school_name' => $requestdata['name'],
+            'primary_person' => $requestdata['name'],
+            'primary_email' => $requestdata['email'],
+            'primary_mobile' => '1112223334',
+            'second_email' => '',
+            'second_mobile' => '',
+            'mobile' => '',
+            'address' => '',
+            'licence' => 1,
+            'school_desc' => 'Random Description',
+            'school_logo' => '',
+            'package_start' => now(),
+            'package_end' => now()->addMonth(),
+            'state_id' => 0,
+            'city_id' => 0,
+            'pincode' => 0,
+            'is_deleted' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'is_demo' => 1
+        ];
+
+        $school_id =  DB::table('school')->insertGetId($schoolData);
+        print_r($school_id);
+
+        $auth_user = new AuthController();
+        $user_pass = $auth_user->getToken();
+        $user_email = strtolower($requestdata['email']);
+        $username = explode("@", $user_email);
+        $userId = trim($username[0]) . date('Yims');
+        $schoolAdmin = [
+            'name' => $requestdata['name'],
+            'email' => $user_email,
+            'usertype' => 'admin',
+            'password' => Hash::make($requestdata['view_pass']),
+            'view_pass' => $requestdata['view_pass'],
+            'school_id' => $school_id,
+            'username' => $userId,
+        ];
+        if (!empty($requestdata['grade_ids'])) {
+            $package_info = [];
+            foreach ($requestdata['grade_ids'] as $grade) {
+                $package_info[] = ['grade' => $grade, 'school_id' => $school_id, 'status' => 1, 'package_start' => $requestdata['package_start'], 'package_end' => $requestdata['package_end']];
+            }
+            Package::insert($package_info);
+        }
+        User::create($schoolAdmin);
+        // $this->schoolAdminMail(['title' => $request->primary_person, 'userid' => $userId, 'pass' => $user_pass, 'email' => $user_email, 'school_name' => $request->title]);
+        // return redirect(route('school.list'))->with(['message' => 'School added successfully!', 'status' => 'success']);
+    }
+
+
+
+
+
+
+
+
+
+
+
     public function index()
     {
         return view('auth.login');
     }
+
 
     public function authuser(Request $request)
     {
@@ -53,6 +207,7 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+
 
     public function userlist(Request $request)
     {
