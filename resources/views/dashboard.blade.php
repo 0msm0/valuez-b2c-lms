@@ -10,7 +10,7 @@
                             style="background-position: right bottom; background-size: auto 100%; background-image: url(../../../images/svg-icon/color-svg/custom-30.svg)">
                             <div class="row">
                                 <div class="col-12 col-xl-12">
-                                    <h1 class="mb-0 fw-600">NEP compliant Values and Near-Future-Tech courses</h1>
+                                    <h1 class="mb-0 fw-600">Welcome {{ $user->name }},</h1>
                                     <div class="mt-45 d-md-flex align-items-center">
                                         <div class="me-30 mb-30 mb-md-0">
                                             <div class="d-flex align-items-center">
@@ -50,9 +50,28 @@
             <div class="col-xl-4 col-12">
                 <div class="box bg-transparent no-shadow">
                     <div class="box-body p-xl-0 text-center">
-                        <h3 class="px-30 mb-20">Have More<br>Knowledge to share?</h3>
-                        <a href="{{ route('lesson.plan.add') }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
-                                class="fa fa-plus me-15"></i> Add Teacher Account</a>
+                        
+                        @if($school->licence == 1)
+                    
+                        <h3 class="px-30">Make your kids 2023 relevant by accessing Valuez Treasure Chest.</h3>
+                        <div>
+                            <br>Learn Relevant New-Age Life Valuez
+                            <br>Learn Latest AI tools & tech
+                            <br>Enjoy Audiobooks
+                            <br>Learn Social Manners
+                        </div>
+                        <a href="{{ route('teacher.add', ['school' => $schoolid]) }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
+                                class="fa fa-plus me-15"></i> Add My Kid</a>
+
+                        @else 
+                            <h3 class="px-30 mb-10">Explore dashboard to track your kids' journey 
+                                <br>Get hands on by reviewing 'parent guidance' and 'conversation topics'.
+                            </h3>
+                            <a href="{{ route('teacher.list') }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
+                                    class="fa fa-plus me-15"></i> Show Dashboard or something</a>
+                        
+                        @endif
+
                     </div>
                 </div>              
             </div>
@@ -69,7 +88,7 @@
                                             <span class="icon-Mail fs-24"></span>
                                         </div>
                                         <div class="d-flex flex-column fw-500">
-                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Total Licence</a>
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Licences Granted</a>
                                             <span class="text-fade">{{ $school->licence }}</span>
                                         </div>
                                     </div>
@@ -88,7 +107,7 @@
                                             <span class="icon-Mail fs-24"></span>
                                         </div>
                                         <div class="d-flex flex-column fw-500">
-                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16"> Licence Usage</a>
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Kids Enrolled</a>
                                             <span class="text-fade">{{ $school->teacher->count() }}</span>
                                         </div>
                                     </div>

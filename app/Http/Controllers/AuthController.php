@@ -218,7 +218,13 @@ class AuthController extends Controller
 
     public function addUser(Request $request)
     {
+        //imp SECURITY flaw fixed at UI level
+        // dd($request , Auth::user()->school->id);
+        $user_schoolid = Auth::user()->school->id;
         $schoolid = $request->input('school');
+        if($request->input('school') != $user_schoolid) {
+            return redirect(route('teacher.list', ['school' => $user_schoolid]))->with('error','Try again');
+        }
         return view('users.teacher-add', compact('schoolid'));
     }
 
@@ -253,25 +259,33 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             // 'password' => 'required|min:6',
         ]);
-
         $data = $request->all();
         $check = $this->create($data);
         $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $data['school']]);
         if ($check == "error") {
             return redirect($redirect)->with('error', 'Maximum licences limit reached.');
-        } else {
-            return redirect($redirect)->withSuccess('User added successfully!');
+        } else if ($check == 'wrong-school') {
+            return redirect($redirect)->with('error', 'Wrong Account Selected. Try again.');
+        } else
+        {
+            return redirect($redirect)->with('error', 'Some error, best to try again');
         }
     }
 
     public function create(array $data)
-    {
+    {   
+        // imp SECURITY flaw fixed
+        // dd(Auth::user()->id, Auth::user()->school->id, $data['school']);
+        // dd(Auth::user()->school->id != $data['school']);
+        if(Auth::user()->school->id != $data['school']) {
+            return 'wrong-school';
+        }
+
         $check_school_user = School::with(['teacher' => function ($query) {
             $query->where('usertype', '=', 'teacher')->where(['is_deleted' => 0]);
         }])->where(['is_deleted' => 0, 'id' => $data['school']])->orderBy('id')->first();
-
+        // dd($check_school_user);
         $total_teacher = $check_school_user->teacher->count();
-
         if ($check_school_user->licence > $total_teacher) {
             $passWord = isset($data['password']) ? $data['password'] : Str::random(10);
             $user_email = strtolower($data['email']);
@@ -386,12 +400,15 @@ class AuthController extends Controller
                     $query->where('usertype', '=', 'teacher');
                 }])->where('id', $schoolid)->orderBy('id')->first();
 
-                $package_start = new \DateTime(date("Y-m-d h:i:s"));
+                // dd($school);
+
+                $package_start = new \DateTime($school->package_start);
                 $package_end = new \DateTime($school->package_end);
                 $interval = $package_start->diff($package_end);
                 $time_left = $interval->format('%a');
 
-                return view('dashboard', compact('school', 'time_left'));
+                // dd($package_start);
+                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user'));
             } else {
                 return view('dashboard-teacher');
             }
