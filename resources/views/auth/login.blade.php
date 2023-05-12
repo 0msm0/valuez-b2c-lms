@@ -76,6 +76,13 @@
                                         <!-- /.col -->
                                     </div>
                                 </form>
+
+
+                                <div class="content-top-agile p-20 pb-0">
+                                    <p class="mb-0">Not a user? Click <a href={{ route('register') }}>here</a> to register as parent!</p>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>

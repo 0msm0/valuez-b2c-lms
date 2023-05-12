@@ -95,6 +95,9 @@
                                                 <label for="basic_checkbox_1">Remember Me</label>
                                             </div>
                                         </div>
+                                        <label class="form-label mt-4">Note: <br>
+                                            If you have subscribed Valuez Live Classes, you get full access to the LMS for 1 month! <br>
+                                            All users get lifetime access to the free content forever!</label>
                                         <div class="col-12 text-center mt-2">
                                             <button type="submit" class="btn btn-primary w-p100 mt-10">Register</button>
                                         </div>
