@@ -104,6 +104,12 @@
                                         <!-- /.col -->
                                     </div>
                                 </form>
+
+                                <div class="content-top-agile p-20 pb-0">
+                                    <p class="mb-0">Already got an account? Click <a href={{ route('login') }}>here</a> to login!</p>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
