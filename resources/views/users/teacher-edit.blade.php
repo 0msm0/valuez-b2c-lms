@@ -9,8 +9,8 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">Manage Users</li>
-                            <li class="breadcrumb-item active" aria-current="page">Update User</li>
+                            <li class="breadcrumb-item" aria-current="page">Manage Kid Accounts</li>
+                            <li class="breadcrumb-item active" aria-current="page">Update Kid Account</li>
                         </ol>
                     </nav>
                 </div>
@@ -36,13 +36,13 @@
                                 <div class="form-group">
                                     <label class="form-label">Name <span class="text-danger">*</span></label>
                                     <input type="text" name="name" value="{{ $user->name }}" class="form-control"
-                                        placeholder="Enter Name">
+                                        placeholder="Kid Name">
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <label class="form-label">Kid Email <span class="text-danger">*</span></label>
                                     <input type="email" name="email" value="{{ $user->email }}" class="form-control"
                                         placeholder="Enter Email">
                                     @error('email')

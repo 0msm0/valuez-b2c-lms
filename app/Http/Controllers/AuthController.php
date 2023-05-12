@@ -268,7 +268,7 @@ class AuthController extends Controller
             return redirect($redirect)->with('error', 'Wrong Account Selected. Try again.');
         } else
         {
-            return redirect($redirect)->with('error', 'Some error, best to try again');
+            return redirect($redirect)->withSuccess('Kid Account created successfully!');
         }
     }
 
@@ -311,6 +311,8 @@ class AuthController extends Controller
 
     public function edituser(Request $request)
     {
+
+        // HANDLE SECURITY FLAW OF UPDATING SOEONE ELSES ACCOUNT. BOTH IN BACKEND AND FRONTEND
         $data = $request->all();
         $school = $data['school'];
         $pagetype = !empty($data['pagetype']) ? $data['pagetype'] : '';
@@ -331,12 +333,14 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'pass' => $data['password']
             ];
-            Mail::to($data['email'])->send(new \App\Mail\TestMail($details));
+            // No need to send email to kids account created
+            // dd($validate);
+            // Mail::to($data['email'])->send(new \App\Mail\TestMail($details));
         }
         $redirect = (session()->get('usertype') == 'admin') ? route('school.teacher.list') : route('teacher.list', ['school' => $school]);
 
         $redirect_url = ($pagetype == 'schooladmin') ? route('school.admin') : $redirect;
-        return redirect($redirect_url)->with('success', 'User Updated successfully');
+        return redirect($redirect_url)->with('success', 'Kid Account Updated successfully');
     }
 
     public function resetPassword(Request $request)

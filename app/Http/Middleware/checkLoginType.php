@@ -24,7 +24,7 @@ class checkLoginType
             } else if ($user->usertype == 'teacher') {
                 return redirect(route('teacher.class.list'));
             } else if ($user->usertype == 'admin') {
-                return redirect(route('school.teacher.list'));
+                return redirect(route('dashboard'));
             }
         } else {
             return $next($request);
