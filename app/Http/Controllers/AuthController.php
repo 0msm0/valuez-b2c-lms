@@ -208,9 +208,11 @@ class AuthController extends Controller
         ]);
     }
 
-
+    // TODO LOOK INTO IT
     public function userlist(Request $request)
     {
+        // if request->input does not exist - handle that situation
+        dd('inside userlist in Authcontroller. To trigger this function requires input in url');
         $schoolid = $request->input('school');
         $userlist = DB::table('users')->where(['school_id' => $schoolid, 'usertype' => 'teacher', 'is_deleted' => 0])->orderBy('id')->get();
         return view('users.teacher', compact('userlist', 'schoolid'));
@@ -412,7 +414,9 @@ class AuthController extends Controller
                 $time_left = $interval->format('%a');
 
                 // dd($package_start);
-                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user'));
+                // dd($school->licence, $school->activelicences());
+                $licences_remaining = $school->licence - $school->activelicences();
+                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user', 'licences_remaining'));
             } else {
                 return view('dashboard-teacher');
             }

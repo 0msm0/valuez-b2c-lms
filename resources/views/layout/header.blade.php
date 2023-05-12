@@ -203,18 +203,15 @@
                             <a href="{{ route('dashboard') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                         </li>
                         <li class="{{ Request::is('school/*') ? 'active' : '' }}">
-                            <a href="{{ route('school.teacher.list') }}"><i data-feather="user"></i><span>Manage
-                                    Teacher</span></a>
+                            <a href="{{ route('school.teacher.list') }}"><i data-feather="user"></i><span>Manage Kids Accounts</span></a>
                         </li>
 
                         <li class="{{ Request::is('whats-new/*') ? 'active' : '' }}">
-                            <a href="{{ route('notify.schoolview') }}"><i data-feather="bell"></i><span>What's
-                                    New</span></a>
+                            <a href="{{ route('notify.schoolview') }}"><i data-feather="bell"></i><span>What's New</span></a>
                         </li>
                     @elseif(session('usertype') == 'teacher')
                         <li class="{{ Request::is('teacher/*') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade
-                                    list</span></a>
+                            <a href="{{ route('teacher.class.list') }}"><i data-feather="list"></i><span>Grade list</span></a>
                         </li>
                         <li class="{{ Request::is('teacher.class.history') ? 'active' : '' }}">
                             <a href="{{ route('teacher.class.history') }}"><i

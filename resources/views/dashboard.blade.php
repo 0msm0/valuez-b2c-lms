@@ -79,7 +79,7 @@
 
             <div class="col-xl-12 col-12">
                 <div class="row">
-                    <div class="col-xl-4 col-6">
+                    <div class="col-xl-4 col-4">
                         <div class="box">
                             <div class="box-body">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -88,7 +88,7 @@
                                             <span class="icon-Mail fs-24"></span>
                                         </div>
                                         <div class="d-flex flex-column fw-500">
-                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Licences Granted</a>
+                                            <a href={{ route('school.teacher.list') }} class="text-dark hover-primary mb-1 fs-16">Licences Granted</a>
                                             <span class="text-fade">{{ $school->licence }}</span>
                                         </div>
                                     </div>
@@ -97,8 +97,7 @@
                             </div>
                         </div>
                     </div>
-
-                        <div class="col-xl-4 col-6">
+                    <div class="col-xl-4 col-4">
                         <div class="box">
                             <div class="box-body">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -107,11 +106,27 @@
                                             <span class="icon-Mail fs-24"></span>
                                         </div>
                                         <div class="d-flex flex-column fw-500">
-                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Kids Enrolled</a>
-                                            <span class="text-fade">{{ $school->teacher->count() }}</span>
+                                            <a href={{ route('school.teacher.list') }} class="text-dark hover-primary mb-1 fs-16">Kids Enrolled</a>
+                                            <span class="text-fade">{{ $school->activelicences() }}</span>
                                         </div>
                                     </div>
-                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-4">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-15 bg-primary h-50 w-50 l-h-68 rounded text-center">
+                                            <span class="icon-Mail fs-24"></span>
+                                        </div>
+                                        <div class="d-flex flex-column fw-500">
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Licences Left</a>
+                                            <span class="text-fade">{{ $licences_remaining }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -120,6 +135,30 @@
                 </div>
             </div>
 
+            
+
+            <div class="col-xl-12 col-12">
+                <div class="row">
+                    <div class="col-xl-6 col-6">
+                        <h3 class="">Latest Update</h3> <br>
+                        {{-- <h4>Module Started<h5> <br> --}}
+                        <h5>
+                        <span>Respect Grandparents - Started - 12 May 2023 8.00 pm</span> <br>
+                        <span>Respect Grandparents - Completed - 12 May 2023 8.20 pm</span> <br>
+                        <span>Thank you Mom & Dad - Started - 12 May 2023 10.00 pm</span>
+                        </h5>
+                    </div>
+
+                    <div class="col-xl-6 col-6">
+                        <h3 class="">Activity Completed</h3> <br>
+                        {{-- <h4>Module<h5> <br> --}}
+                        <h5>
+                        <span>Review letter written to grandpa - 13 May 2023 5.20 pm</span><br>
+                        <span>Audio or video recording of thank you message - 13 May 2023 7.00 pm</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </section>

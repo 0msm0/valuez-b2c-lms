@@ -15,4 +15,11 @@ class School extends Model
     {
         return $this->hasMany(User::class, 'school_id', 'id');
     }
+
+    // # of licenses currently in use i.e. non-deleted
+    public function activelicences() 
+    {
+        return $this->teacher->where('is_deleted', 0)->count();
+    }
+
 }
