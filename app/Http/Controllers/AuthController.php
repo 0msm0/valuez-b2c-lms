@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
-use App\Models\{User, School, LogsModel};
+use App\Models\{User, School, LogsModel, Payment};
 use DataTables;
 // use Mail;
 use Psy\Readline\Hoa\Console;
 use App\Models\Package;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use \Razorpay\Api\Api;
 
 class AuthController extends Controller
 {
@@ -395,11 +397,27 @@ class AuthController extends Controller
             return redirect("login")->withSuccess('You are not allowed to access');
         }
     }
+    public function createOrder($amount, $currency) {
+        $api = new Api(env('RAZORPAY_LIVE_KEY_ID'), env('RAZORPAY_LIVE_KEY_SECRET'));
+        // Create order
+        $order = $api->order->create(array(
+            'receipt' => 'OrderID' . rand(),
+            'amount' => $amount * 100, // amount in paise
+            'currency' => $currency
+        ));
+        $orderId = $order['id'];
+        return $orderId;
+        // Return to the payment process page with the necessary parameters
+        // return view('webpages.razorpay', compact('orderId', 'amount', 'currency'));
+    }
 
     public function dashboard()
     {
         if (Auth::check()) {
             $user = Auth::user();
+            $amount = 1; 
+            $currency = 'INR';
+            $orderId = $this->createOrder($amount, $currency);
             $schoolid = $user->school_id;
             if (session()->get('usertype') == 'admin') {
                 $school = School::with(['teacher' => function ($query) {
@@ -408,7 +426,7 @@ class AuthController extends Controller
 
                 // dd($school);
 
-                $package_start = new \DateTime($school->package_start);
+                $package_start = Carbon::now();
                 $package_end = new \DateTime($school->package_end);
                 $interval = $package_start->diff($package_end);
                 $time_left = $interval->format('%a');
@@ -416,8 +434,11 @@ class AuthController extends Controller
                 $is_demo = $school->is_demo;
                 // dd($package_start);
                 // dd($school->licence, $school->activelicences());
-                $licences_remaining = $school->licence - $school->activelicences();
-                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user', 'licences_remaining', 'is_demo'));
+                // dd($school->activefreelicences(), $school->activepaidlicences());
+                $licences_remaining = $school->licence - ($school->activefreelicences() + $school->activepaidlicences());
+
+                $payments_made = $user->payments->all();
+                return view('dashboard', compact('school', 'schoolid', 'time_left', 'user', 'licences_remaining', 'is_demo', 'amount', 'currency', 'orderId', 'payments_made'));
             } else {
                 return view('dashboard-teacher');
             }

@@ -6,6 +6,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonPlanController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\{WebPage, Notification, ReportController, UserController};
 
 /*
@@ -34,6 +35,7 @@ Route::middleware('isLogin')->controller(AuthController::class)->group(function 
     Route::post('process-register', 'authuserregister')->name('register.process');
 
 });
+
 
 Route::middleware(['auth', 'isAdmin'])->get('master-dashboard', [AuthController::class, 'AdminDash'])->name('admin-dashboard');
 Route::middleware('auth')->get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
@@ -94,6 +96,11 @@ Route::middleware('auth')->prefix('school')->controller(AuthController::class)->
     Route::get('manage-school-admin', 'SchoolAdmin')->name('school.admin');
     Route::get('update-school-admin/{userid}', 'updateAdminUser')->name('school.admin.edit');
 });
+
+Route::get('/payment',[PaymentController::class,'index'])->name('index');
+Route::post('/payment', [PaymentController::class, 'store'])->name('razorpay.payment.store');
+Route::get('/orderid-generate', [PaymentController::class, 'orderIdGenerate']);
+
 
 Route::middleware(['auth', 'isAdmin'])->prefix('whats-new')->controller(Notification::class)->group(function () {
     Route::get('manage-notification', 'index')->name('notify.list');

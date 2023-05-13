@@ -4,12 +4,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Users</h4>
+                <h4 class="page-title">Kids Accounts</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Manage Teacher</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Kids</li>
                         </ol>
                     </nav>
                 </div>
@@ -34,11 +34,11 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Manage Teacher</h5>
+                        <h5 class="card-title mb-0">Manage Kids Accounts</h5>
                         <div class="card-actions float-end">
                             <div class="dropdown show">
                                 <a href="{{ route('teacher.add', ['school' => $schoolid]) }}"
-                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add Teacher</a>
+                                    class="waves-effect waves-light btn btn-sm btn-outline btn-info mb-5">Add a Kid</a>
                             </div>
                         </div>
                     </div>

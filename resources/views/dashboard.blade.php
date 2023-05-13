@@ -26,9 +26,32 @@
                                                     @else
                                                         {{ 'Free Trial | Limited Version | No Time Limit' }} <br >
                                                         <a href="{{ route('teacher.add', ['school' => $schoolid]) }}" class=""><i
-                                                            class="fa fa-plus"></i> Purchase Full Version</a> | INR 999                                                    
+                                                            class="fa fa-plus"></i> Purchase Full Version</a> | INR 999 <br>
                                                     @endif
                                                 </div>
+                                                @if($is_demo == 1)
+                                                <div class="card-body text-center">
+                                                    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                                    <form action="{{ route('razorpay.payment.store') }}" method="POST" >
+                                                        @csrf 
+                                                        <script src="https://checkout.razorpay.com/v1/checkout.js"
+                                                                data-key="{{ env('RAZORPAY_LIVE_KEY_ID') }}"
+                                                                data-amount="{{ $amount * 100 }}"
+                                                                data-currency="{{ $currency }}"
+                                                                data-order_id="{{ $orderId }}"
+                                                                data-buttontext="Pay Now"
+                                                                data-name="Valuez Treasure Chest - 1 yr subscription"
+                                                                data-description="Razorpay payment"
+                                                                data-image="/images/logo-icon.png"
+                                                                data-prefill.name={{ Auth::user()->name }}
+                                                                data-prefill.email={{ Auth::user()->name }}
+                                                                data-theme.color="#ff7529">
+                                                        </script>
+                                                        <input type="hidden" custom="Hidden Element" name="hidden">
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div>                                           
@@ -60,10 +83,11 @@
                     
                         <h3 class="px-30">Make your kids 2023 relevant by accessing Valuez Treasure Chest.</h3>
                         <div>
-                            <br>Learn Relevant New-Age Life Valuez
-                            <br>Learn Latest AI tools & tech
-                            <br>Enjoy Audiobooks
-                            <br>Learn Social Manners
+                            <br>Learn Relevant New-Age Life Valuez<br>
+                            <br>Learn Latest AI tools & tech<br>
+                            {{-- <br>Enjoy Audiobooks --}}
+                            {{-- <br>Learn Social Manners --}}
+                            <br>
                         </div>
                         <a href="{{ route('teacher.add', ['school' => $schoolid]) }}" class="waves-effect waves-light w-p100 btn btn-primary"><i
                                 class="fa fa-plus me-15"></i> Add My Kid</a>
@@ -111,8 +135,25 @@
                                             <span class="icon-Mail fs-24"></span>
                                         </div>
                                         <div class="d-flex flex-column fw-500">
-                                            <a href={{ route('school.teacher.list') }} class="text-dark hover-primary mb-1 fs-16">Kids Enrolled</a>
-                                            <span class="text-fade">{{ $school->activelicences() }}</span>
+                                            <a href={{ route('school.teacher.list') }} class="text-dark hover-primary mb-1 fs-16">Kids Enrolled (Free)</a>
+                                            <span class="text-fade">{{ $school->activefreelicences() }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-4">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-15 bg-primary h-50 w-50 l-h-68 rounded text-center">
+                                            <span class="icon-Mail fs-24"></span>
+                                        </div>
+                                        <div class="d-flex flex-column fw-500">
+                                            <a href={{ route('school.teacher.list') }} class="text-dark hover-primary mb-1 fs-16">Kids Enrolled (Paid)</a>
+                                            <span class="text-fade">{{ $school->activepaidlicences() }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +177,25 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="col-xl-4 col-4">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-15 bg-primary h-50 w-50 l-h-68 rounded text-center">
+                                            <span class="icon-Mail fs-24"></span>
+                                        </div>
+                                        <div class="d-flex flex-column fw-500">
+                                            <a href="course.html" class="text-dark hover-primary mb-1 fs-16">Payments Made</a>
+                                            @foreach($payments_made as $p)
+                                                <span class="text-fade">{{\Carbon\Carbon::parse($p->created_at)->diffForhumans()}}.{{ '| INR '.round($p->amount/100) }}</span>
+                                            @endforeach                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

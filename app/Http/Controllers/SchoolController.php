@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
 use Mail;
+use Illuminate\Validation\Rule;
 
 
 class SchoolController extends Controller
@@ -127,10 +128,17 @@ class SchoolController extends Controller
 
     public function edit(Request $request)
     {
+        // dd($request, $this);
         $request->validate([
             'title' => 'required',
             'primary_person' => 'required',
-            'primary_email' => 'required|email|unique:users,email',
+            // 'primary_email' => [
+            //     'required', 'email',
+            //     Rule::unique('users')->where(function ($query) use($request) {
+            //         return $query->whereIn('email', School::find($request['school'])->first()->teachers());
+            //     }),
+            // ],
+            'primary_email' => 'required|email|unique:users,email'. $request['school'],
             'licence' => 'required|numeric',
             'package_start' => 'required',
             'package_end' => 'required',
